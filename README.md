@@ -5,10 +5,7 @@
  UIManager 는 UIBaseController를 통해 UI를 관리
 
 
-<iframe src="[https://app.diagrams.net/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1#Ryour-diagram-id](https://viewer.diagrams.net/?tags=%7B%7D&highlight=0000ff&edit=_blank&layers=1&nav=1&title=GenericCode.drawio#RzZhbb5swFMc%2FDY%2BLuJk0j82lW6VWqhpV6x49cMCdg5FxmrBPv2Owwy1pmqoLlaLI549v5%2BdzbIPlzda77wJnyT2PCLNcO9pZ3txy3SuE4F8JRSUg16uEWNCokpxaWNK%2FRIu2Vjc0InmrouScSZq1xZCnKQllS8NC8G272oqz9qgZjklPWIaY9dWfNJKJdssd1%2FoPQuPEjOwEk%2BrJGpvK2pM8wRHfNiRvYXkzwbmsSuvdjDDFznCp2t0cebqfmCCpfE8DL8xuJquXRzYVrpPcFcn43v5m%2FHjFbKM91rOVhUEg%2BCaNiOrFsbzpNqGSLDMcqqdbWHPQErlm%2BrHujghJdkcn6uzdh7AhfE2kKKCKboAmmpgOGcfY23oBXFtrSRN%2BoEWsFz3e911zgYJGcwYm5wClgMGw04i%2BQjFWRWsxt66urenEWsysa9uaIFMJxmzUm%2FFUCs4YEW%2Bgti%2BC2kVt1K7fR%2B24B1D%2FN9Juj%2FTT7T1OIc2Gp%2BV3A9MZmpZ3Onth28lUccXI7lptiMCCpJEuzkOG85yGIOYSC9mXGwjbvAGaKJ6bxi9ljJAx57vmw3lhrB2Vz7pHVW60AqtupAzTxgB2zTz1QRGMgnptSdTbyjsrC2D4RoTkdKbDGDGRp%2BK0HynNSDi4RRlREIYlfW1P%2BFB86DEeOAVX9qHo2e1Q9PxOiFWO6lbNU6HTkW8f2QFMRxWJXkdluO4d%2F3gEB%2BecP5dJ88BBbSQu6qf5ocXtovu0NL%2FqMVGxvtQmFzLhMU8xW9RqJ1nrOnecZ5rVC5Gy0JmEN5K3Sdb5PUI2aua4M7LHwaksV9YDERQIwNbdTn37jNT%2FxNw2l52PJvd5OQtbKS4aFTKVQvnxlEbIaYfd2O4ETtXjp6afOa2%2BVP65nfzzhs4%2F99D9b2hKXoeSPzil%2Ft1teEp%2BhxIanNI77mwXp4Q6lILBKflfkFLQoTQenBLqUXq6neKcvPGKCf7L8hYt%2BB%2Box7g6nFOeqjvDijLWkTCjcQomIyvVTAGkIWbXWl7TKCqvGzmQp2l8V1ab%2B7XyqDkoiUPzFStfMBJoSKCHqT4WYW5oCj9ANVNXAgRznYHt1Db8VHUhwTuYPqblshGcyy3JZXnlkVji36Wnl9peup8q3hkS3vkhAWb9sag6%2F%2Bsvbt7iHw%3D%3D)" width="100%" height="600px"></iframe>
-
-
-[ ](https://viewer.diagrams.net/?tags=%7B%7D&highlight=0000ff&edit=_blank&layers=1&nav=1#G1HnAOy57G5G50fbBferm6YLP4e0a9D-bY)
+![Diagram](https://viewer.diagrams.net/?tags=%7B%7D&highlight=0000ff&edit=_blank&layers=1&nav=1#G1HnAOy57G5G50fbBferm6YLP4e0a9D-bY)
 
 
  UIBaseController 기능
