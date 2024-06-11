@@ -53,3 +53,12 @@ Enable 및 Disable를 활용하여 최적화
   - OnDespawnObject
 
 </details>
+
+
+# **NetWorkManager**
+ NetWorkManager 는 RestAPI를 사용하기 위해 제작 //Todo: 서버에 맞게 수정
+ 
+ NetWorkManager의 경우 Partical 키워드를 통해 나눠서 제작
+
+ Task가 아닌 UniTask를 사용하여 최적화
+ 
