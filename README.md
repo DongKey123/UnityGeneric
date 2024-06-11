@@ -3,7 +3,9 @@
 
 # **UIManager**
  UIManager 는 UIBaseController를 통해 UI를 관리
+
  Canvas 및 RayCaster 를 Cashing하여 렌더링 부하를 감소하여 최적화
+
  Enable을 껏다 켰다 할 때마다 SetDirty함수를 최소화 하여 관리하기 위해 제작
 
 <details>
@@ -28,13 +30,15 @@
 </details>
 
 # **GameObjectPool**
+GameObjectPool 의 경우 Unity에서 Instantiate 및 Destroy 함수를 피하기 위해 제작
+
+Enable 및 Disable를 활용하여 최적화
+
+
 
 <details>
 
 ![GameObjectPool](DrawIO/export/GameObjectPool.drawio.png)
-
-[사용법]
- - 특정폴더 (Resources/Prefabs/UI)에 UI 제작
 
 [GameObjectPoolManager 기능]
   - GetPool
