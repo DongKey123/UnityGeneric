@@ -3,19 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPoolManager : LazySingleton<ObjectPoolManager>
+public class GameObjectPoolManager : LazySingleton<GameObjectPoolManager>
 {
     private Dictionary<Type, IPool> poolDictionary = null;
     private const int defaultPoolSize = 10;
 
-    ObjectPoolManager()
+    GameObjectPoolManager()
     {
         poolDictionary = new Dictionary<System.Type, IPool>();
 
         UnityEngine.SceneManagement.SceneManager.sceneUnloaded += ClearPools;
     }
 
-    ~ObjectPoolManager()
+    ~GameObjectPoolManager()
     {
         poolDictionary.Clear();
 

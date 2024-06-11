@@ -31,6 +31,7 @@ public class GameObjectPool<T> : IPool where T : Component , IPoolable  ,new()
         if (pool.Count > 0)
         {
             obj = pool.Pop();
+            obj.gameObject.SetActive(true);
             obj.OnSpawnPoolObject();
 
             return obj;
