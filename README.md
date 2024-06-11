@@ -1,4 +1,4 @@
-유니티에서 모바일 Generic Code 
+유니티에서 기본적으로 사용하는 Generic 코드 정리용
 
 
 [UIManager]
