@@ -3,6 +3,8 @@
 
 [UIManager]
  UIManager 는 UIBaseController를 통해 UI를 관리
+ Canvas 및 RayCaster 를 Cashing하여 렌더링 부하를 감소하여 최적화
+ Enable을 껏다 켰다 할 때마다 SetDirty함수를 최소화 하여 관리하기 위해 제작
 
 ![Diagram](https://viewer.diagrams.net/?tags=%7B%7D&highlight=0000ff&edit=_blank&layers=1&nav=1&title=UIManager.drawio#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1HnAOy57G5G50fbBferm6YLP4e0a9D-bY%26export%3Ddownload)
 
@@ -11,4 +13,4 @@
   - Show
   - Hide
   - SetSortingOrder
-  - NotchArea // Todo: 노치 영역 적용하기
+  - NotchArea // Todo: 추후 모바일에서 Notch영역을 적용하기 위해 기능 추가 제작
