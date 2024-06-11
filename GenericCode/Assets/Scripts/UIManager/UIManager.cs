@@ -16,7 +16,7 @@ public class UIManager : LazySingleton<UIManager>
         uiDictionary = new Dictionary<System.Type, UIBaseController>();
         showedPanels = new Stack<UIBaseController>();
 
-        UnityEngine.SceneManagement.SceneManager.sceneUnloaded += ClearPanels; ;
+        UnityEngine.SceneManagement.SceneManager.sceneUnloaded += ClearPanels;
     }
 
     ~UIManager()
@@ -80,7 +80,7 @@ public class UIManager : LazySingleton<UIManager>
         }
     }
 
-    public T CachePanel<T>(string path) where T : UIBaseController
+    public T GetCachedPanel<T>(string path) where T : UIBaseController
     {
         var type = typeof(T);
         T panel;
@@ -143,15 +143,4 @@ public class UIManager : LazySingleton<UIManager>
             panels[i].Hide();
         }
     }
-
-    public void ShowAllPanelInHidedPanels()
-    {
-        int count = showedPanels.Count;
-        var panels = showedPanels.ToArray();
-        for (int i = 0; i < count; i++)
-        {
-            panels[i].Show();
-        }
-    }
-
 }

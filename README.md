@@ -8,6 +8,16 @@
 
 ![UIManager](DrawIO/export/UIManager.drawio.png)
 
+//사용법
+ - 특정폴더 (Resources/Prefabs/UI)에 UI 제작
+
+ UIManaber 기능
+  - HideAll // Showed 된 Panel을 모두 Hide 
+  - Show
+   - 캐시된 Panel이 존재한다면 Show 후 Controller Return
+   - 캐시된 Panel이 없다면 특정폴더에서 Load하여 생성
+  - SceneUnload 시 Stack,Dictionary 초기화
+
  UIBaseController 기능
   - Show
   - Hide
