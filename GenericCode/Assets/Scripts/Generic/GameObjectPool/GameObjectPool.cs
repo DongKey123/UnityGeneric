@@ -2,14 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPool<T> : IPool where T : Component , IPoolable  ,new()
+public class GameObjectPool<T> : IPool where T : Component , IPoolable  ,new()
 {
     private Stack<T> pool = null;
     private T originPrefab = default;
 
-    private const int defaultPoolSize = 10;
-
-    public ObjectPool(T prefab, int poolSize = defaultPoolSize)
+    public GameObjectPool(T prefab, int poolSize)
     {
         pool = new Stack<T>();
         
@@ -27,7 +25,7 @@ public class ObjectPool<T> : IPool where T : Component , IPoolable  ,new()
         }
     }
 
-    private T GetObject()
+    public T GetObject()
     {
         T obj;
         if (pool.Count > 0)
@@ -42,7 +40,7 @@ public class ObjectPool<T> : IPool where T : Component , IPoolable  ,new()
         return obj;
     }
 
-    private void ReturnObject(T obj)
+    public void ReturnObject(T obj)
     {
         obj.OnDespawnObject();
         obj.gameObject.SetActive(false);

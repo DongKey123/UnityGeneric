@@ -10,10 +10,9 @@
 
 ![UIManager](DrawIO/export/UIManager.drawio.png)
 
-[사용법]
- - 특정폴더 (Resources/Prefabs/UI)에 UI 제작
 
-[UIManaber 기능]
+[UIManager 기능]
+ - 특정폴더 (Resources/Prefabs/UI)에 UI 제작 후 동적으로 로딩 //Todo : 로딩할 때 Addressable 로 등록해서 동적으로 UI가 변경될 수 있도록 수정
   - HideAll // Showed 된 Panel을 모두 Hide 
   - Show
    - 캐시된 Panel이 존재한다면 Show 후 Controller Return
@@ -25,5 +24,28 @@
   - Hide
   - SetSortingOrder
   - NotchArea // Todo: 추후 모바일에서 Notch영역을 적용하기 위해 기능 추가 제작
+
+</details>
+
+# **GameObjectPool**
+
+<details>
+
+![GameObjectPool](DrawIO/export/GameObjectPool.drawio.png)
+
+[사용법]
+ - 특정폴더 (Resources/Prefabs/UI)에 UI 제작
+
+[GameObjectPoolManager 기능]
+  - GetPool
+  - SceneUnload 시 Pool 초기화
+
+ [GameObjectPool 기능]
+  - GetObject
+  - ReturnObject
+
+ [IPoolAble 기능]
+  - OnSpawnObject 
+  - OnDespawnObject
 
 </details>
