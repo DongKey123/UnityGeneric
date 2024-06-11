@@ -10,11 +10,11 @@ public partial class NetworkManager : LazySingleton<NetworkManager>
 
 
     private string token = string.Empty;
-    private const string scheme = "http";
-    private const string ip = "localhost";
-    private const int port = 8080;
+    private string scheme = "http";
+    private string ip = "localhost";
+    private int port = 8080;
 
-    private const double timeout = 5;
+    private double timeout = 5;
 
     public string AccessToken = string.Empty;
     public string RefreshToken = string.Empty;
