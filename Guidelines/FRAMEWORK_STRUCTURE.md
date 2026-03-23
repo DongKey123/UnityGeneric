@@ -14,18 +14,19 @@ Assets/
 │   ├── Scenes/
 │   └── Resources/
 │
-└── Framework/                  # 제네릭 재사용 프레임워크
-    ├── Core/                   # 핵심 유틸리티
-    │   ├── Singleton/
-    │   ├── ObjectPool/
-    │   └── EventSystem/
-    ├── Patterns/               # 디자인 패턴 구현체
-    │   ├── StateMachine/
-    │   ├── Observer/
-    │   └── Command/
-    ├── Extensions/             # C# / Unity 확장 메서드
-    ├── Interfaces/             # 공용 인터페이스 정의
-    └── Utils/                  # 수학, 타이머, 코루틴 헬퍼 등
+└── Scripts/
+    └── Framework/              # 제네릭 재사용 프레임워크
+        ├── Core/               # 핵심 유틸리티
+        │   ├── Singleton/
+        │   ├── ObjectPool/
+        │   └── EventSystem/
+        ├── Patterns/           # 디자인 패턴 구현체
+        │   ├── StateMachine/
+        │   ├── Observer/
+        │   └── Command/
+        ├── Extensions/         # C# / Unity 확장 메서드
+        ├── Interfaces/         # 공용 인터페이스 정의
+        └── Utils/              # 수학, 타이머, 코루틴 헬퍼 등
 ```
 
 ---

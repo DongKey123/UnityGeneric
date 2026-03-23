@@ -16,7 +16,7 @@
 ## 디렉토리 구조 예시
 
 ```
-Assets/Framework/Core/Singleton/
+Assets/Scripts/Framework/Core/Singleton/
 ├── Singleton.cs
 ├── Singleton.md              ← 모듈 문서 (필수)
 └── Singleton.unitypackage    ← 완료 표시 (필수)
