@@ -19,7 +19,7 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 
 | 모듈 | 설명 | 상태 |
 |------|------|------|
-| ExcelToJson | Excel 파일을 읽어 JSON으로 변환 저장 | ⬜ |
+| DataParser/ExcelToJson | Excel 파일을 읽어 JSON으로 변환 저장 | 🚧 |
 
 ### Patterns
 
