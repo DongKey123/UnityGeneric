@@ -11,6 +11,7 @@
 | `Singleton<T>` | MonoBehaviour 싱글톤 | [x] |
 | `ObjectPool<T>` | 제네릭 오브젝트 풀 | [x] |
 | `EventBus` | 글로벌 이벤트 시스템 | [x] |
+| `ExcelToJson` | Excel 파일을 읽어 JSON으로 변환 저장 (ExcelDataReader, Newtonsoft.Json 의존) | [ ] |
 | `SceneLoader` | 씬 전환 + 로딩 화면 | [ ] |
 | `AudioManager` | BGM/SFX 관리 | [ ] |
 | `SaveSystem` | JSON/PlayerPrefs 기반 데이터 저장 | [ ] |
