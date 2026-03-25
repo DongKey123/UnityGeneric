@@ -4,6 +4,7 @@ namespace Framework.Core.Singleton
 {
     /// <summary>
     /// DontDestroyOnLoad가 적용된 MonoBehaviour 싱글톤입니다.
+    /// 씬에 없으면 자동으로 GameObject를 생성합니다.
     /// 씬 전환 후에도 파괴되지 않고 유지됩니다.
     /// </summary>
     public abstract class PersistentMonoSingleton<T> : MonoBehaviour where T : PersistentMonoSingleton<T>
@@ -23,6 +24,12 @@ namespace Framework.Core.Singleton
                 if (_instance == null)
                 {
                     _instance = FindObjectOfType<T>();
+
+                    if (_instance == null)
+                    {
+                        var go = new GameObject(typeof(T).Name);
+                        _instance = go.AddComponent<T>();
+                    }
                 }
 
                 return _instance;

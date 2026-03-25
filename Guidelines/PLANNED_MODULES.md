@@ -8,7 +8,7 @@
 
 | 모듈 | 설명 | 완료 |
 |------|------|------|
-| `Singleton<T>` | MonoBehaviour 싱글톤 | [ ] |
+| `Singleton<T>` | MonoBehaviour 싱글톤 | [x] |
 | `ObjectPool<T>` | 제네릭 오브젝트 풀 | [ ] |
 | `EventBus` | 글로벌 이벤트 시스템 | [ ] |
 | `SceneLoader` | 씬 전환 + 로딩 화면 | [ ] |
