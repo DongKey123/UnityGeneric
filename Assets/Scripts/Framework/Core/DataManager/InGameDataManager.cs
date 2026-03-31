@@ -12,30 +12,44 @@ namespace Framework.Core.DataManager
     ///
     /// [사용 흐름]
     /// 1. LoadAsDictionary 로 데이터 로드 (id 기반 빠른 조회)
-    /// 2. Get 으로 특정 데이터 접근
+    /// 2. 반환된 Dictionary를 직접 사용
     /// 3. 씬 전환 또는 불필요 시 Unload 로 캐시 해제
     ///
     /// [Resources 경로 규칙]
     /// Resources 폴더 기준 경로, 확장자 제외
     /// 예) "Data/Monster" → Assets/Resources/Data/Monster.json
     /// </summary>
-    public class InGameDataManager : Singleton<InGameDataManager>
+    public partial class InGameDataManager : Singleton<InGameDataManager>
     {
-        #region Fields
+        #region Cache
 
-        private readonly Dictionary<string, object> _listCache = new();
-        private readonly Dictionary<string, object> _dictCache = new();
+        private static class ListCache<T>
+        {
+            internal static readonly Dictionary<string, List<T>> Store = new();
+        }
+
+        private static class DictCache<TKey, TValue>
+        {
+            internal static readonly Dictionary<string, Dictionary<TKey, TValue>> Store = new();
+        }
+
+        // UnloadAll 지원을 위해 등록된 캐시 클리어 액션 목록 (경로 → 액션)
+        private static readonly Dictionary<string, Action> _clearActions = new();
 
         #endregion
 
         #region Initialization
 
         /// <summary>
-        /// 플레이 모드 재시작 시 캐시를 초기화합니다.
+        /// 플레이 모드 재시작 시 모든 캐시를 초기화합니다.
         /// </summary>
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         private static void Init()
         {
+            foreach (var action in _clearActions.Values)
+                action();
+
+            _clearActions.Clear();
             Release();
         }
 
@@ -51,20 +65,23 @@ namespace Framework.Core.DataManager
         /// <returns>데이터 리스트. 파일이 없으면 null</returns>
         public List<T> Load<T>(string resourcePath)
         {
-            if (_listCache.TryGetValue(resourcePath, out var cached))
-                return (List<T>)cached;
+            if (ListCache<T>.Store.TryGetValue(resourcePath, out var cached))
+                return cached;
 
             var json = LoadJson(resourcePath);
             if (json == null)
                 return null;
 
             var list = JsonConvert.DeserializeObject<List<T>>(json);
-            _listCache[resourcePath] = list;
+            if (list == null)
+                return null;
+
+            ListCache<T>.Store[resourcePath] = list;
+            _clearActions[$"L:{typeof(T).FullName}:{resourcePath}"] = () => ListCache<T>.Store.Remove(resourcePath);
 
 #if UNITY_EDITOR
-            Debug.Log($"[InGameDataManager] Loaded: {resourcePath} ({list?.Count ?? 0} rows)");
+            Debug.Log($"[InGameDataManager] Loaded: {resourcePath} ({list.Count} rows)");
 #endif
-
             return list;
         }
 
@@ -78,8 +95,8 @@ namespace Framework.Core.DataManager
         /// <returns>Dictionary. 파일이 없으면 null</returns>
         public Dictionary<TKey, TValue> LoadAsDictionary<TKey, TValue>(string resourcePath, Func<TValue, TKey> keySelector)
         {
-            if (_dictCache.TryGetValue(resourcePath, out var cached))
-                return (Dictionary<TKey, TValue>)cached;
+            if (DictCache<TKey, TValue>.Store.TryGetValue(resourcePath, out var cached))
+                return cached;
 
             var json = LoadJson(resourcePath);
             if (json == null)
@@ -93,51 +110,43 @@ namespace Framework.Core.DataManager
             foreach (var item in list)
                 dict[keySelector(item)] = item;
 
-            _dictCache[resourcePath] = dict;
+            DictCache<TKey, TValue>.Store[resourcePath] = dict;
+            _clearActions[$"D:{typeof(TKey).FullName}:{typeof(TValue).FullName}:{resourcePath}"] = () => DictCache<TKey, TValue>.Store.Remove(resourcePath);
 
 #if UNITY_EDITOR
             Debug.Log($"[InGameDataManager] Loaded as Dictionary: {resourcePath} ({dict.Count} entries)");
 #endif
-
             return dict;
         }
 
         /// <summary>
-        /// LoadAsDictionary로 캐시된 데이터에서 특정 키의 값을 반환합니다.
+        /// List로 로드된 특정 경로의 캐시를 해제합니다.
         /// </summary>
-        /// <typeparam name="TKey">키 타입</typeparam>
-        /// <typeparam name="TValue">값 타입</typeparam>
-        /// <param name="resourcePath">LoadAsDictionary 시 사용한 경로</param>
-        /// <param name="key">조회할 키</param>
-        /// <returns>해당 키의 데이터. 없으면 default</returns>
-        public TValue Get<TKey, TValue>(string resourcePath, TKey key)
-        {
-            if (!_dictCache.TryGetValue(resourcePath, out var cached))
-            {
-                Debug.LogWarning($"[InGameDataManager] Get 실패 — '{resourcePath}'가 LoadAsDictionary로 로드되지 않았습니다.");
-                return default;
-            }
-
-            var dict = (Dictionary<TKey, TValue>)cached;
-
-            if (dict.TryGetValue(key, out var value))
-                return value;
-
-            Debug.LogWarning($"[InGameDataManager] Get 실패 — '{resourcePath}'에서 키 '{key}'를 찾을 수 없습니다.");
-            return default;
-        }
-
-        /// <summary>
-        /// 특정 경로의 캐시를 해제합니다.
-        /// </summary>
+        /// <typeparam name="T">로드 시 사용한 데이터 타입</typeparam>
         /// <param name="resourcePath">해제할 경로</param>
-        public void Unload(string resourcePath)
+        public void Unload<T>(string resourcePath)
         {
-            _listCache.Remove(resourcePath);
-            _dictCache.Remove(resourcePath);
+            ListCache<T>.Store.Remove(resourcePath);
+            _clearActions.Remove($"L:{typeof(T).FullName}:{resourcePath}");
 
 #if UNITY_EDITOR
             Debug.Log($"[InGameDataManager] Unloaded: {resourcePath}");
+#endif
+        }
+
+        /// <summary>
+        /// Dictionary로 로드된 특정 경로의 캐시를 해제합니다.
+        /// </summary>
+        /// <typeparam name="TKey">로드 시 사용한 키 타입</typeparam>
+        /// <typeparam name="TValue">로드 시 사용한 값 타입</typeparam>
+        /// <param name="resourcePath">해제할 경로</param>
+        public void UnloadDictionary<TKey, TValue>(string resourcePath)
+        {
+            DictCache<TKey, TValue>.Store.Remove(resourcePath);
+            _clearActions.Remove($"D:{typeof(TKey).FullName}:{typeof(TValue).FullName}:{resourcePath}");
+
+#if UNITY_EDITOR
+            Debug.Log($"[InGameDataManager] Unloaded Dictionary: {resourcePath}");
 #endif
         }
 
@@ -146,8 +155,10 @@ namespace Framework.Core.DataManager
         /// </summary>
         public void UnloadAll()
         {
-            _listCache.Clear();
-            _dictCache.Clear();
+            foreach (var action in _clearActions.Values)
+                action();
+
+            _clearActions.Clear();
 
 #if UNITY_EDITOR
             Debug.Log("[InGameDataManager] All cache cleared.");

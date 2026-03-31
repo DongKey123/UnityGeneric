@@ -48,6 +48,12 @@ Unity Editor에서 Excel(.xlsx) 파일을 읽어 시트별 JSON 파일로 변환
 - 빈 행 → 무시
 - 배열 구분자: `|`
 
+### 키 컬럼 규칙
+
+- 모든 시트의 **첫 번째 컬럼 이름은 반드시 `id`** 로 작성합니다.
+- `id` 컬럼을 기준으로 `InGameDataManager` Get 메서드가 자동 생성됩니다.
+- `id` 컬럼이 없는 시트는 InGameDataManager 연동 생성이 건너뜁니다.
+
 ---
 
 ## API 레퍼런스
@@ -59,7 +65,9 @@ Unity Editor에서 Excel(.xlsx) 파일을 읽어 시트별 JSON 파일로 변환
 | `ExcelToJsonConverter` | Excel → JSON 변환 로직 (static) |
 | `ExcelToJsonWindow` | EditorWindow UI |
 | `ExcelAutoConverter` | AssetPostprocessor 기반 자동 변환 |
+| `ExcelClassGenerator` | Excel 구조 기반 C# 데이터 클래스 및 InGameDataManager partial 클래스 생성 |
 | `SheetConvertResult` | 시트 하나의 변환 결과 데이터 |
+| `ClassGenerateResult` | 시트 하나의 클래스 생성 결과 데이터 |
 
 ### ExcelToJsonConverter 주요 메서드
 
@@ -68,6 +76,13 @@ Unity Editor에서 Excel(.xlsx) 파일을 읽어 시트별 JSON 파일로 변환
 | `Convert(excelPath, outputDir, prettyPrint, selectedSheets)` | `List<SheetConvertResult>` | 단일 파일 변환 |
 | `ConvertFolder(folderPath, outputDir, prettyPrint)` | `List<SheetConvertResult>` | 폴더 내 전체 .xlsx 변환 |
 | `GetSheetNames(excelPath)` | `List<string>` | 시트 이름 목록 반환 (#시트 제외) |
+
+### ExcelClassGenerator 주요 메서드
+
+| 메서드 | 반환 타입 | 설명 |
+|--------|-----------|------|
+| `GenerateFromFile(excelPath, outputDir, namespaceName, generateManager, jsonResourcePrefix)` | `List<ClassGenerateResult>` | 단일 파일에서 C# 클래스 생성 |
+| `GenerateFromFolder(folderPath, outputDir, namespaceName, generateManager, jsonResourcePrefix)` | `List<ClassGenerateResult>` | 폴더 내 전체 .xlsx에서 C# 클래스 생성 |
 
 ### SheetConvertResult 필드
 
@@ -79,6 +94,15 @@ Unity Editor에서 Excel(.xlsx) 파일을 읽어 시트별 JSON 파일로 변환
 | `Error` | `string` | 실패 시 원인 메시지 |
 | `Json` | `string` | 성공 시 변환된 JSON 문자열 |
 
+### ClassGenerateResult 필드
+
+| 필드 | 타입 | 설명 |
+|------|------|------|
+| `SheetName` | `string` | 시트 이름 |
+| `Success` | `bool` | 생성 성공 여부 |
+| `Error` | `string` | 실패 시 원인 메시지 |
+| `Code` | `string` | 성공 시 생성된 C# 코드 문자열 |
+
 ---
 
 ## 사용법
@@ -87,8 +111,16 @@ Unity Editor에서 Excel(.xlsx) 파일을 읽어 시트별 JSON 파일로 변환
 
 1. **Framework > Excel To Json** 메뉴로 창을 엽니다.
 2. **변환 설정** — Excel 파일 또는 폴더를 선택합니다.
-3. **출력 설정** — 출력 폴더, Pretty Print, 자동 변환을 설정합니다.
+3. **출력 설정** — 출력 폴더, Pretty Print, 자동 변환, C# 클래스 생성 옵션을 설정합니다.
 4. Convert / 폴더 변환 버튼을 누르면 **변환 결과** 섹션에서 시트별 성공/실패 로그와 JSON 미리보기를 확인합니다.
+
+### C# 클래스 자동 생성
+
+출력 설정에서 **C# 클래스 생성**을 활성화하면 변환 시 시트 구조 기반으로 C# 데이터 클래스를 자동 생성합니다.
+
+- **클래스 폴더** — 생성된 `.cs` 파일 출력 경로 (기본값: `Assets/Scripts/GameData`)
+- **네임스페이스** — 생성될 클래스의 네임스페이스 (기본값: `GameData`)
+- **InGameDataManager 연동** — `id` 컬럼 기준 `Get{SheetName}()` partial 메서드 자동 생성
 
 ### 스크립트에서 직접 호출
 
@@ -162,6 +194,8 @@ var results = ExcelToJsonConverter.Convert(
 - `.xlsx` 형식만 지원합니다. `.xls` / `.csv` 는 지원하지 않습니다.
 - 자동 변환은 **Assets 폴더 내** `.xlsx` 파일에만 반응합니다. 외부 경로 파일은 수동 변환이 필요합니다.
 - 헤더 행(Row 1)에 빈 셀이 나오면 그 이후 컬럼은 모두 무시됩니다.
+- InGameDataManager 연동 생성은 `id` 컬럼이 있는 시트에만 동작합니다.
+- 자동 생성된 파일(`// Auto-generated`)은 직접 수정하지 마세요. 다음 변환 시 덮어씌워집니다.
 
 ---
 
@@ -169,4 +203,5 @@ var results = ExcelToJsonConverter.Convert(
 
 | 버전 | 날짜 | 내용 |
 |------|------|------|
+| 1.1.0 | 2026-03-31 | ExcelClassGenerator 추가 — C# 클래스/enum 자동 생성, InGameDataManager partial 연동 |
 | 1.0.0 | 2026-03-31 | 최초 완성 — 단일/폴더 변환, 시트 선택, 자동 변환, 변환 결과 미리보기 |

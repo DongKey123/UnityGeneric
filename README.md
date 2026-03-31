@@ -15,7 +15,7 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 | ObjectPool | 제네릭 오브젝트 풀 | ✅ |
 | EventBus | 글로벌 이벤트 시스템 | ✅ |
 | DataParser/ExcelToJson | Excel 파일을 읽어 JSON으로 변환 저장 | ✅ |
-| InGameDataManager | JSON 로드 + 키 컬럼 기준 Dictionary 캐싱 | ⬜ |
+| InGameDataManager | JSON 로드 + 키 컬럼 기준 Dictionary 캐싱 | ✅ |
 | SceneLoader | 씬 전환 + 로딩 화면 | ⬜ |
 | AudioManager | BGM/SFX 관리 | ⬜ |
 | SaveSystem | JSON/PlayerPrefs 기반 데이터 저장 | ⬜ |
@@ -71,6 +71,7 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 
 | 버전 | 날짜 | 내용 |
 |------|------|------|
+| 0.6.0 | 2026-03-31 | InGameDataManager 모듈 완료, ExcelClassGenerator 추가 |
 | 0.5.0 | 2026-03-31 | DataParser/ExcelToJson 모듈 완료 |
 | 0.4.0 | 2026-03-25 | EventBus 모듈 완료 |
 | 0.3.0 | 2026-03-25 | ObjectPool 모듈 완료 |

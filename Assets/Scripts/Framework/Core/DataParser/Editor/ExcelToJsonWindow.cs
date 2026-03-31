@@ -13,9 +13,15 @@ namespace Framework.Core.DataParser.Editor
     {
         #region Constants
 
-        internal const string OutputPathKey     = "ExcelToJson_OutputPath";
-        internal const string DefaultOutputPath  = "Assets/Resources/Data";
-        internal const string PrettyPrintKey    = "ExcelToJson_PrettyPrint";
+        internal const string OutputPathKey        = "ExcelToJson_OutputPath";
+        internal const string DefaultOutputPath   = "Assets/Resources/Data";
+        internal const string PrettyPrintKey      = "ExcelToJson_PrettyPrint";
+        internal const string GenerateClassKey    = "ExcelToJson_GenerateClass";
+        internal const string ClassOutputPathKey  = "ExcelToJson_ClassOutputPath";
+        internal const string DefaultClassPath    = "Assets/Scripts/GameData";
+        internal const string NamespaceKey        = "ExcelToJson_Namespace";
+        internal const string DefaultNamespace    = "GameData";
+        internal const string GenerateManagerKey  = "ExcelToJson_GenerateManager";
 
         #endregion
 
@@ -34,10 +40,18 @@ namespace Framework.Core.DataParser.Editor
         private bool   _prettyPrint = true;
         private bool   _autoConvert = false;
 
+        // 클래스 생성 설정
+        private bool   _generateClass   = false;
+        private string _classOutputPath = DefaultClassPath;
+        private string _namespaceName   = DefaultNamespace;
+        private bool   _generateManager = false;
+
         // 변환 결과
-        private List<SheetConvertResult> _results;
+        private List<SheetConvertResult>  _results;
+        private List<ClassGenerateResult> _classResults;
         private int     _previewIndex;
         private Vector2 _resultScrollPos;
+        private Vector2 _classResultScrollPos;
         private Vector2 _previewScrollPos;
 
         // UI 상태
@@ -47,6 +61,9 @@ namespace Framework.Core.DataParser.Editor
 
         #region Menu
 
+        /// <summary>
+        /// Framework > Excel To Json 메뉴로 창을 엽니다.
+        /// </summary>
         [MenuItem("Framework/Excel To Json")]
         public static void ShowWindow()
         {
@@ -59,9 +76,13 @@ namespace Framework.Core.DataParser.Editor
 
         private void OnEnable()
         {
-            _outputPath  = EditorPrefs.GetString(OutputPathKey, DefaultOutputPath);
-            _prettyPrint = EditorPrefs.GetBool(PrettyPrintKey, true);
-            _autoConvert = ExcelAutoConverter.IsEnabled;
+            _outputPath      = EditorPrefs.GetString(OutputPathKey, DefaultOutputPath);
+            _prettyPrint     = EditorPrefs.GetBool(PrettyPrintKey, true);
+            _autoConvert     = ExcelAutoConverter.IsEnabled;
+            _generateClass   = EditorPrefs.GetBool(GenerateClassKey, false);
+            _classOutputPath = EditorPrefs.GetString(ClassOutputPathKey, DefaultClassPath);
+            _namespaceName   = EditorPrefs.GetString(NamespaceKey, DefaultNamespace);
+            _generateManager = EditorPrefs.GetBool(GenerateManagerKey, false);
         }
 
         #endregion
@@ -77,6 +98,7 @@ namespace Framework.Core.DataParser.Editor
             GUILayout.Space(6);
             DrawOutputSettings();
             DrawConversionResults();
+            DrawClassGenerateResults();
         }
 
         // ───────────────────────────────────────────────
@@ -149,6 +171,13 @@ namespace Framework.Core.DataParser.Editor
             {
                 _results      = ExcelToJsonConverter.Convert(_excelPath, _outputPath, _prettyPrint, _selectedSheets);
                 _previewIndex = 0;
+
+                if (_generateClass)
+                {
+                    var prefix = GetJsonResourcePrefix();
+                    _classResults = ExcelClassGenerator.GenerateFromFile(_excelPath, _classOutputPath, _namespaceName, _generateManager, prefix);
+                }
+
                 AssetDatabase.Refresh();
             }
 
@@ -173,6 +202,13 @@ namespace Framework.Core.DataParser.Editor
             {
                 _results      = ExcelToJsonConverter.ConvertFolder(_folderPath, _outputPath, _prettyPrint);
                 _previewIndex = 0;
+
+                if (_generateClass)
+                {
+                    var prefix = GetJsonResourcePrefix();
+                    _classResults = ExcelClassGenerator.GenerateFromFolder(_folderPath, _classOutputPath, _namespaceName, _generateManager, prefix);
+                }
+
                 AssetDatabase.Refresh();
             }
 
@@ -221,6 +257,49 @@ namespace Framework.Core.DataParser.Editor
                 "  Assets 폴더 내 .xlsx 변경 시 자동으로 JSON 변환",
                 EditorStyles.miniLabel
             );
+
+            GUILayout.Space(4);
+
+            var newGenerateClass = EditorGUILayout.Toggle("C# 클래스 생성", _generateClass);
+            if (newGenerateClass != _generateClass)
+            {
+                _generateClass = newGenerateClass;
+                EditorPrefs.SetBool(GenerateClassKey, _generateClass);
+            }
+            EditorGUILayout.LabelField(
+                "  변환 시 시트 구조 기반 C# 데이터 클래스 및 enum 자동 생성",
+                EditorStyles.miniLabel
+            );
+
+            if (_generateClass)
+            {
+                GUILayout.Space(4);
+                DrawClassOutputPathField();
+                GUILayout.Space(2);
+
+                GUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("네임스페이스", GUILayout.Width(80));
+                var newNs = EditorGUILayout.TextField(_namespaceName);
+                if (newNs != _namespaceName)
+                {
+                    _namespaceName = newNs;
+                    EditorPrefs.SetString(NamespaceKey, _namespaceName);
+                }
+                GUILayout.EndHorizontal();
+
+                GUILayout.Space(2);
+
+                var newGenerateManager = EditorGUILayout.Toggle("InGameDataManager 연동", _generateManager);
+                if (newGenerateManager != _generateManager)
+                {
+                    _generateManager = newGenerateManager;
+                    EditorPrefs.SetBool(GenerateManagerKey, _generateManager);
+                }
+                EditorGUILayout.LabelField(
+                    "  id 컬럼 기준 Get 메서드 partial 클래스 자동 생성",
+                    EditorStyles.miniLabel
+                );
+            }
 
             EditorGUILayout.EndVertical();
         }
@@ -335,6 +414,77 @@ namespace Framework.Core.DataParser.Editor
             GUILayout.EndHorizontal();
         }
 
+        private void DrawClassOutputPathField()
+        {
+            GUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("클래스 폴더", GUILayout.Width(80));
+
+            var newPath = EditorGUILayout.TextField(_classOutputPath);
+            if (newPath != _classOutputPath)
+            {
+                _classOutputPath = newPath;
+                EditorPrefs.SetString(ClassOutputPathKey, _classOutputPath);
+            }
+
+            if (GUILayout.Button("...", GUILayout.Width(28)))
+            {
+                var path = EditorUtility.OpenFolderPanel("클래스 출력 폴더 선택", "Assets", "");
+                if (!string.IsNullOrEmpty(path))
+                {
+                    _classOutputPath = "Assets" + path.Substring(Application.dataPath.Length);
+                    EditorPrefs.SetString(ClassOutputPathKey, _classOutputPath);
+                    GUI.FocusControl(null);
+                }
+            }
+
+            if (GUILayout.Button("Default", GUILayout.Width(52)))
+            {
+                _classOutputPath = DefaultClassPath;
+                EditorPrefs.SetString(ClassOutputPathKey, _classOutputPath);
+                GUI.FocusControl(null);
+            }
+
+            GUILayout.EndHorizontal();
+        }
+
+        private void DrawClassGenerateResults()
+        {
+            if (_classResults == null || _classResults.Count == 0)
+                return;
+
+            GUILayout.Space(6);
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            GUILayout.Label("클래스 생성 결과", EditorStyles.boldLabel);
+            GUILayout.Space(2);
+
+            int successCount = 0, failCount = 0;
+            foreach (var r in _classResults)
+            {
+                if (r.Success) successCount++;
+                else           failCount++;
+            }
+
+            string summary = failCount > 0
+                ? $"✅ {successCount}개 성공   ❌ {failCount}개 실패"
+                : $"✅ {successCount}개 클래스 생성 완료";
+
+            GUILayout.Label(summary, EditorStyles.boldLabel);
+            GUILayout.Space(4);
+
+            float logHeight = Mathf.Min(_classResults.Count * 20f, 80f);
+            _classResultScrollPos = EditorGUILayout.BeginScrollView(_classResultScrollPos, GUILayout.Height(logHeight));
+
+            foreach (var r in _classResults)
+            {
+                EditorGUILayout.LabelField(r.Success
+                    ? $"✅  {r.SheetName}Data.cs"
+                    : $"❌  {r.SheetName}  →  {r.Error}");
+            }
+
+            EditorGUILayout.EndScrollView();
+            EditorGUILayout.EndVertical();
+        }
+
         private void RefreshSheetNamesIfNeeded()
         {
             if (_excelPath == _lastExcelPath)
@@ -403,6 +553,14 @@ namespace Framework.Core.DataParser.Editor
             GUI.enabled = true;
 
             GUILayout.EndHorizontal();
+        }
+
+        // Assets/Resources/Data → Data
+        private string GetJsonResourcePrefix()
+        {
+            const string resourcesMarker = "Resources/";
+            var idx = _outputPath.IndexOf(resourcesMarker, System.StringComparison.Ordinal);
+            return idx >= 0 ? _outputPath.Substring(idx + resourcesMarker.Length) : _outputPath;
         }
 
         private static void DrawSeparator()

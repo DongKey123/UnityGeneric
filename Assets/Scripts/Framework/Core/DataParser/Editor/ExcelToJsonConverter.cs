@@ -100,6 +100,7 @@ namespace Framework.Core.DataParser.Editor
         /// <param name="outputDir">JSON 출력 폴더 경로</param>
         /// <param name="prettyPrint">JSON 들여쓰기 여부</param>
         /// <param name="selectedSheets">변환할 시트 이름 목록. null이면 전체 변환</param>
+        /// <returns>시트별 변환 결과 목록</returns>
         public static List<SheetConvertResult> Convert(string excelPath, string outputDir, bool prettyPrint = true, HashSet<string> selectedSheets = null)
         {
             var results = new List<SheetConvertResult>();
