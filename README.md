@@ -19,7 +19,7 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 
 | 모듈 | 설명 | 상태 |
 |------|------|------|
-| DataParser/ExcelToJson | Excel 파일을 읽어 JSON으로 변환 저장 | 🚧 |
+| DataParser/ExcelToJson | Excel 파일을 읽어 JSON으로 변환 저장 | ✅ |
 
 ### Patterns
 
@@ -49,6 +49,7 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 
 | 버전 | 날짜 | 내용 |
 |------|------|------|
+| 0.5.0 | 2026-03-31 | DataParser/ExcelToJson 모듈 완료 |
 | 0.4.0 | 2026-03-25 | EventBus 모듈 완료 |
 | 0.3.0 | 2026-03-25 | ObjectPool 모듈 완료 |
 | 0.2.0 | 2026-03-23 | Singleton 모듈 완료 |

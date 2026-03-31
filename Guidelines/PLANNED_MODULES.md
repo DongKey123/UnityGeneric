@@ -11,7 +11,8 @@
 | `Singleton<T>` | MonoBehaviour 싱글톤 | [x] |
 | `ObjectPool<T>` | 제네릭 오브젝트 풀 | [x] |
 | `EventBus` | 글로벌 이벤트 시스템 | [x] |
-| `DataParser/ExcelToJson` | Excel 파일을 읽어 JSON으로 변환 저장 (ExcelDataReader, Newtonsoft.Json 의존) | [~] |
+| `DataParser/ExcelToJson` | Excel 파일을 읽어 JSON으로 변환 저장 (ExcelDataReader, Newtonsoft.Json 의존) | [x] |
+| `InGameDataManager` | JSON 로드 + 키 컬럼 기준 Dictionary 캐싱, 런타임 게임 데이터 관리 | [ ] |
 | `SceneLoader` | 씬 전환 + 로딩 화면 | [ ] |
 | `AudioManager` | BGM/SFX 관리 | [ ] |
 | `SaveSystem` | JSON/PlayerPrefs 기반 데이터 저장 | [ ] |
@@ -72,13 +73,12 @@
 | 빈 행 무시 | 완전히 비어있는 행 건너뜀 | [x] |
 | 주석 시트 무시 | `#` 으로 시작하는 시트명 건너뜀 | [x] |
 | Pretty Print 옵션 | 들여쓰기 ON/OFF | [x] |
-| enum 타입 지원 | string 타입과 동일하게 처리 (별칭 추가) | [ ] |
-| 폴더 일괄 변환 | 폴더 내 모든 .xlsx 한 번에 변환 | [ ] |
-| 출력 경로 기억 | 마지막 설정을 EditorPrefs에 저장 | [ ] |
-| 자동 변환 | Excel 파일 변경 감지 시 자동 변환 | [ ] |
-| 키 컬럼 지정 | 특정 컬럼을 key로 Dictionary 형태 JSON 출력 | [ ] |
-| 특정 시트만 선택 | 시트 목록 체크박스로 변환 대상 선택 | [ ] |
-| 변환 결과 미리보기 | 변환 전 JSON 구조를 창 내에서 미리보기 | [ ] |
+| enum 타입 지원 | string 타입과 동일하게 처리 (별칭 추가) | [x] |
+| 폴더 일괄 변환 | 폴더 내 모든 .xlsx 한 번에 변환 | [x] |
+| 출력 경로 기억 | 마지막 설정을 EditorPrefs에 저장 | [x] |
+| 자동 변환 | Excel 파일 변경 감지 시 자동 변환 | [x] |
+| 특정 시트만 선택 | 시트 목록 체크박스로 변환 대상 선택 | [x] |
+| 변환 결과 미리보기 | 변환 후 JSON 구조 + 시트별 성공/실패 로그를 창 내에서 확인 | [x] |
 
 ---
 
