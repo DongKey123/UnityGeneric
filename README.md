@@ -14,12 +14,13 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 | Singleton | MonoBehaviour 싱글톤 | ✅ |
 | ObjectPool | 제네릭 오브젝트 풀 | ✅ |
 | EventBus | 글로벌 이벤트 시스템 | ✅ |
-
-### Data
-
-| 모듈 | 설명 | 상태 |
-|------|------|------|
 | DataParser/ExcelToJson | Excel 파일을 읽어 JSON으로 변환 저장 | ✅ |
+| InGameDataManager | JSON 로드 + 키 컬럼 기준 Dictionary 캐싱 | ⬜ |
+| SceneLoader | 씬 전환 + 로딩 화면 | ⬜ |
+| AudioManager | BGM/SFX 관리 | ⬜ |
+| SaveSystem | JSON/PlayerPrefs 기반 데이터 저장 | ⬜ |
+| InputManager | 입력 추상화 (InputSystem 래퍼) | ⬜ |
+| ServiceLocator | 의존성 관리 패턴 | ⬜ |
 
 ### Patterns
 
@@ -28,6 +29,21 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 | StateMachine | 유한 상태 머신 | ⬜ |
 | Observer | 옵저버 패턴 | ⬜ |
 | Command | 커맨드 패턴 | ⬜ |
+| ObjectFactory | 팩토리 패턴 | ⬜ |
+| Strategy | 전략 패턴 | ⬜ |
+| Decorator | 데코레이터 패턴 | ⬜ |
+
+### UI
+
+| 모듈 | 설명 | 상태 |
+|------|------|------|
+| UIManager | UI 스택 관리 | ⬜ |
+| PopupSystem | 팝업 열기/닫기 관리 | ⬜ |
+| ToastMessage | 알림 메시지 | ⬜ |
+| LoadingScreen | 로딩 화면 전환 | ⬜ |
+| InfiniteScrollView | 무한 스크롤뷰 (대용량 리스트 최적화) | ⬜ |
+| TabSystem | 탭 UI 시스템 | ⬜ |
+| DragDropSystem | 드래그 앤 드롭 시스템 | ⬜ |
 
 ### Utils
 
@@ -36,6 +52,12 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 | Timer | 코루틴 기반 타이머 | ⬜ |
 | MathExtensions | 수학 유틸리티 | ⬜ |
 | CoroutineHelper | 코루틴 헬퍼 | ⬜ |
+| TransformExtensions | Transform 확장 메서드 | ⬜ |
+| VectorExtensions | Vector 연산 확장 메서드 | ⬜ |
+| ColorExtensions | Color 유틸리티 | ⬜ |
+| WaitCache | WaitForSeconds 캐싱 (GC 최적화) | ⬜ |
+| LocalizationSystem | 다국어 지원 | ⬜ |
+| AsyncHelper | UniTask 래퍼 (async/await 유틸) | ⬜ |
 
 ### 상태 아이콘
 
