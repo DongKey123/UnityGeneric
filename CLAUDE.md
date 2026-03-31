@@ -11,6 +11,7 @@
 2. 해당 모듈 폴더에 `<ModuleName>.unitypackage` 추출
 3. `README.md` 모듈 목록에서 해당 모듈 상태를 ✅ 로 변경
 4. `README.md` 변경 이력에 버전, 날짜, 내용 추가
+5. 작업된 모든 파일의 XML 주석 검토 — `&lt;` / `&gt;` 엔티티 노출, `<param>` / `<returns>` 누락 여부 확인 후 수정
 
 ---
 

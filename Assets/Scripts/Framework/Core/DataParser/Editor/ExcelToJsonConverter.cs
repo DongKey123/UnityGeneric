@@ -50,6 +50,10 @@ namespace Framework.Core.DataParser.Editor
         /// <summary>
         /// 폴더 내 모든 .xlsx 파일을 읽어 시트별 변환 결과를 반환합니다.
         /// </summary>
+        /// <param name="folderPath">Excel 파일이 담긴 폴더 경로</param>
+        /// <param name="outputDir">JSON 출력 폴더 경로</param>
+        /// <param name="prettyPrint">JSON 들여쓰기 여부</param>
+        /// <returns>변환된 시트 결과 목록</returns>
         public static List<SheetConvertResult> ConvertFolder(string folderPath, string outputDir, bool prettyPrint = true)
         {
             var files = Directory.GetFiles(folderPath, "*.xlsx", SearchOption.TopDirectoryOnly);
@@ -70,6 +74,8 @@ namespace Framework.Core.DataParser.Editor
         /// <summary>
         /// Excel 파일의 시트 이름 목록을 반환합니다. (#으로 시작하는 시트는 제외)
         /// </summary>
+        /// <param name="excelPath">Excel 파일 경로 (.xlsx)</param>
+        /// <returns>시트 이름 목록</returns>
         public static List<string> GetSheetNames(string excelPath)
         {
             var names = new List<string>();
