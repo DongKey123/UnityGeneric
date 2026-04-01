@@ -20,7 +20,6 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 | AudioManager | BGM/SFX 관리 | ⬜ |
 | SaveSystem | JSON/PlayerPrefs 기반 데이터 저장 | ✅ |
 | InputManager | 입력 추상화 (InputSystem 래퍼) | ✅ |
-| ServiceLocator | 의존성 관리 패턴 | ⬜ |
 
 ### Patterns
 
