@@ -19,7 +19,7 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 | SceneLoader | 씬 전환 + 로딩 화면 | ✅ |
 | AudioManager | BGM/SFX 관리 | ⬜ |
 | SaveSystem | JSON/PlayerPrefs 기반 데이터 저장 | ✅ |
-| InputManager | 입력 추상화 (InputSystem 래퍼) | ⬜ |
+| InputManager | 입력 추상화 (InputSystem 래퍼) | ✅ |
 | ServiceLocator | 의존성 관리 패턴 | ⬜ |
 
 ### Patterns
@@ -71,6 +71,7 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 
 | 버전 | 날짜 | 내용 |
 |------|------|------|
+| 0.9.0 | 2026-04-01 | InputManager 모듈 완료 (Desktop/Mobile) |
 | 0.8.0 | 2026-04-01 | SaveSystem 모듈 완료 |
 | 0.7.0 | 2026-04-01 | SceneLoader 모듈 완료 |
 | 0.6.0 | 2026-03-31 | InGameDataManager 모듈 완료, ExcelClassGenerator 추가 |
