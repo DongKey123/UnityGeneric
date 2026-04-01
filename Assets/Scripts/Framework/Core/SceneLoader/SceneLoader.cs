@@ -122,12 +122,13 @@ namespace Framework.Core.SceneLoader
 
             while (operation.progress < 0.9f)
             {
-                // LoadSceneAsync의 progress는 0~0.9 범위이므로 0~1로 정규화
-                OnLoadProgress?.Invoke(operation.progress / 0.9f);
+                // LoadSceneAsync의 progress는 0~0.9 범위이므로 0~0.99로 정규화
+                // 씬 활성화 완료(isDone) 시점에 1.0을 전달하여 100%를 표시
+                OnLoadProgress?.Invoke(operation.progress / 0.9f * 0.99f);
                 yield return null;
             }
 
-            OnLoadProgress?.Invoke(1f);
+            OnLoadProgress?.Invoke(0.99f);
 
             if (transition != null)
             {
@@ -141,6 +142,7 @@ namespace Framework.Core.SceneLoader
                 yield return null;
             }
 
+            OnLoadProgress?.Invoke(1f);
             _isLoading = false;
             OnLoadComplete?.Invoke();
         }
@@ -160,11 +162,11 @@ namespace Framework.Core.SceneLoader
 
             while (operation.progress < 0.9f)
             {
-                OnLoadProgress?.Invoke(operation.progress / 0.9f);
+                OnLoadProgress?.Invoke(operation.progress / 0.9f * 0.99f);
                 yield return null;
             }
 
-            OnLoadProgress?.Invoke(1f);
+            OnLoadProgress?.Invoke(0.99f);
 
             if (transition != null)
             {
@@ -178,6 +180,7 @@ namespace Framework.Core.SceneLoader
                 yield return null;
             }
 
+            OnLoadProgress?.Invoke(1f);
             _isLoading = false;
             OnLoadComplete?.Invoke();
         }
@@ -198,11 +201,11 @@ namespace Framework.Core.SceneLoader
 
             while (operation.progress < 0.9f)
             {
-                OnLoadProgress?.Invoke(operation.progress / 0.9f);
+                OnLoadProgress?.Invoke(operation.progress / 0.9f * 0.99f);
                 yield return null;
             }
 
-            OnLoadProgress?.Invoke(1f);
+            OnLoadProgress?.Invoke(0.99f);
 
             // 로딩 씬이 완료 연출을 처리할 수 있도록 한 프레임 대기
             yield return null;
@@ -214,6 +217,7 @@ namespace Framework.Core.SceneLoader
                 yield return null;
             }
 
+            OnLoadProgress?.Invoke(1f);
             _isLoading = false;
             OnLoadComplete?.Invoke();
         }
