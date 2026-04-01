@@ -13,7 +13,7 @@
 | `EventBus` | 글로벌 이벤트 시스템 | [x] |
 | `DataParser/ExcelToJson` | Excel 파일을 읽어 JSON으로 변환 저장 (ExcelDataReader, Newtonsoft.Json 의존) | [x] |
 | `InGameDataManager` | JSON 로드 + 키 컬럼 기준 Dictionary 캐싱, 런타임 게임 데이터 관리 | [x] |
-| `SceneLoader` | 씬 전환 + 로딩 화면 | [ ] |
+| `SceneLoader` | 씬 전환 + 로딩 화면 | [x] |
 | `AudioManager` | BGM/SFX 관리 | [ ] |
 | `SaveSystem` | JSON/PlayerPrefs 기반 데이터 저장 | [ ] |
 | `InputManager` | 입력 추상화 (InputSystem 래퍼) | [ ] |
