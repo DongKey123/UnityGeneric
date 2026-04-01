@@ -117,6 +117,14 @@ Rigidbody rigidbody;
 - 복잡한 로직, 비직관적인 코드에 주석을 작성합니다.
 - 자명한 코드에는 주석을 달지 않습니다.
 
+### TODO 형식
+
+작성자를 명시할 때는 `TODO_이름:` 형식을 사용합니다.
+
+```csharp
+// TODO_DongKey: 서버 저장 방식으로 전환 시 IStorageProvider로 교체
+```
+
 ```csharp
 // ✅ Good - 비직관적인 로직 설명
 // 음수 방향으로 이동하면 flipX 처리

@@ -22,7 +22,7 @@ JSON 파일과 PlayerPrefs 두 가지 방식의 데이터 저장을 지원하는
 
 ## 의존성
 
-- 없음
+- `Newtonsoft.Json` (com.unity.nuget.newtonsoft-json) — JSON 직렬화/역직렬화
 
 ---
 
@@ -151,8 +151,8 @@ public class SettingsManager : MonoBehaviour
 
 ## 주의사항
 
-- `Save<T>` 는 `JsonUtility.ToJson`을 사용하므로 저장할 클래스에 `[System.Serializable]` 어트리뷰트가 필요합니다.
-- `JsonUtility`는 `Dictionary`, `private` 필드(미노출)를 직렬화하지 않습니다. 복잡한 타입은 Newtonsoft.Json 사용을 고려하세요.
+- `Save<T>` 는 `Newtonsoft.Json`을 사용하므로 `[System.Serializable]` 어트리뷰트 없이도 직렬화됩니다.
+- `Dictionary`, `private` 필드도 직렬화됩니다. `private` 필드를 제외하려면 `[JsonIgnore]` 어트리뷰트를 사용하세요.
 - `SavePref`는 `int`, `float`, `string`, `bool` 타입만 지원합니다. 그 외 타입은 에러 로그를 출력하고 저장하지 않습니다.
 - JSON 저장 경로(`Application.persistentDataPath`)는 플랫폼마다 다릅니다.
 

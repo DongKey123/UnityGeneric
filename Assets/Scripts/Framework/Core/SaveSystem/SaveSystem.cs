@@ -1,4 +1,5 @@
 using System.IO;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Framework.Core.SaveSystem
@@ -19,9 +20,9 @@ namespace Framework.Core.SaveSystem
 
         #region JSON
 
-        // TODO: 현재 JSON 데이터는 로컬 파일(Application.persistentDataPath)에 저장됩니다.
-        //       추후 서버 저장 방식으로 전환 시 IStorageProvider 인터페이스를 도입하여
-        //       LocalStorageProvider / RemoteStorageProvider 로 교체하세요.
+        // TODO_DongKey: 현재 JSON 데이터는 로컬 파일(Application.persistentDataPath)에 저장됩니다.
+        //              추후 서버 저장 방식으로 전환 시 IStorageProvider 인터페이스를 도입하여
+        //              LocalStorageProvider / RemoteStorageProvider 로 교체하세요.
 
         /// <summary>
         /// 데이터를 JSON 파일로 로컬에 저장합니다.
@@ -33,7 +34,7 @@ namespace Framework.Core.SaveSystem
         public static void Save<T>(string key, T data)
         {
             string path = GetFilePath(key);
-            string json = JsonUtility.ToJson(data, prettyPrint: true);
+            string json = JsonConvert.SerializeObject(data, Formatting.Indented);
             File.WriteAllText(path, json);
 
 #if UNITY_EDITOR
@@ -62,7 +63,7 @@ namespace Framework.Core.SaveSystem
             }
 
             string json = File.ReadAllText(path);
-            return JsonUtility.FromJson<T>(json);
+            return JsonConvert.DeserializeObject<T>(json);
         }
 
         /// <summary>
