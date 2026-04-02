@@ -14,7 +14,7 @@
 | `DataParser/ExcelToJson` | Excel 파일을 읽어 JSON으로 변환 저장 (ExcelDataReader, Newtonsoft.Json 의존) | [x] |
 | `InGameDataManager` | JSON 로드 + 키 컬럼 기준 Dictionary 캐싱, 런타임 게임 데이터 관리 | [x] |
 | `SceneLoader` | 씬 전환 + 로딩 화면 | [x] |
-| `AudioManager` | BGM/SFX 관리 | [ ] |
+| `AudioManager` | BGM/SFX 관리 | [x] |
 | `SaveSystem` | JSON/PlayerPrefs 기반 데이터 저장 | [x] |
 | `InputManager` | 입력 추상화 (InputSystem 래퍼) | [x] |
 
@@ -45,13 +45,9 @@
 
 | 모듈 | 설명 | 완료 |
 |------|------|------|
-| `Timer` | 코루틴 기반 타이머 | [ ] |
-| `MathExtensions` | 수학 유틸리티 | [ ] |
-| `CoroutineHelper` | 코루틴 헬퍼 | [ ] |
-| `TransformExtensions` | Transform 확장 메서드 | [ ] |
-| `VectorExtensions` | Vector 연산 확장 메서드 | [ ] |
-| `ColorExtensions` | Color 유틸리티 | [ ] |
-| `WaitCache` | WaitForSeconds 캐싱 (GC 최적화) | [ ] |
+| `Coroutine` (WaitCache / CoroutineRunner / CoroutineTimer) | 코루틴 유틸리티 모음 (GC 최적화 캐싱, 외부 실행, 타이머) | [x] |
+| `Extensions` (TransformExtensions / VectorExtensions / ColorExtensions) | Unity 타입 확장 메서드 모음 | [x] |
+| `Math` (MathExtensions) | 수학 유틸리티 | [x] |
 | `LocalizationSystem` | 다국어 지원 | [ ] |
 | `AsyncHelper` | UniTask 래퍼 (async/await 유틸) | [ ] |
 

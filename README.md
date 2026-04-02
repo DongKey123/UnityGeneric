@@ -17,7 +17,7 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 | DataParser/ExcelToJson | Excel 파일을 읽어 JSON으로 변환 저장 | ✅ |
 | InGameDataManager | JSON 로드 + 키 컬럼 기준 Dictionary 캐싱 | ✅ |
 | SceneLoader | 씬 전환 + 로딩 화면 | ✅ |
-| AudioManager | BGM/SFX 관리 | ⬜ |
+| AudioManager | BGM/SFX 관리 | ✅ |
 | SaveSystem | JSON/PlayerPrefs 기반 데이터 저장 | ✅ |
 | InputManager | 입력 추상화 (InputSystem 래퍼) | ✅ |
 
@@ -48,13 +48,9 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 
 | 모듈 | 설명 | 상태 |
 |------|------|------|
-| Timer | 코루틴 기반 타이머 | ⬜ |
-| MathExtensions | 수학 유틸리티 | ⬜ |
-| CoroutineHelper | 코루틴 헬퍼 | ⬜ |
-| TransformExtensions | Transform 확장 메서드 | ⬜ |
-| VectorExtensions | Vector 연산 확장 메서드 | ⬜ |
-| ColorExtensions | Color 유틸리티 | ⬜ |
-| WaitCache | WaitForSeconds 캐싱 (GC 최적화) | ⬜ |
+| Coroutine (WaitCache / CoroutineRunner / CoroutineTimer) | 코루틴 유틸리티 모음 | ✅ |
+| Extensions (TransformExtensions / VectorExtensions / ColorExtensions) | Unity 타입 확장 메서드 모음 | ✅ |
+| Math (MathExtensions) | 수학 유틸리티 | ✅ |
 | LocalizationSystem | 다국어 지원 | ⬜ |
 | AsyncHelper | UniTask 래퍼 (async/await 유틸) | ⬜ |
 
@@ -70,6 +66,10 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 
 | 버전 | 날짜 | 내용 |
 |------|------|------|
+| 1.3.0 | 2026-04-03 | Math 모듈 완료 (MathExtensions) |
+| 1.2.0 | 2026-04-03 | Extensions 모듈 완료 (TransformExtensions / VectorExtensions / ColorExtensions) |
+| 1.1.0 | 2026-04-03 | Coroutine Utils 모듈 완료 (WaitCache / CoroutineRunner / CoroutineTimer) |
+| 1.0.0 | 2026-04-03 | AudioManager 모듈 완료 (BGM/SFX) |
 | 0.9.0 | 2026-04-01 | InputManager 모듈 완료 (Desktop/Mobile) |
 | 0.8.0 | 2026-04-01 | SaveSystem 모듈 완료 |
 | 0.7.0 | 2026-04-01 | SceneLoader 모듈 완료 |
