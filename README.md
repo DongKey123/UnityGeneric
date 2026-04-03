@@ -1,7 +1,6 @@
 # Unity Generic Framework
 
 Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모듈화한 재사용 가능한 제네릭 프레임워크입니다.
-각 모듈은 독립적으로 `.unitypackage` 형태로 추출하여 다른 프로젝트에 바로 적용할 수 있습니다.
 
 ---
 
@@ -36,9 +35,9 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 
 | 모듈 | 설명 | 상태 |
 |------|------|------|
-| UIManager | UI 스택 관리 | ⬜ |
+| UIManager | UI 패널 2레이어 관리 (Default 스택 / Overlay) | ✅ |
 | PopupSystem | 팝업 열기/닫기 관리 | ⬜ |
-| ToastMessage | 알림 메시지 | ⬜ |
+| ToastManager | 알림 메시지 (UIManager 독립, 별도 싱글톤) | ⬜ |
 | LoadingScreen | 로딩 화면 전환 | ⬜ |
 | InfiniteScrollView | 무한 스크롤뷰 (대용량 리스트 최적화) | ⬜ |
 | TabSystem | 탭 UI 시스템 | ⬜ |
@@ -56,7 +55,7 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 
 ### 상태 아이콘
 
-- ✅ 완료 (md + unitypackage 존재)
+- ✅ 완료
 - 🚧 진행 중
 - ⬜ 미시작
 
@@ -66,6 +65,7 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 
 | 버전 | 날짜 | 내용 |
 |------|------|------|
+| 1.4.0 | 2026-04-03 | UIManager 모듈 완료 (2레이어 Default/Overlay, CanClose/CloseOnBack, 이벤트/레지스트리) |
 | 1.3.0 | 2026-04-03 | Math 모듈 완료 (MathExtensions) |
 | 1.2.0 | 2026-04-03 | Extensions 모듈 완료 (TransformExtensions / VectorExtensions / ColorExtensions) |
 | 1.1.0 | 2026-04-03 | Coroutine Utils 모듈 완료 (WaitCache / CoroutineRunner / CoroutineTimer) |

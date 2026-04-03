@@ -33,9 +33,10 @@
 
 | 모듈 | 설명 | 완료 |
 |------|------|------|
-| `UIManager` | UI 스택 관리 | [ ] |
+| `UIManager` | UI 패널 2레이어 관리 (Default 스택 / Overlay) | [x] |
+| `UIManager — 트랜지션 비동기 지원` | Open/Close 시 페이드/슬라이드 애니메이션을 UIManager가 await할 수 있는 구조. AsyncHelper(UniTask) 완료 후 작업 | [ ] |
 | `PopupSystem` | 팝업 열기/닫기 관리 | [ ] |
-| `ToastMessage` | 알림 메시지 | [ ] |
+| `ToastManager` | 알림 메시지 (UIManager 독립, 별도 싱글톤) | [ ] |
 | `LoadingScreen` | 로딩 화면 전환 | [ ] |
 | `InfiniteScrollView` | 무한 스크롤뷰 (대용량 리스트 최적화) | [ ] |
 | `TabSystem` | 탭 UI 시스템 | [ ] |
@@ -91,3 +92,9 @@
 |------|------|
 | `TweenHelper` | DOTween 래퍼 (애니메이션 유틸) |
 | `ReactiveProperty<T>` | 값 변경 감지 프로퍼티 |
+
+### 도입 여부 미결정
+
+| 항목 | 설명 | 고민 포인트 |
+|------|------|------------|
+| `UIManager — Addressables 전환` | Resources.Load 동기 로드를 Addressables 비동기 로드로 교체 | 프로젝트 규모가 작으면 오버엔지니어링. 대형 프로젝트에서는 빌드 용량 및 메모리 관리에 유리 |

@@ -8,10 +8,9 @@
 모듈 구현이 완료될 때마다 아래 항목을 반드시 업데이트하세요.
 
 1. 해당 모듈 폴더에 `<ModuleName>.md` 작성 ([문서 템플릿 참고](Guidelines/DOCS_STYLE.md))
-2. 해당 모듈 폴더에 `<ModuleName>.unitypackage` 추출
-3. `README.md` 모듈 목록에서 해당 모듈 상태를 ✅ 로 변경 — README의 모든 섹션(Core/Patterns/UI/Utils)에 해당 모듈이 누락 없이 등록되어 있는지 함께 확인
-4. `README.md` 변경 이력에 버전, 날짜, 내용 추가
-5. 작업된 모든 파일의 XML 주석 검토 — `&lt;` / `&gt;` 엔티티 노출, `<param>` / `<returns>` 누락 여부 확인 후 수정
+2. `README.md` 모듈 목록에서 해당 모듈 상태를 ✅ 로 변경 — README의 모든 섹션(Core/Patterns/UI/Utils)에 해당 모듈이 누락 없이 등록되어 있는지 함께 확인
+3. `README.md` 변경 이력에 버전, 날짜, 내용 추가
+4. 작업된 모든 파일의 XML 주석 검토 — `&lt;` / `&gt;` 엔티티 노출, `<param>` / `<returns>` 누락 여부 확인 후 수정
 
 ---
 

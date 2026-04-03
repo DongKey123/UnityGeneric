@@ -6,10 +6,9 @@
 
 ## 모듈 완료 기준
 
-아래 두 가지가 모두 존재해야 해당 모듈이 **완료** 상태입니다.
+아래 항목이 존재해야 해당 모듈이 **완료** 상태입니다.
 
 1. 모듈 폴더 내 `<ModuleName>.md` 문서 파일
-2. 모듈 폴더 내 `<ModuleName>.unitypackage` 익스포트 파일
 
 ---
 
@@ -18,8 +17,7 @@
 ```
 Assets/Scripts/Framework/Core/Singleton/
 ├── Singleton.cs
-├── Singleton.md              ← 모듈 문서 (필수)
-└── Singleton.unitypackage    ← 완료 표시 (필수)
+└── Singleton.md    ← 모듈 문서 (필수)
 ```
 
 ---
