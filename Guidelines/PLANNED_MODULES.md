@@ -29,7 +29,6 @@
 | 모듈 | 설명 | 완료 |
 |------|------|------|
 | `StateMachine<T>` | ★★★ 유한 상태 머신 | [x] |
-| `Observer` | ★★☆ 옵저버 패턴 | [ ] |
 | `Command` | ★★☆ 커맨드 패턴 | [ ] |
 | `ObjectFactory<T>` | ★★☆ 팩토리 패턴 | [ ] |
 | `Strategy<T>` | ★★☆ 전략 패턴 | [ ] |
@@ -101,12 +100,6 @@
 | `ChunkSystem` | 무한 맵 청크 로딩/언로딩 |
 | `ShaderPropertyCache` | Shader.PropertyToID 캐싱 |
 | `LODController` | 거리 기반 LOD 전환 |
-
-### 비동기 / 트위닝
-
-| 모듈 | 설명 |
-|------|------|
-| `ReactiveProperty<T>` | 값 변경 감지 프로퍼티 |
 
 ### 도입 여부 미결정
 

@@ -25,7 +25,6 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 | 모듈 | 설명 | 상태 |
 |------|------|------|
 | StateMachine | 유한 상태 머신 | ✅ |
-| Observer | 옵저버 패턴 | ⬜ |
 | Command | 커맨드 패턴 | ⬜ |
 | ObjectFactory | 팩토리 패턴 | ⬜ |
 | Strategy | 전략 패턴 | ⬜ |
