@@ -40,12 +40,12 @@
 | 모듈 | 설명 | 플랫폼 | 완료 |
 |------|------|--------|------|
 | `UIManager` | ★★★ UI 패널 2레이어 관리 (Default 스택 / Overlay) | 공통 | [x] |
-| `SafeAreaFitter` | ★★★ 노치/펀치홀/홈 인디케이터 영역 자동 회피 | 모바일 | [ ] |
+| `SafeAreaFitter` | ★★★ 노치/펀치홀/홈 인디케이터 영역 자동 회피 | 모바일 | [x] |
 | `UITransitionSystem` | ★★★ Open/Close 시 페이드/슬라이드 트랜지션 (AsyncHelper 완료 후 작업) | 공통 | [ ] |
 | `LocalizationSystem` | ★★★ 다국어 텍스트/폰트 런타임 교체 | 공통 | [ ] |
 | `BottomSheet` | ★★★ 하단 슬라이드업 패널 (half/full/hidden 스냅) | 모바일 | [ ] |
 | `PopupSystem` | ★★★ 팝업 열기/닫기 관리 | 공통 | [ ] |
-| `ToastManager` | ★★★ 알림 메시지 (UIManager 독립, 별도 싱글톤) | 공통 | [ ] |
+| `ToastManager` | ★★★ 알림 메시지 (UIManager 독립, 별도 싱글톤) | 공통 | [x] |
 | `ConfirmDialogBuilder` | ★★☆ 확인/취소 팝업 빌더 API (IInitializable 연동) | 공통 | [ ] |
 | `SwipeGestureDetector` | ★★☆ 스와이프 방향 판정, 핀치줌 감지 | 모바일 | [ ] |
 | `KeyboardAvoidance` | ★★☆ 소프트 키보드 올라올 때 InputField 자동 이동 | 모바일 | [ ] |

@@ -1,0 +1,54 @@
+﻿[
+  {
+    "id": 2001,
+    "name": "Warrior",
+    "hp": 200,
+    "attack": 25,
+    "defense": 20,
+    "speed": 8.0,
+    "level": 1,
+    "skills": [
+      "slash",
+      "shield_bash"
+    ]
+  },
+  {
+    "id": 2002,
+    "name": "Mage",
+    "hp": 120,
+    "attack": 40,
+    "defense": 8,
+    "speed": 10.0,
+    "level": 1,
+    "skills": [
+      "fireball",
+      "ice_shard"
+    ]
+  },
+  {
+    "id": 2003,
+    "name": "Rogue",
+    "hp": 150,
+    "attack": 30,
+    "defense": 12,
+    "speed": 15.0,
+    "level": 1,
+    "skills": [
+      "backstab",
+      "smoke"
+    ]
+  },
+  {
+    "id": 2004,
+    "name": "Paladin",
+    "hp": 180,
+    "attack": 20,
+    "defense": 25,
+    "speed": 7.0,
+    "level": 1,
+    "skills": [
+      "holy_strike",
+      "heal"
+    ]
+  }
+]

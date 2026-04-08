@@ -1,0 +1,67 @@
+﻿[
+  {
+    "id": 1001,
+    "name": "Iron Sword",
+    "type": "Weapon",
+    "attack": 15,
+    "defense": 0,
+    "price": 500.0,
+    "tags": [
+      "weapon",
+      "melee"
+    ],
+    "description": "A basic iron sword."
+  },
+  {
+    "id": 1002,
+    "name": "Steel Shield",
+    "type": "Armor",
+    "attack": 0,
+    "defense": 20,
+    "price": 800.0,
+    "tags": [
+      "armor",
+      "shield"
+    ],
+    "description": "A sturdy steel shield."
+  },
+  {
+    "id": 1003,
+    "name": "Health Potion",
+    "type": "Consumable",
+    "attack": 0,
+    "defense": 0,
+    "price": 150.0,
+    "tags": [
+      "consumable",
+      "heal"
+    ],
+    "description": "Restores 50 HP."
+  },
+  {
+    "id": 1004,
+    "name": "Fire Staff",
+    "type": "Weapon",
+    "attack": 30,
+    "defense": 0,
+    "price": 1200.0,
+    "tags": [
+      "weapon",
+      "magic"
+    ],
+    "description": "A staff imbued with fire."
+  },
+  {
+    "id": 1005,
+    "name": "Leather Armor",
+    "type": "Armor",
+    "attack": 0,
+    "defense": 10,
+    "price": 400.0,
+    "tags": [
+      "armor",
+      "light"
+    ],
+    "description": "Light leather armor."
+  }
+]
