@@ -64,7 +64,7 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 | Extensions (TransformExtensions / VectorExtensions / ColorExtensions) | Unity 타입 확장 메서드 모음 | ✅ |
 | Math (MathExtensions) | 수학 유틸리티 | ✅ |
 | LocalizationSystem | 다국어 지원 | ⬜ |
-| AsyncHelper | UniTask 래퍼 (async/await 유틸) | ⬜ |
+| AsyncHelper | UniTask 래퍼 (async/await 유틸) | ✅ |
 
 ### 상태 아이콘
 
@@ -78,6 +78,7 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 
 | 버전 | 날짜 | 내용 |
 |------|------|------|
+| 1.9.0 | 2026-04-08 | AsyncHelper 모듈 완료 (UniTask 래퍼, Delay / Frame / Condition / Cancellation) |
 | 1.8.0 | 2026-04-08 | LocalizationSystem 모듈 완료 (다국어 JSON 로드, LocalizedText 자동 갱신) |
 | 1.7.0 | 2026-04-08 | CommonPopupManager 모듈 완료 (OneButtonPopup / TwoButtonPopup / Dim / 스택 관리) |
 | 1.6.0 | 2026-04-08 | ToastManager 모듈 완료 (큐 기반 토스트 알림, Default/Success/Warning/Error 타입) |
