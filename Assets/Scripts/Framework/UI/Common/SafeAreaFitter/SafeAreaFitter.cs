@@ -43,9 +43,6 @@ namespace Framework.UI
 
         private void Apply()
         {
-            _lastSafeArea = Screen.safeArea;
-            _lastOrientation = Screen.orientation;
-
             var safeArea = Screen.safeArea;
             var screenSize = new Vector2(Screen.width, Screen.height);
 
