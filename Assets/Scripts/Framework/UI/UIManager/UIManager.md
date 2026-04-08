@@ -192,10 +192,14 @@ UIManager.Instance.OnStackEmpty += () => Debug.Log("모든 패널 닫힘");
 
 ### 모바일 뒤로가기 연동
 
+뒤로가기 입력은 `InputManager`를 상속받아 `HandleBack()`을 override하여 처리하세요.
+UIManager는 입력 코드를 직접 갖지 않습니다.
+
 ```csharp
-private void Update()
+// 게임 코드 예시 (프레임워크 외부)
+public class GameInputManager : MobileInputManager
 {
-    if (Input.GetKeyDown(KeyCode.Escape))
+    protected override void HandleBack()
     {
         UIManager.Instance.HandleBack();
     }

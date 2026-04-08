@@ -88,16 +88,18 @@ CommonPopupManager.Instance.ShowTwoButton(
 
 ### 뒤로가기 연동
 
+뒤로가기 입력은 `InputManager`를 상속받아 `HandleBack()`을 override하여 처리하세요.
+CommonPopupManager는 입력 코드를 직접 갖지 않습니다.
+
 ```csharp
-private void Update()
+// 게임 코드 예시 (프레임워크 외부)
+public class GameInputManager : MobileInputManager
 {
-    if (Input.GetKeyDown(KeyCode.Escape))
+    protected override void HandleBack()
     {
-        // 팝업이 열려 있으면 팝업을 먼저 닫음
-        if (!CommonPopupManager.Instance.HandleBack())
-        {
-            UIManager.Instance.HandleBack();
-        }
+        // 팝업 먼저, 없으면 UIManager
+        if (CommonPopupManager.Instance.HandleBack()) return;
+        UIManager.Instance.HandleBack();
     }
 }
 ```
@@ -113,22 +115,6 @@ CommonPopupManager.Instance.ShowTwoButton("확인", "계속하시겠습니까?",
 ```
 
 ---
-
-## 예시 (심화)
-
-### UIManager 뒤로가기와 우선순위 연동
-
-```csharp
-private void Update()
-{
-    if (Input.GetKeyDown(KeyCode.Escape))
-    {
-        // 팝업 → UIManager 순서로 처리
-        if (CommonPopupManager.Instance.HandleBack()) return;
-        UIManager.Instance.HandleBack();
-    }
-}
-```
 
 ---
 
