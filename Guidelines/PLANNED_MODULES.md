@@ -29,7 +29,6 @@
 | 모듈 | 설명 | 완료 |
 |------|------|------|
 | `StateMachine<T>` | ★★★ 유한 상태 머신 | [x] |
-| `Decorator` | ★☆☆ 데코레이터 패턴 | [ ] |
 
 ## UI
 
@@ -37,12 +36,9 @@
 |------|------|--------|------|
 | `UIManager` | ★★★ UI 패널 2레이어 관리 (Default 스택 / Overlay) | 공통 | [x] |
 | `SafeAreaFitter` | ★★★ 노치/펀치홀/홈 인디케이터 영역 자동 회피 | 모바일 | [x] |
-| `UITransitionSystem` | ★★★ Open/Close 시 페이드/슬라이드 트랜지션 (AsyncHelper 완료 후 작업) | 공통 | [ ] |
-| `LocalizationSystem` | ★★★ 다국어 텍스트/폰트 런타임 교체 | 공통 | [x] |
-| `BottomSheet` | ★★★ 하단 슬라이드업 패널 (half/full/hidden 스냅) | 모바일 | [ ] |
 | `CommonPopupManager` | ★★★ 공용 팝업 관리 (OneButton / TwoButton / Dim / 스택) | 공통 | [x] |
 | `ToastManager` | ★★★ 알림 메시지 (UIManager 독립, 별도 싱글톤) | 공통 | [x] |
-| `ConfirmDialogBuilder` | ★★☆ 확인/취소 팝업 빌더 API (IInitializable 연동) | 공통 | [ ] |
+| `LocalizationSystem` | ★★★ 다국어 텍스트/폰트 런타임 교체 | 공통 | [x] |
 | `SwipeGestureDetector` | ★★☆ 스와이프 방향 판정, 핀치줌 감지 | 모바일 | [ ] |
 | `KeyboardAvoidance` | ★★☆ 소프트 키보드 올라올 때 InputField 자동 이동 | 모바일 | [ ] |
 | `ResolutionScaler` | ★★☆ 다양한 종횡비(16:9~21:9) 동적 대응 | 공통 | [ ] |
@@ -68,7 +64,21 @@
 
 ---
 
-## 고민 중 / 추가 예정
+## 필요 시 구현
+
+장르/요구사항에 따라 필요할 때 추가합니다.
+
+| 항목 | 설명 | 도입 조건 |
+|------|------|-----------|
+| `UITransitionSystem` | Open/Close 페이드/슬라이드 트랜지션 | 트랜지션 연출이 필요한 프로젝트 |
+| `BottomSheet` | 하단 슬라이드업 패널 (half/full/hidden 스냅) | 지도/정보 UI가 필요한 프로젝트 |
+| `ConfirmDialogBuilder` | 확인/취소 팝업 빌더 API | CommonPopupManager 확장이 필요할 때 |
+| `Command` | Undo/Redo, 리플레이, 전투 로그, Lockstep PvP | 퍼즐/전략/리플레이 기능이 필요한 프로젝트 |
+| `UIManager — Addressables 전환` | Resources.Load를 Addressables 비동기 로드로 교체 | 대형 프로젝트, 빌드 용량 최적화 필요 시 |
+
+---
+
+## 고민 중
 
 ### 고급 UI
 
@@ -97,10 +107,3 @@
 | `ChunkSystem` | 무한 맵 청크 로딩/언로딩 |
 | `ShaderPropertyCache` | Shader.PropertyToID 캐싱 |
 | `LODController` | 거리 기반 LOD 전환 |
-
-### 도입 여부 미결정
-
-| 항목 | 설명 | 고민 포인트 |
-|------|------|------------|
-| `UIManager — Addressables 전환` | Resources.Load 동기 로드를 Addressables 비동기 로드로 교체 | 프로젝트 규모가 작으면 오버엔지니어링. 대형 프로젝트에서는 빌드 용량 및 메모리 관리에 유리 |
-| `Command` | Undo/Redo, 리플레이, 전투 로그, Lockstep PvP | 퍼즐/전략/리플레이 기능이 필요할 때 구현. 방치형/액션RPG는 불필요 |

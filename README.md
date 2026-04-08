@@ -25,7 +25,6 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 | 모듈 | 설명 | 상태 |
 |------|------|------|
 | StateMachine | 유한 상태 머신 | ✅ |
-| Decorator | 데코레이터 패턴 | ⬜ |
 
 ### UI
 
@@ -34,23 +33,8 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 | UIManager | UI 패널 2레이어 관리 (Default 스택 / Overlay) | ✅ |
 | SafeAreaFitter | 노치/펀치홀/홈 인디케이터 Safe Area 자동 적용 | ✅ |
 | ToastManager | 자동으로 사라지는 토스트 알림 메시지 | ✅ |
-| UITransitionSystem | Open/Close 페이드/슬라이드 트랜지션 | ⬜ |
-| LocalizationSystem | 다국어 텍스트/폰트 런타임 교체 | ✅ |
-| BottomSheet | 하단 슬라이드업 패널 | ⬜ |
 | CommonPopupManager | 공용 팝업 관리 (OneButton / TwoButton / Dim / 스택) | ✅ |
-| ConfirmDialogBuilder | 확인/취소 팝업 빌더 API | ⬜ |
-| SwipeGestureDetector | 스와이프 방향 판정, 핀치줌 감지 | ⬜ |
-| KeyboardAvoidance | 소프트 키보드 올라올 때 InputField 자동 이동 | ⬜ |
-| ResolutionScaler | 다양한 종횡비 동적 대응 | ⬜ |
-| TweenHelper | 버튼 탭 피드백, 숫자 카운트업, HP바 애니메이션 | ⬜ |
-| LoadingScreen | 로딩 화면 전환 | ⬜ |
-| InfiniteScrollView | 무한 스크롤뷰 (대용량 리스트 최적화) | ⬜ |
-| TabSystem | 탭 UI 시스템 | ⬜ |
-| JoystickUI | 버추얼 조이스틱 (모바일) | ⬜ |
-| HapticFeedback | iOS/Android 진동 패턴 통합 래퍼 | ⬜ |
-| DragDropSystem | 드래그 앤 드롭 시스템 | ⬜ |
-| UIFocusManager | 키보드/게임패드 포커스 네비게이션 | ⬜ |
-| UIAccessibilityHelper | 폰트 크기, 고대비, 색맹 지원 | ⬜ |
+| LocalizationSystem | 다국어 텍스트/폰트 런타임 교체 | ✅ |
 
 ### Utils
 
@@ -59,8 +43,8 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 | Coroutine (WaitCache / CoroutineRunner / CoroutineTimer) | 코루틴 유틸리티 모음 | ✅ |
 | Extensions (TransformExtensions / VectorExtensions / ColorExtensions) | Unity 타입 확장 메서드 모음 | ✅ |
 | Math (MathExtensions) | 수학 유틸리티 | ✅ |
-| LocalizationSystem | 다국어 지원 | ✅ |
 | AsyncHelper | UniTask 래퍼 (async/await 유틸) | ✅ |
+| LocalizationSystem | 다국어 지원 | ✅ |
 
 ### 상태 아이콘
 
