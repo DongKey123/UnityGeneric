@@ -142,8 +142,33 @@ camera.orthographicSize -= pinch * 0.01f;
 
 ---
 
+## 뒤로가기(Back Key) 처리
+
+UIManager / CommonPopupManager는 입력 코드를 직접 갖지 않습니다.
+뒤로가기 처리는 반드시 InputManager를 상속받은 곳에서 수행하세요.
+
+- `DesktopInputManager` — Escape 키 감지 시 `HandleBack()` 호출
+- `MobileInputManager` — Android Back 버튼(New Input System에서 Escape로 매핑) 감지 시 `HandleBack()` 호출
+- `BaseInputManager.HandleBack()`은 기본 구현이 비어 있으므로 게임에서 상속받아 override하세요.
+
+```csharp
+// 게임 코드 예시 (프레임워크 외부)
+public class GameInputManager : MobileInputManager
+{
+    protected override void HandleBack()
+    {
+        // 팝업 먼저, 없으면 UIManager
+        if (CommonPopupManager.Instance.HandleBack()) return;
+        UIManager.Instance.HandleBack();
+    }
+}
+```
+
+---
+
 ## 변경 이력
 
 | 버전 | 날짜 | 내용 |
 |------|------|------|
+| 1.1.0 | 2026-04-08 | HandleBack() 추가 (Escape / Android Back 감지, 상속 override 방식) |
 | 1.0.0 | 2026-04-01 | 최초 작성 |

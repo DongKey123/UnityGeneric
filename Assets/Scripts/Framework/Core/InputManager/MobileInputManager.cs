@@ -38,6 +38,15 @@ namespace Framework.Core.InputManager
             EnhancedTouchSupport.Enable();
         }
 
+        private void Update()
+        {
+            // Android Back 버튼은 New Input System에서 Escape 키로 매핑됩니다.
+            if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+            {
+                HandleBack();
+            }
+        }
+
         private void OnDestroy()
         {
             EnhancedTouchSupport.Disable();

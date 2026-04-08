@@ -9,6 +9,18 @@ namespace Framework.Core.InputManager
     /// </summary>
     public class DesktopInputManager : BaseInputManager
     {
+        #region Unity Lifecycle
+
+        private void Update()
+        {
+            if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+            {
+                HandleBack();
+            }
+        }
+
+        #endregion
+
         #region Properties
 
         /// <summary>현재 프레임의 마우스 위치 (스크린 좌표)입니다.</summary>

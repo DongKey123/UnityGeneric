@@ -56,5 +56,20 @@ namespace Framework.Core.InputManager
         }
 
         #endregion
+
+        #region Protected Methods
+
+        /// <summary>
+        /// 뒤로가기 입력이 감지될 때 호출됩니다.
+        /// <para>
+        /// - <see cref="DesktopInputManager"/>: Escape 키<br/>
+        /// - <see cref="MobileInputManager"/>: Android Back 버튼
+        /// </para>
+        /// 게임에서 이 클래스를 상속받아 override하고 UIManager / CommonPopupManager 등의
+        /// HandleBack() 호출 우선순위를 직접 구현하세요.
+        /// </summary>
+        protected virtual void HandleBack() { }
+
+        #endregion
     }
 }
