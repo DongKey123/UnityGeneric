@@ -24,7 +24,7 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 
 | 모듈 | 설명 | 상태 |
 |------|------|------|
-| StateMachine | 유한 상태 머신 | ⬜ |
+| StateMachine | 유한 상태 머신 | ✅ |
 | Observer | 옵저버 패턴 | ⬜ |
 | Command | 커맨드 패턴 | ⬜ |
 | ObjectFactory | 팩토리 패턴 | ⬜ |
@@ -78,6 +78,7 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 
 | 버전 | 날짜 | 내용 |
 |------|------|------|
+| 2.0.0 | 2026-04-08 | StateMachine 모듈 완료 (제네릭 FSM, IState / BaseState / OnStateChanged) |
 | 1.9.0 | 2026-04-08 | AsyncHelper 모듈 완료 (UniTask 래퍼, Delay / Frame / Condition / Cancellation) |
 | 1.8.0 | 2026-04-08 | LocalizationSystem 모듈 완료 (다국어 JSON 로드, LocalizedText 자동 갱신) |
 | 1.7.0 | 2026-04-08 | CommonPopupManager 모듈 완료 (OneButtonPopup / TwoButtonPopup / Dim / 스택 관리) |
