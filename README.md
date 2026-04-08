@@ -63,7 +63,7 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 | Coroutine (WaitCache / CoroutineRunner / CoroutineTimer) | 코루틴 유틸리티 모음 | ✅ |
 | Extensions (TransformExtensions / VectorExtensions / ColorExtensions) | Unity 타입 확장 메서드 모음 | ✅ |
 | Math (MathExtensions) | 수학 유틸리티 | ✅ |
-| LocalizationSystem | 다국어 지원 | ⬜ |
+| LocalizationSystem | 다국어 지원 | ✅ |
 | AsyncHelper | UniTask 래퍼 (async/await 유틸) | ✅ |
 
 ### 상태 아이콘

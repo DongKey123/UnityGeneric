@@ -68,7 +68,7 @@
 | `Extensions` (TransformExtensions / VectorExtensions / ColorExtensions) | ★★★ Unity 타입 확장 메서드 모음 | [x] |
 | `Math` (MathExtensions) | ★★☆ 수학 유틸리티 | [x] |
 | `AsyncHelper` | ★★★ UniTask 래퍼 (async/await 유틸) | [x] |
-| `LocalizationSystem` | ★★★ 다국어 지원 | [ ] |
+| `LocalizationSystem` | ★★★ 다국어 지원 | [x] |
 
 ---
 
