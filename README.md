@@ -39,7 +39,7 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 | SafeAreaFitter | 노치/펀치홀/홈 인디케이터 Safe Area 자동 적용 | ✅ |
 | ToastManager | 자동으로 사라지는 토스트 알림 메시지 | ✅ |
 | UITransitionSystem | Open/Close 페이드/슬라이드 트랜지션 | ⬜ |
-| LocalizationSystem | 다국어 텍스트/폰트 런타임 교체 | ⬜ |
+| LocalizationSystem | 다국어 텍스트/폰트 런타임 교체 | ✅ |
 | BottomSheet | 하단 슬라이드업 패널 | ⬜ |
 | CommonPopupManager | 공용 팝업 관리 (OneButton / TwoButton / Dim / 스택) | ✅ |
 | ConfirmDialogBuilder | 확인/취소 팝업 빌더 API | ⬜ |
@@ -78,6 +78,7 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 
 | 버전 | 날짜 | 내용 |
 |------|------|------|
+| 1.8.0 | 2026-04-08 | LocalizationSystem 모듈 완료 (다국어 JSON 로드, LocalizedText 자동 갱신) |
 | 1.7.0 | 2026-04-08 | CommonPopupManager 모듈 완료 (OneButtonPopup / TwoButtonPopup / Dim / 스택 관리) |
 | 1.6.0 | 2026-04-08 | ToastManager 모듈 완료 (큐 기반 토스트 알림, Default/Success/Warning/Error 타입) |
 | 1.5.0 | 2026-04-08 | SafeAreaFitter 모듈 완료 (노치/펀치홀/홈 인디케이터 Safe Area 자동 적용) |

@@ -42,7 +42,7 @@
 | `UIManager` | ★★★ UI 패널 2레이어 관리 (Default 스택 / Overlay) | 공통 | [x] |
 | `SafeAreaFitter` | ★★★ 노치/펀치홀/홈 인디케이터 영역 자동 회피 | 모바일 | [x] |
 | `UITransitionSystem` | ★★★ Open/Close 시 페이드/슬라이드 트랜지션 (AsyncHelper 완료 후 작업) | 공통 | [ ] |
-| `LocalizationSystem` | ★★★ 다국어 텍스트/폰트 런타임 교체 | 공통 | [ ] |
+| `LocalizationSystem` | ★★★ 다국어 텍스트/폰트 런타임 교체 | 공통 | [x] |
 | `BottomSheet` | ★★★ 하단 슬라이드업 패널 (half/full/hidden 스냅) | 모바일 | [ ] |
 | `CommonPopupManager` | ★★★ 공용 팝업 관리 (OneButton / TwoButton / Dim / 스택) | 공통 | [x] |
 | `ToastManager` | ★★★ 알림 메시지 (UIManager 독립, 별도 싱글톤) | 공통 | [x] |
