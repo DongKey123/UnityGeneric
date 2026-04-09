@@ -1,0 +1,112 @@
+[
+  {
+    "item_id": 1001,
+    "name": "나무 검",
+    "slot_type": "weapon",
+    "atk": 5,
+    "atk_range": 2.0,
+    "max_hp": 0,
+    "def": 0,
+    "atk_speed": 0.0,
+    "move_speed": 0.0
+  },
+  {
+    "item_id": 1002,
+    "name": "철 검",
+    "slot_type": "weapon",
+    "atk": 15,
+    "atk_range": 2.0,
+    "max_hp": 0,
+    "def": 0,
+    "atk_speed": 0.0,
+    "move_speed": 0.0
+  },
+  {
+    "item_id": 2001,
+    "name": "가죽 투구",
+    "slot_type": "helmet",
+    "atk": 0,
+    "atk_range": 0.0,
+    "max_hp": 30,
+    "def": 0,
+    "atk_speed": 0.0,
+    "move_speed": 0.0
+  },
+  {
+    "item_id": 2002,
+    "name": "철 투구",
+    "slot_type": "helmet",
+    "atk": 0,
+    "atk_range": 0.0,
+    "max_hp": 80,
+    "def": 0,
+    "atk_speed": 0.0,
+    "move_speed": 0.0
+  },
+  {
+    "item_id": 3001,
+    "name": "가죽 갑옷",
+    "slot_type": "armor",
+    "atk": 0,
+    "atk_range": 0.0,
+    "max_hp": 20,
+    "def": 5,
+    "atk_speed": 0.0,
+    "move_speed": 0.0
+  },
+  {
+    "item_id": 3002,
+    "name": "철 갑옷",
+    "slot_type": "armor",
+    "atk": 0,
+    "atk_range": 0.0,
+    "max_hp": 50,
+    "def": 15,
+    "atk_speed": 0.0,
+    "move_speed": 0.0
+  },
+  {
+    "item_id": 4001,
+    "name": "가죽 장갑",
+    "slot_type": "gloves",
+    "atk": 0,
+    "atk_range": 0.0,
+    "max_hp": 0,
+    "def": 3,
+    "atk_speed": 0.1,
+    "move_speed": 0.0
+  },
+  {
+    "item_id": 4002,
+    "name": "철 장갑",
+    "slot_type": "gloves",
+    "atk": 0,
+    "atk_range": 0.0,
+    "max_hp": 0,
+    "def": 8,
+    "atk_speed": 0.2,
+    "move_speed": 0.0
+  },
+  {
+    "item_id": 5001,
+    "name": "가죽 신발",
+    "slot_type": "boots",
+    "atk": 0,
+    "atk_range": 0.0,
+    "max_hp": 0,
+    "def": 2,
+    "atk_speed": 0.0,
+    "move_speed": 0.5
+  },
+  {
+    "item_id": 5002,
+    "name": "철 신발",
+    "slot_type": "boots",
+    "atk": 0,
+    "atk_range": 0.0,
+    "max_hp": 0,
+    "def": 6,
+    "atk_speed": 0.0,
+    "move_speed": 1.0
+  }
+]

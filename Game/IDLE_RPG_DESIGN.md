@@ -104,6 +104,58 @@ Unity Generic Framework 샘플 프로젝트입니다.
 
 ---
 
+## 방치 보상 시스템
+
+### 온라인 vs 오프라인 비교
+
+> **미정** — 온라인/오프라인 보상 비율은 추후 확정 예정
+
+| 보상 항목 | 온라인 (실행 중) | 오프라인 (앱 종료) |
+|-----------|------------------|-------------------|
+| 골드 | 100% | 미정 |
+| 경험치 | 100% | 미정 |
+| 아이템 드롭 | 있음 | 미정 |
+| 스탯 포인트 재화 | 있음 | 미정 |
+
+- 오프라인과 온라인 보상 차이를 최소화하는 방향으로 결정
+- 광고 없음
+
+### 적립 규칙
+
+- 앱 종료 시각을 저장, 재접속 시 경과 시간 계산
+- 최대 적립 시간: **12시간** (초과분은 버림)
+- 기준 필드: 앱 종료 직전에 자동 사냥 중이던 챕터
+- 시간당 보상량은 **ChapterData 테이블에서 관리** (챕터마다 골드/경험치 드롭량 설정)
+
+```json
+// ChapterData.json — 방치 보상 필드 예시
+{
+  "chapter_id": 1,
+  "idle_gold_per_hour": 1000,
+  "idle_exp_per_hour": 500
+}
+```
+
+### 수령 흐름
+
+```
+앱 재실행
+  → SaveSystem에서 오프라인 경과 시간 계산
+  → 경과 시간 > 0 이면 보상 계산
+  → CommonPopupManager로 "오프라인 보상 수령" 팝업 표시
+  → 확인 버튼 → 골드 / 경험치 지급
+  → 팝업 닫힘
+```
+
+### 저장 데이터 추가
+
+| 키 | 내용 |
+|----|------|
+| `offline_exit_time` | 앱 종료 시각 (Unix Timestamp) |
+| `offline_chapter_id` | 종료 시 사냥 중이던 챕터 ID |
+
+---
+
 ## 세계관
 
 삼국지를 모티브로 한 3개 나라가 대립하는 세계입니다.
@@ -132,7 +184,7 @@ Unity Generic Framework 샘플 프로젝트입니다.
 ```
 
 - 챕터 안에서 무한 자동 사냥
-- 챕터 이탈 시 로비로 복귀
+- 챕터 변경은 UI 패널에서 바로 선택 (씬 전환 없음)
 
 ### 챕터 해금 조건
 
@@ -182,9 +234,11 @@ Unity Generic Framework 샘플 프로젝트입니다.
 
 | 씬 | 설명 |
 |----|------|
-| `BootScene` | 초기 데이터 로드, 씬 전환 |
-| `LobbyScene` | 캐릭터 정보, 강화, 설정 |
-| `BattleScene` | 자동 전투 (챕터별 필드) |
+| `BootScene` | 초기 데이터 로드 → MainScene 전환 |
+| `MainScene` | 자동사냥 + 모든 UI 패널 (강화, 장비, 설정) |
+
+> **LobbyScene 미사용** — 씬 전환 없이 MainScene에서 UIManager 패널 오버레이로 모든 컨텐츠 접근.
+> 추후 던전/보스타임 등 별도 연출이 필요한 컨텐츠는 독립 씬으로 분리 예정.
 
 ---
 
@@ -409,25 +463,33 @@ Iron Sword +10 각인 → ATK +20 영구 보유 (추가 누적)
 
 ## UI 구성
 
-### BattleScene HUD
+모든 UI는 MainScene에서 UIManager 패널 오버레이로 동작합니다.
+
+### HUD (항상 표시)
 
 | UI | 모듈 | 설명 |
 |----|------|------|
 | HP바 | UIManager | 캐릭터 HP 표시 |
-| 스테이지 정보 | UIManager | 현재 스테이지, 몬스터 수 |
+| 스테이지 정보 | UIManager | 현재 챕터, 몬스터 수 |
 | 골드/경험치 | UIManager | 실시간 표시 |
 | 레벨업 알림 | ToastManager | 레벨업 시 잠깐 표시 |
-| 일시정지 | CommonPopupManager | 설정/나가기 |
 
-### LobbyScene
+### 패널 (버튼 탭 시 오버레이)
 
 | UI | 모듈 | 설명 |
 |----|------|------|
 | 캐릭터 정보 패널 | UIManager | 스탯, 장비 확인 |
 | 강화 패널 | UIManager | 장비 강화 |
+| 설정 패널 | UIManager | 언어, 음량 설정 |
+
+### 팝업
+
+| UI | 모듈 | 설명 |
+|----|------|------|
 | 강화 확인 팝업 | CommonPopupManager | 골드 소모 확인 |
 | 강화 결과 알림 | ToastManager | 성공/실패 알림 |
-| 설정 패널 | UIManager | 언어, 음량 설정 |
+| 오프라인 보상 | CommonPopupManager | 재접속 시 보상 수령 |
+| 일시정지 | CommonPopupManager | 설정/나가기 |
 
 ---
 
@@ -461,12 +523,12 @@ Iron Sword +10 각인 → ATK +20 영구 보유 (추가 누적)
 | `StateMachine` | 캐릭터 / 몬스터 상태 관리 |
 | `ObjectPool` | 몬스터, 공격 이펙트, 드롭 아이템 |
 | `EventBus` | 레벨업, 스테이지 클리어, 몬스터 사망 이벤트 |
-| `AudioManager` | BGM(로비/전투), SFX(공격/레벨업/강화) |
+| `AudioManager` | BGM(메인), SFX(공격/레벨업/강화) |
 | `SaveSystem` | 플레이어 데이터 저장/로드 |
-| `InGameDataManager` | 스테이지/몬스터/아이템/레벨 데이터 로드 |
-| `SceneLoader` | Boot → Lobby → Battle 씬 전환 |
-| `InputManager` | 모바일 터치 입력 |
-| `UIManager` | HUD, 로비 패널 관리 |
+| `InGameDataManager` | 챕터/몬스터/아이템/레벨 데이터 로드 |
+| `SceneLoader` | Boot → MainScene 전환 |
+| `InputManager` | PC(WASD) / 모바일(조이스틱) 입력 |
+| `UIManager` | HUD, 강화/장비/설정 패널 관리 |
 | `CommonPopupManager` | 강화 확인, 일시정지 팝업 |
 | `ToastManager` | 레벨업, 강화 결과 알림 |
 | `SafeAreaFitter` | 노치/홈 인디케이터 회피 |
@@ -477,41 +539,37 @@ Iron Sword +10 각인 → ATK +20 영구 보유 (추가 누적)
 ## 디렉토리 구조 (예정)
 
 ```
-Assets/
+Assets/Idle_Game/
 ├── Scripts/
-│   ├── Framework/       ← 기존 프레임워크
+│   ├── SceneEntry/      ← 씬 진입점 (BootEntry, MainEntry)
+│   ├── Data/            ← 데이터 클래스 + InGameDataManager partial
+│   ├── Battle/          ← 전투 로직 (Character, Monster, Stage)
+│   │   ├── Character/
+│   │   ├── Monster/
+│   │   └── Stage/
+│   ├── Lobby/           ← 로비 UI 로직 (강화, 장비 패널 등)
+│   └── UI/              ← 게임 전용 UI 패널
+├── Resources/
 │   └── Game/
-│       ├── Boot/        ← BootScene 초기화
-│       ├── Lobby/       ← 로비 로직
-│       ├── Battle/      ← 전투 로직
-│       │   ├── Character/
-│       │   ├── Monster/
-│       │   └── Stage/
-│       ├── Data/        ← 데이터 클래스 (StageData, MonsterData 등)
-│       └── UI/          ← 게임 전용 UI 패널
+│       ├── Data/        ← JSON 데이터
+│       └── UI/          ← UI 프리팹
 ├── Prefabs/
 │   ├── Characters/
 │   ├── Monsters/
 │   └── UI/
-├── Resources/
-│   ├── Data/            ← JSON 데이터
-│   ├── Localization/    ← 다국어 JSON
-│   └── UI/              ← UI 프리팹
 └── Scenes/
     ├── BootScene
-    ├── LobbyScene
-    └── BattleScene
+    └── MainScene
 ```
 
 ---
 
 ## 개발 순서 (예정)
 
-1. BootScene — 데이터 로드, 씬 전환
-2. 데이터 클래스 및 JSON 작성
-3. BattleScene — 캐릭터, 몬스터, 전투 로직
-4. LobbyScene — 강화, 캐릭터 정보
-5. UI 연동
-6. 저장/로드
-7. 오디오
-8. 다국어
+1. [x] 데이터 클래스 및 JSON 작성
+2. [x] BootEntry — 데이터 로드, MainScene 전환
+3. [ ] MainScene — 캐릭터, 몬스터, 전투 로직 (StageManager, PlayerController)
+4. [ ] UI 연동 — HUD, 강화 패널, 팝업
+5. [ ] 저장/로드
+6. [ ] 오디오
+7. [ ] 다국어

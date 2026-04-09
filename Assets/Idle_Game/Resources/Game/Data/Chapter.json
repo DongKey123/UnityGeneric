@@ -1,0 +1,41 @@
+[
+  {
+    "chapter_id": 1,
+    "name": "초보자의 땅",
+    "unlock_level": 0,
+    "unlock_kill_count": 0,
+    "idle_gold_per_hour": 1000,
+    "idle_exp_per_hour": 500,
+    "monsters": [
+      { "monster_id": 1001, "spawn_weight": 60 },
+      { "monster_id": 1002, "spawn_weight": 30 },
+      { "monster_id": 1003, "spawn_weight": 10 }
+    ]
+  },
+  {
+    "chapter_id": 2,
+    "name": "황야의 벌판",
+    "unlock_level": 20,
+    "unlock_kill_count": 500,
+    "idle_gold_per_hour": 3000,
+    "idle_exp_per_hour": 1500,
+    "monsters": [
+      { "monster_id": 2001, "spawn_weight": 50 },
+      { "monster_id": 2002, "spawn_weight": 35 },
+      { "monster_id": 2003, "spawn_weight": 15 }
+    ]
+  },
+  {
+    "chapter_id": 3,
+    "name": "어둠의 숲",
+    "unlock_level": 50,
+    "unlock_kill_count": 1000,
+    "idle_gold_per_hour": 8000,
+    "idle_exp_per_hour": 4000,
+    "monsters": [
+      { "monster_id": 3001, "spawn_weight": 45 },
+      { "monster_id": 3002, "spawn_weight": 35 },
+      { "monster_id": 3003, "spawn_weight": 20 }
+    ]
+  }
+]
