@@ -12,7 +12,7 @@ namespace Framework.Core.DataManager
     ///
     /// [사용 흐름]
     /// 1. LoadAsDictionary 로 데이터 로드 (id 기반 빠른 조회)
-    /// 2. 반환된 Dictionary를 직접 사용
+    /// 2. Get&lt;TValue&gt;(int id) 로 단건 조회 — LoadAll() 이후에만 사용
     /// 3. 씬 전환 또는 불필요 시 Unload 로 캐시 해제
     ///
     /// [Resources 경로 규칙]
@@ -40,9 +40,7 @@ namespace Framework.Core.DataManager
 
         #region Initialization
 
-        /// <summary>
-        /// 플레이 모드 재시작 시 모든 캐시를 초기화합니다.
-        /// </summary>
+        /// <summary>플레이 모드 재시작 시 모든 캐시를 초기화합니다.</summary>
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         private static void Init()
         {
@@ -86,6 +84,17 @@ namespace Framework.Core.DataManager
         }
 
         /// <summary>
+        /// JSON 파일을 int 키 기준 Dictionary로 로드합니다. 이미 로드된 경우 캐시를 반환합니다.
+        /// <para>int id 기반 데이터에 사용하는 편의 오버로드입니다. Get&lt;TValue&gt;(int id)와 함께 사용하세요.</para>
+        /// </summary>
+        /// <typeparam name="TValue">값 타입</typeparam>
+        /// <param name="resourcePath">Resources 기준 경로 (확장자 제외)</param>
+        /// <param name="keySelector">int 키로 사용할 필드 지정 (예: x => x.id)</param>
+        /// <returns>Dictionary. 파일이 없으면 null</returns>
+        public Dictionary<int, TValue> LoadAsDictionary<TValue>(string resourcePath, Func<TValue, int> keySelector)
+            => LoadAsDictionary<int, TValue>(resourcePath, keySelector);
+
+        /// <summary>
         /// JSON 파일을 로드하여 Dictionary 형태로 반환합니다. 이미 로드된 경우 캐시를 반환합니다.
         /// </summary>
         /// <typeparam name="TKey">키 타입</typeparam>
@@ -120,6 +129,30 @@ namespace Framework.Core.DataManager
         }
 
         /// <summary>
+        /// int 키 기준으로 캐시에서 단건 데이터를 조회합니다.
+        /// <para>반드시 LoadAll() 이후에 호출하세요. 캐시가 없으면 에러 로그를 출력하고 null을 반환합니다.</para>
+        /// </summary>
+        /// <typeparam name="TValue">조회할 데이터 타입</typeparam>
+        /// <param name="id">조회할 int 키</param>
+        /// <returns>데이터. 미로드 또는 키 없으면 null</returns>
+        public TValue Get<TValue>(int id) where TValue : class
+        {
+            if (DictCache<int, TValue>.Store.Count == 0)
+            {
+                Debug.LogError($"[InGameDataManager] {typeof(TValue).Name} 캐시 없음 — LoadAll()을 먼저 호출하세요.");
+                return null;
+            }
+
+            foreach (var table in DictCache<int, TValue>.Store.Values)
+            {
+                table.TryGetValue(id, out var data);
+                return data;
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// List로 로드된 특정 경로의 캐시를 해제합니다.
         /// </summary>
         /// <typeparam name="T">로드 시 사용한 데이터 타입</typeparam>
@@ -150,9 +183,7 @@ namespace Framework.Core.DataManager
 #endif
         }
 
-        /// <summary>
-        /// 모든 캐시를 해제합니다.
-        /// </summary>
+        /// <summary>모든 캐시를 해제합니다.</summary>
         public void UnloadAll()
         {
             foreach (var action in _clearActions.Values)
