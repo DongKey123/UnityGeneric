@@ -6,6 +6,10 @@
     "unlock_kill_count": 0,
     "idle_gold_per_hour": 1000,
     "idle_exp_per_hour": 500,
+    "max_monster_count": 10,
+    "respawn_delay": 3.0,
+    "spawn_radius": 20.0,
+    "spawn_min_distance_from_player": 8.0,
     "monsters": [
       { "monster_id": 1001, "spawn_weight": 60 },
       { "monster_id": 1002, "spawn_weight": 30 },
@@ -19,6 +23,10 @@
     "unlock_kill_count": 500,
     "idle_gold_per_hour": 3000,
     "idle_exp_per_hour": 1500,
+    "max_monster_count": 12,
+    "respawn_delay": 3.0,
+    "spawn_radius": 20.0,
+    "spawn_min_distance_from_player": 8.0,
     "monsters": [
       { "monster_id": 2001, "spawn_weight": 50 },
       { "monster_id": 2002, "spawn_weight": 35 },
@@ -32,6 +40,10 @@
     "unlock_kill_count": 1000,
     "idle_gold_per_hour": 8000,
     "idle_exp_per_hour": 4000,
+    "max_monster_count": 15,
+    "respawn_delay": 4.0,
+    "spawn_radius": 25.0,
+    "spawn_min_distance_from_player": 10.0,
     "monsters": [
       { "monster_id": 3001, "spawn_weight": 45 },
       { "monster_id": 3002, "spawn_weight": 35 },

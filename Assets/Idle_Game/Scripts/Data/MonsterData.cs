@@ -30,6 +30,9 @@ namespace IdleGame.Data
         /// <summary>공격 사거리</summary>
         public float atk_range;
 
+        /// <summary>플레이어 탐지 범위 (ChaseState 진입 거리)</summary>
+        public float detect_range;
+
         /// <summary>처치 시 지급 경험치</summary>
         public int exp;
 

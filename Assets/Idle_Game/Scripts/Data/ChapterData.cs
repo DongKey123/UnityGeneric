@@ -25,6 +25,18 @@ namespace IdleGame.Data
         /// <summary>방치 보상 — 시간당 경험치 (온라인 기준 100%)</summary>
         public int idle_exp_per_hour;
 
+        /// <summary>동시 최대 몬스터 수</summary>
+        public int max_monster_count;
+
+        /// <summary>몬스터 리스폰 대기 시간 (초)</summary>
+        public float respawn_delay;
+
+        /// <summary>스폰 허용 반경 (스테이지 중심 기준)</summary>
+        public float spawn_radius;
+
+        /// <summary>플레이어와의 최소 스폰 거리</summary>
+        public float spawn_min_distance_from_player;
+
         /// <summary>등장 몬스터 목록 (monster_id + 스폰 가중치)</summary>
         public List<MonsterSpawnEntry> monsters;
     }
