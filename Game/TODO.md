@@ -19,12 +19,12 @@
 
 ## 핵심 시스템 구현
 
-- [ ] `IDamageable` 인터페이스
-- [ ] `PlayerStat` — 최종 스탯 계산 클래스
-- [ ] `PlayerController` + States (Idle / Combat / Dead)
-- [ ] `MonsterController` + States (Idle / Chase / Attack / Dead)
-- [ ] `StageManager` — 몬스터 스폰 / 챕터 관리
-- [ ] `MainEntry` — StageManager / PlayerController 초기화 연결
+- [x] `IDamageable` 인터페이스
+- [x] `PlayerStat` — 최종 스탯 계산 클래스 (순수 C#)
+- [x] `PlayerController` + States (대기 / 전투 / 사망)
+- [x] `MonsterController` + States (대기 / 추격 / 공격 / 사망)
+- [x] `StageManager` — 몬스터 스폰 / 리스폰 / 챕터 관리
+- [x] `MainEntry` — StageManager / PlayerController 초기화 연결
 
 ---
 

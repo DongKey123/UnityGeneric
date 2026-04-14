@@ -12,12 +12,27 @@ IDamageable (인터페이스)
     └── MonsterController
 
 PlayerController
-    ├── PlayerStat          — 최종 스탯 계산 (레벨 + 장비 + 강화 합산)
+    ├── PlayerStat          — 최종 스탯 계산 (장비 + 강화 합산)
     ├── StateMachine        — 대기 / 전투 / 사망
     ├── TargetingSystem     — 주변 탐색, 가장 가까운 타겟 선택
     ├── AttackSystem        — 기본 공격 타이머
     └── SkillSystem         — 스킬 슬롯 3개, 쿨타임 관리
 ```
+
+---
+
+## 클래스 설계 원칙
+
+| 클래스 | MonoBehaviour | 이유 |
+|--------|--------------|------|
+| `PlayerController` | ✅ | Unity 생명주기 필요 (Update, 컴포넌트 참조) |
+| `MonsterController` | ✅ | Unity 생명주기 필요 |
+| `PlayerStat` | ❌ 순수 C# | 스탯 계산만 담당, 생명주기 불필요. PlayerController 필드로 보유 |
+| `StateMachine` | ❌ 순수 C# | 상태 전환 로직만 담당 (프레임워크 제공) |
+| `AttackSystem` | ❌ 순수 C# | 타이머 계산만 담당, PlayerController에서 Tick 호출 |
+| `SkillSystem` | ❌ 순수 C# | 쿨타임 계산만 담당, PlayerController에서 Tick 호출 |
+| `TargetingSystem` | ❌ 순수 C# | 탐색 로직만 담당, PlayerController에서 호출 |
+| `StageManager` | ✅ | 씬 오브젝트로 존재, Coroutine 사용 (리스폰 타이머) |
 
 ## 이동 방식
 
