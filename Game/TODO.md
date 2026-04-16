@@ -28,6 +28,20 @@
 
 ---
 
+## 스킬 시스템
+
+- [x] 타겟 방식 확정 — Single / AoE / Self / Line
+- [x] 효과 방식 확정 — Damage / DoT / Buff / Debuff / Shield / Heal
+- [x] 발동 방식 결정 — Instant / Cast / Passive / Reaction
+- [x] 스킬 강화 방식 결정 — 골드 (추후 변경 가능), 강화 효과는 스킬마다 다르게 설정
+- [x] 스킬 획득 방식 결정 — 기본 지급 + 조건 해금 혼재, 해금 조건 상세는 추후 확정
+- [x] `SkillData.json` 필드 확정 및 작성
+- [x] `SkillSystem` 클래스 구현
+- [ ] 버프/디버프 시스템 설계 (BUFF_SYSTEM.md)
+- [ ] 스킬 버튼 UI 연동
+
+---
+
 ## UI 구현
 
 - [ ] HUD — HP바, 골드/경험치, 스테이지 정보

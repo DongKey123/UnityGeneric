@@ -1,4 +1,8 @@
+using System;
+using System.Linq;
+using Framework.Core.DataManager;
 using Framework.Patterns.StateMachine;
+using IdleGame.Data;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -12,15 +16,25 @@ namespace IdleGame.Battle
     {
         #region Inspector
 
-        [SerializeField] private LayerMask _monsterLayer;
+        [SerializeField] private HpBar _hpBar;
+
+        #endregion
+
+        #region Events
+
+        /// <summary>플레이어 부활 시 발생합니다.</summary>
+        public event Action OnRevived;
 
         #endregion
 
         #region Constants
 
-        private const float DetectRadius = 15f;
+        private const float DetectRadius   = 15f;
+        private const string MonsterLayer  = "Monster";
 
         #endregion
+
+        private LayerMask _monsterLayer;
 
         #region Properties
 
@@ -45,6 +59,9 @@ namespace IdleGame.Battle
         /// <summary>NavMeshAgent 컴포넌트</summary>
         public NavMeshAgent Agent { get; private set; }
 
+        /// <summary>스킬 시스템</summary>
+        public SkillSystem SkillSystem { get; private set; }
+
         #endregion
 
         #region Private Fields
@@ -62,6 +79,8 @@ namespace IdleGame.Battle
         {
             Agent = GetComponent<NavMeshAgent>();
             Stat  = new PlayerStat();
+            _monsterLayer = LayerMask.GetMask(MonsterLayer);
+            SkillSystem   = new SkillSystem();
 
             _idleState   = new PlayerIdleState();
             _combatState = new PlayerCombatState();
@@ -73,6 +92,7 @@ namespace IdleGame.Battle
         private void Update()
         {
             _stateMachine.Update();
+            SkillSystem.Tick(Time.deltaTime);
         }
 
         #endregion
@@ -88,6 +108,12 @@ namespace IdleGame.Battle
             CurrentHp = Stat.MaxHp;
             IsDead    = false;
 
+            var defaultSkills = InGameDataManager.Instance
+                .GetAll<SkillData>()
+                .Where(s => s.unlock_type == "Default");
+            SkillSystem.Initialize(defaultSkills);
+
+            _hpBar?.UpdateHp(CurrentHp, Stat.MaxHp);
             _stateMachine.SetInitialState(_idleState);
         }
 
@@ -130,11 +156,22 @@ namespace IdleGame.Battle
             return nearest;
         }
 
+        /// <summary>체력을 회복합니다. SkillSystem(Heal)에서 호출됩니다.</summary>
+        /// <param name="amount">회복량</param>
+        public void Heal(int amount)
+        {
+            if (IsDead) return;
+            CurrentHp = Mathf.Min(Stat.MaxHp, CurrentHp + amount);
+            _hpBar?.UpdateHp(CurrentHp, Stat.MaxHp);
+        }
+
         /// <summary>부활 처리합니다. PlayerDeadState에서 호출됩니다.</summary>
         public void Revive()
         {
             IsDead    = false;
             CurrentHp = Stat.MaxHp;
+            _hpBar?.UpdateHp(CurrentHp, Stat.MaxHp);
+            OnRevived?.Invoke();
             ChangeToIdle();
 
             // TODO: 레벨업 이펙트와 동일한 복귀 이펙트
@@ -158,6 +195,7 @@ namespace IdleGame.Battle
             int finalDamage = Mathf.Max(minDamage, rawDamage);
 
             CurrentHp = Mathf.Max(0, CurrentHp - finalDamage);
+            _hpBar?.UpdateHp(CurrentHp, Stat.MaxHp);
 
             // TODO: 데미지 숫자 팝업 (머리 위)
             // TODO: 피격 SFX

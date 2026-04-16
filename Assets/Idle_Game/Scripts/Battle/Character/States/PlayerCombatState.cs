@@ -85,9 +85,12 @@ namespace IdleGame.Battle
             }
         }
 
-        /// <summary>공격 타이머 기반으로 기본 공격을 시도합니다.</summary>
+        /// <summary>스킬 우선, 기본 공격 타이머 기반으로 공격을 시도합니다.</summary>
         private void TryAttack(PlayerController owner)
         {
+            // 쿨타임 완료된 스킬이 있으면 스킬 우선 발동
+            if (owner.SkillSystem.TryUseAny(owner)) return;
+
             _attackTimer += Time.deltaTime;
             float attackInterval = 1f / owner.Stat.AtkSpeed;
 
@@ -108,7 +111,6 @@ namespace IdleGame.Battle
             owner.Target.TakeDamage(attackPower);
 
             // TODO: 공격 애니메이션 / SFX
-            // TODO: 스킬 시스템 연동 (스킬 쿨타임 완료 시 기본 공격보다 우선 발동)
         }
 
         #endregion

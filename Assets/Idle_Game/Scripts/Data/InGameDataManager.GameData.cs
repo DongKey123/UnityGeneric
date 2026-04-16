@@ -15,6 +15,7 @@ namespace Framework.Core.DataManager
         private const string PathMonster = "Game/Data/Monster";
         private const string PathItem    = "Game/Data/Item";
         private const string PathLevel   = "Game/Data/Level";
+        private const string PathSkill   = "Game/Data/Skill";
 
         #endregion
 
@@ -30,6 +31,7 @@ namespace Framework.Core.DataManager
             LoadAsDictionary<MonsterData>(PathMonster, x => x.monster_id);
             LoadAsDictionary<ItemData>(PathItem, x => x.item_id);
             LoadAsDictionary<LevelData>(PathLevel, x => x.level);
+            LoadAsDictionary<SkillData>(PathSkill, x => x.skill_id);
         }
 
         #endregion
