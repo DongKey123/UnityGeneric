@@ -44,13 +44,30 @@
 
 ## UI 구현
 
-- [ ] HUD — HP바, 골드/경험치, 스테이지 정보
-- [ ] 스킬 버튼 (쿨타임 표시)
-- [ ] 자동/수동 토글 버튼
-- [ ] 캐릭터 정보 패널
-- [ ] 강화 패널
-- [ ] 설정 패널
-- [ ] 오프라인 보상 팝업
+> 상세 구조 → [UI_STRUCTURE.md](UI_STRUCTURE.md)
+
+### Defines
+- [x] `UIEnums.cs` — `InGameTabType` (Battle / Character / Enhance / Shop / Settings)
+
+### 탭 구조
+- [ ] `TabButton` — 잠금/해제 + 선택 상태 시각화
+- [ ] `TabBar` — 탭 전환, Lock/Unlock API (튜토리얼 연동 기반)
+- [ ] `BaseView` — Show/Hide 기반 클래스 (모든 View가 상속)
+- [ ] `MainCanvas` — TabBar / TopBar / View 초기화 루트, MainEntry에서 호출
+
+### View
+- [ ] `BattleView` — 스킬 버튼 + 자동/수동 토글 + 스테이지 정보
+- [ ] `CharacterView` — 스탯 확인 (셸)
+- [ ] `EnhanceView` — 스킬 강화 (셸)
+- [ ] `ShopView` — 상점 (셸)
+- [ ] `SettingsView` — 오디오, 기타 설정 (셸)
+
+### 공통 컴포넌트
+- [ ] `TopBar` — 골드 / 경험치 표시 (골드·경험치 시스템 연동 전까지 더미)
+- [ ] `SkillButton` — 쿨타임 오버레이 + 수동 클릭 처리
+
+### 팝업
+- [ ] `OfflineRewardPopup` — 앱 재진입 시 보상 팝업
 
 ---
 
