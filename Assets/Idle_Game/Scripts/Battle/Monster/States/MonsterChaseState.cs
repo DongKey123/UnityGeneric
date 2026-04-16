@@ -11,7 +11,11 @@ namespace IdleGame.Battle
     {
         public override void Update(MonsterController owner)
         {
-            if (owner.Player == null) return;
+            if (owner.Player == null || owner.Player.IsDead)
+            {
+                owner.Agent.ResetPath();
+                return;
+            }
 
             float dist = Vector3.Distance(owner.transform.position, owner.Player.transform.position);
 

@@ -71,6 +71,9 @@ namespace IdleGame.Battle
 
         #region Constants
 
+        private const int   BaseMaxHp     = 500;
+        private const int   BaseAtk       = 20;
+        private const int   BaseDef       = 10;
         private const float BaseAtkSpeed  = 1.0f;
         private const float BaseMoveSpeed = 3.0f;
         private const float BaseCritRate  = 0.05f;  // 5%
@@ -137,14 +140,17 @@ namespace IdleGame.Battle
         /// </summary>
         public void Recalculate()
         {
-            MaxHp = CalcEquipStat(_helmet, _helmetLevel, i => i.max_hp)
+            MaxHp = BaseMaxHp
+                  + CalcEquipStat(_helmet, _helmetLevel, i => i.max_hp)
                   + CalcEquipStat(_armor,  _armorLevel,  i => i.max_hp)
                   + _enhanceMaxHp;
 
-            Atk = CalcEquipStat(_weapon, _weaponLevel, i => i.atk)
+            Atk = BaseAtk
+                + CalcEquipStat(_weapon, _weaponLevel, i => i.atk)
                 + _enhanceAtk;
 
-            Def = CalcEquipStat(_armor,  _armorLevel,  i => i.def)
+            Def = BaseDef
+                + CalcEquipStat(_armor,  _armorLevel,  i => i.def)
                 + CalcEquipStat(_gloves, _glovesLevel, i => i.def)
                 + CalcEquipStat(_boots,  _bootsLevel,  i => i.def)
                 + _enhanceDef;

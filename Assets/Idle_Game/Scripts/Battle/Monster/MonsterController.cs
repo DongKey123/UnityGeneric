@@ -13,6 +13,12 @@ namespace IdleGame.Battle
     /// </summary>
     public class MonsterController : MonoBehaviour, IDamageable, IPoolable
     {
+        #region Inspector
+
+        [SerializeField] private HpBar _hpBar;
+
+        #endregion
+
         #region Events
 
         /// <summary>몬스터 사망 시 발생합니다. (this)</summary>
@@ -85,6 +91,7 @@ namespace IdleGame.Battle
             IsDead    = false;
 
             Agent.speed = data.move_speed;
+            _hpBar?.UpdateHp(CurrentHp, data.hp);
             _stateMachine.SetInitialState(_idleState);
         }
 
@@ -113,6 +120,7 @@ namespace IdleGame.Battle
             int finalDamage = Mathf.Max(minDamage, rawDamage);
 
             CurrentHp = Mathf.Max(0, CurrentHp - finalDamage);
+            _hpBar?.UpdateHp(CurrentHp, Data.hp);
 
             // TODO: 데미지 숫자 팝업 (머리 위)
             // TODO: 피격 SFX

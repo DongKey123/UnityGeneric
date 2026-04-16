@@ -57,6 +57,25 @@ namespace IdleGame.Battle
         }
 
         /// <summary>
+        /// 스테이지를 초기화합니다. 플레이어 부활 시 호출하세요.
+        /// 모든 몬스터를 제거하고 다시 스폰합니다.
+        /// </summary>
+        public void ResetStage()
+        {
+            StopAllCoroutines();
+
+            foreach (var monster in _activeMonsters)
+            {
+                if (monster == null) continue;
+                monster.OnDied -= OnMonsterDied;
+                ObjectPoolManager.Instance.Release(PoolKey(monster.Data.monster_id), monster);
+            }
+
+            _activeMonsters.Clear();
+            FillMonsters();
+        }
+
+        /// <summary>
         /// 현재 챕터를 종료하고 모든 몬스터를 풀에 반환합니다.
         /// 챕터 전환 시 호출하세요.
         /// </summary>

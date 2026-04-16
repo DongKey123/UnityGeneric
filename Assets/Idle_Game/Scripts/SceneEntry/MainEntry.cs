@@ -1,3 +1,4 @@
+using Framework.Core.DataManager;
 using IdleGame.Battle;
 using UnityEngine;
 
@@ -21,9 +22,12 @@ namespace IdleGame.SceneEntry
 
         private void Start()
         {
+            InGameDataManager.Instance.LoadAll();
+
             // TODO: 오프라인 보상 계산 및 팝업
 
             _player.Initialize();
+            _player.OnRevived += _stageManager.ResetStage;
             _stageManager.LoadChapter(_startChapterId, _player, Vector3.zero);
         }
 
