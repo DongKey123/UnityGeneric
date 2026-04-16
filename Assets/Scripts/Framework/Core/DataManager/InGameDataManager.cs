@@ -129,6 +129,23 @@ namespace Framework.Core.DataManager
         }
 
         /// <summary>
+        /// 캐시에 로드된 특정 타입의 모든 데이터를 반환합니다.
+        /// <para>반드시 LoadAll() 이후에 호출하세요. 캐시가 없으면 빈 컬렉션을 반환합니다.</para>
+        /// </summary>
+        /// <typeparam name="TValue">조회할 데이터 타입</typeparam>
+        /// <returns>모든 데이터 컬렉션. 캐시가 없으면 빈 컬렉션</returns>
+        public IEnumerable<TValue> GetAll<TValue>() where TValue : class
+        {
+            if (DictCache<int, TValue>.Store.Count == 0)
+                return System.Array.Empty<TValue>();
+
+            foreach (var table in DictCache<int, TValue>.Store.Values)
+                return table.Values;
+
+            return System.Array.Empty<TValue>();
+        }
+
+        /// <summary>
         /// int 키 기준으로 캐시에서 단건 데이터를 조회합니다.
         /// <para>반드시 LoadAll() 이후에 호출하세요. 캐시가 없으면 에러 로그를 출력하고 null을 반환합니다.</para>
         /// </summary>
