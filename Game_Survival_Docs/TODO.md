@@ -28,7 +28,51 @@
 
 ## 구현
 
-> 설계 완료 후 진행
+### ✅ 완료
+
+#### 캐릭터 이동
+- `SurvivalInputManager` — MobileInputManager 상속, 조이스틱 방향 관리
+- `VirtualJoystick` — 좌하단 가상 조이스틱 UI, LDOE 방식
+- `PlayerController` — Rigidbody 기반 이동, 인벤토리 소유
+- `PlayerCamera` — 고정 오프셋 추적 카메라
+
+#### 데이터
+- `SurvivalItemData` — 아이템 데이터 클래스 (Resource/Equipment/Consumable)
+- `SurvivalDataLoader` — 서바이벌 게임 전용 데이터 로더
+- `ItemEnums` — ItemCategory, EquipmentSlotType 열거형
+- `Resources/Data/Item.json` — 샘플 아이템 6종 (나무/돌/철조각/나무도끼/나무검/붕대)
+
+#### 인벤토리 (백엔드)
+- `Inventory` — 슬롯 수 + 무게 이중 제한, TryAdd/TryRemove/GetCount/HasItem
+- `InventorySlot` — 아이템 데이터, 수량, 내구도 관리
+
+#### 인벤토리 UI
+- `MainPanel` — 항상 표시되는 HUD (UIPanel 상속, ShowOverlay로 관리)
+- `InventoryPanel` — 인벤토리 패널 (UIPanel + IInitializable<Inventory>)
+- `InventorySlotElement` — 슬롯 단위 Element (배경/아이콘/수량)
+- `InventoryTestButton` — 아이템 추가 테스트용 임시 버튼
+
+#### 씬 초기화
+- `SurvivalEntry` — 데이터 로드 + HUD 초기화 진입점
+
+### 🔲 다음 작업
+
+#### 인벤토리 UI 마무리
+- [ ] InventorySlotElement 프리팹 완성 (SlotGrid 배치, Inspector 연결)
+- [ ] InventoryPanel 프리팹 Inspector 연결 (_slotGrid, _slotElementPrefab)
+- [ ] MainPanel Inspector 연결 (_inventoryButton, _player)
+- [ ] 플레이 테스트 — 인벤토리 열기/닫기, 아이템 추가 확인
+
+#### 파밍 시스템
+- [ ] 자원 오브젝트 (나무, 돌) — 클릭/접근 시 채집
+- [ ] 채집 후 인벤토리 자동 추가
+
+#### 전투 시스템
+- [ ] 적 AI 기본 구현
+- [ ] 플레이어 공격 처리
+
+#### 빌딩 시스템
+- [ ] 그리드 기반 건설
 
 ---
 

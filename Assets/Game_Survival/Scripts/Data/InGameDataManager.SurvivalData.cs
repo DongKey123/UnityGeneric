@@ -1,0 +1,30 @@
+using Framework.Core.DataManager;
+
+namespace SurvivalGame.Data
+{
+    /// <summary>
+    /// 서바이벌 게임 데이터 로더입니다.
+    /// InGameDataManager를 사용하여 서바이벌 게임 전용 데이터를 로드합니다.
+    /// </summary>
+    public static class SurvivalDataLoader
+    {
+        #region Path Constants
+
+        private const string PathSurvivalItem = "Data/Item";
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// 서바이벌 게임 데이터를 모두 로드합니다.
+        /// SurvivalEntry 초기화 시 호출하세요.
+        /// </summary>
+        public static void LoadAll()
+        {
+            InGameDataManager.Instance.LoadAsDictionary<SurvivalItemData>(PathSurvivalItem, x => x.item_id);
+        }
+
+        #endregion
+    }
+}

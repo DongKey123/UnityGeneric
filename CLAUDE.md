@@ -45,6 +45,28 @@
 
 ---
 
+## 게임 코드 작업 시 필수 원칙
+
+게임 코드를 작성하기 전에 **반드시 프레임워크를 먼저 확인**하세요.
+
+### UI 작업
+- 모든 UI 패널은 `Framework.UI.UIPanel`을 상속합니다 — `MonoBehaviour` 직접 상속 금지
+- 패널 열기/닫기는 `UIManager.Instance.Open<T>()` / `Close()` / `ShowOverlay<T>()` 사용
+- HUD처럼 항상 표시되는 패널은 `ShowOverlay<T>()`, 일반 패널은 `Open<T>()`
+- `CanClose`, `CloseOnBack`, `DestroyOnClose`를 override하여 패널 동작 제어
+- 초기화 데이터가 필요한 패널은 `IInitializable<TData>` 구현
+- 패널 프리팹은 `Resources/UI/<ClassName>` 경로에 저장
+- **버튼/토글 등 UI 이벤트는 Unity Inspector OnClick이 아닌 스크립트에서 `AddListener`로 연결** — Inspector 연결은 수정 시 추적이 어려워 유지보수가 힘듦
+
+### 데이터 작업
+- 게임 전용 데이터 로더는 `static class`로 작성, `InGameDataManager.Instance` 통해 호출
+- `partial class InGameDataManager`는 프레임워크 namespace를 오염시키므로 사용 금지
+
+### 입력 작업
+- 모바일 입력은 `MobileInputManager`를 상속한 게임 전용 InputManager 사용
+
+---
+
 ## 가이드라인 문서
 
 - [코딩 스타일 규칙](Guidelines/CODING_STYLE.md) — 네이밍, 중괄호, Region 구조 등 상세 규칙
