@@ -37,8 +37,8 @@
 
 | 게임 | 상태 | 문서 |
 |------|------|------|
-| 서바이벌 게임 (Last Day on Earth 스타일) | 🟢 진행 중 | [기획서](Game_Survival/DESIGN.md) · [TODO](Game_Survival/TODO.md) |
-| Idle RPG | ⏸ 보류 | [TODO](Game/TODO.md) |
+| 서바이벌 게임 (Last Day on Earth 스타일) | 🟢 진행 중 | [기획서](Game_Survival_Docs/DESIGN.md) · [TODO](Game_Survival_Docs/TODO.md) |
+| Idle RPG | ⏸ 보류 | [TODO](Game_Idle_Docs/TODO.md) |
 
 > 게임 코드 작업 시 해당 게임의 TODO.md 및 설계 문서를 우선 참고하세요.
 > 프레임워크(`Assets/Scripts/Framework/`) 수정이 발생하면 위 **프레임워크 수정 시 필수 절차**를 따르세요.
