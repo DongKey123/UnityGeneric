@@ -8,10 +8,11 @@
 - [x] 게임 개요 / 핵심 루프 / 시스템 최소 설계 (DESIGN.md)
 - [ ] 맵 / 지역 구조 상세 설계 (MAP.md)
 - [ ] 플레이어 스탯 상세 설계 (PLAYER.md)
-- [ ] 인벤토리 상세 설계
+- [x] 인벤토리 상세 설계 (INVENTORY.md)
 - [ ] 크래프팅 상세 설계 (CRAFTING.md)
-- [ ] 베이스 건설 상세 설계 (BASE.md)
-- [ ] 전투 상세 설계 (BATTLE.md)
+- [x] 빌딩 / 베이스 건설 상세 설계 (BUILDING.md)
+- [x] 전투 상세 설계 (BATTLE.md)
+- [x] 파밍 / 자원 수집 설계 (FARMING.md)
 - [ ] 오프라인 보상 설계
 - [ ] UI 구조 설계 (UI_STRUCTURE.md)
 
