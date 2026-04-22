@@ -33,6 +33,18 @@
 
 ---
 
+## 현재 진행 중인 게임
+
+| 게임 | 상태 | 문서 |
+|------|------|------|
+| 서바이벌 게임 (Last Day on Earth 스타일) | 🟢 진행 중 | [TODO](서바이벌_게임/TODO.md) |
+| Idle RPG | ⏸ 보류 | [TODO](Game/TODO.md) |
+
+> 게임 코드 작업 시 해당 게임의 TODO.md 및 설계 문서를 우선 참고하세요.
+> 프레임워크(`Assets/Scripts/Framework/`) 수정이 발생하면 위 **프레임워크 수정 시 필수 절차**를 따르세요.
+
+---
+
 ## 가이드라인 문서
 
 - [코딩 스타일 규칙](Guidelines/CODING_STYLE.md) — 네이밍, 중괄호, Region 구조 등 상세 규칙
