@@ -1,5 +1,6 @@
 using Framework.UI;
 using SurvivalGame.Data;
+using SurvivalGame.Player;
 using SurvivalGame.UI;
 using UnityEngine;
 
@@ -12,6 +13,14 @@ namespace SurvivalGame.Core
     /// </summary>
     public class SurvivalEntry : MonoBehaviour
     {
+        #region Inspector
+
+        [SerializeField] private PlayerController _player;
+
+        #endregion
+
+        #region Unity Lifecycle
+
         private void Awake()
         {
             SurvivalDataLoader.LoadAll();
@@ -19,7 +28,9 @@ namespace SurvivalGame.Core
 
         private void Start()
         {
-            UIManager.Instance.ShowOverlay<MainPanel>();
+            UIManager.Instance.ShowOverlay<MainPanel, PlayerController>(_player);
         }
+
+        #endregion
     }
 }

@@ -1,7 +1,6 @@
 using Framework.UI;
 using SurvivalGame.Inventories;
 using SurvivalGame.Player;
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace SurvivalGame.UI
@@ -9,14 +8,19 @@ namespace SurvivalGame.UI
     /// <summary>
     /// 인게임 메인 HUD 패널입니다.
     /// 항상 표시되며 조이스틱, 인벤토리 열기 버튼 등 HUD 요소를 포함합니다.
-    /// SurvivalEntry에서 UIManager.Instance.ShowOverlay&lt;MainPanel&gt;()으로 열어주세요.
+    /// SurvivalEntry에서 UIManager.Instance.ShowOverlay&lt;MainPanel, PlayerController&gt;(player)로 열어주세요.
     /// </summary>
-    public class MainPanel : UIPanel
+    public class MainPanel : UIPanel, IInitializable<PlayerController>
     {
         #region Inspector
 
-        [SerializeField] private Button           _inventoryButton;
-        [SerializeField] private PlayerController _player;
+        [UnityEngine.SerializeField] private Button _inventoryButton;
+
+        #endregion
+
+        #region Private Fields
+
+        private PlayerController _player;
 
         #endregion
 
@@ -31,11 +35,17 @@ namespace SurvivalGame.UI
         protected override void Awake()
         {
             base.Awake();
-
-            if (_player == null)
-                _player = FindFirstObjectByType<PlayerController>();
-
             _inventoryButton.onClick.AddListener(OnClickInventory);
+        }
+
+        #endregion
+
+        #region IInitializable
+
+        /// <summary>열릴 때 플레이어를 주입받습니다.</summary>
+        public void Initialize(PlayerController player)
+        {
+            _player = player;
         }
 
         #endregion

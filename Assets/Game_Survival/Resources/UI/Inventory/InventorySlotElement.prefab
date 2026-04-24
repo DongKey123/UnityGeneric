@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8e0ba792a4984069b18d0d0244e098a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SurvivalGame.UI.InventorySlotElement
-  _background: {fileID: 0}
+  _background: {fileID: 4444596019659365550}
   _iconImage: {fileID: 3375139412718045036}
   _countText: {fileID: 1646375336204157352}
 --- !u!1 &5477766798237125628
@@ -155,7 +155,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 44.75
+  m_fontSize: 18
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

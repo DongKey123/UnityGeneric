@@ -859,6 +859,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb95446cdbaae4493b948214c581a916, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SurvivalGame.Core.SurvivalEntry
+  _player: {fileID: 571031943}
 --- !u!4 &1334114405
 Transform:
   m_ObjectHideFlags: 0
