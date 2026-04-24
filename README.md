@@ -73,10 +73,10 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 | 시스템 | 주요 스크립트 |
 |--------|--------------|
 | 캐릭터 이동 | `PlayerController`, `SurvivalInputManager`, `VirtualJoystick`, `PlayerCamera` |
-| 데이터 | `SurvivalItemData`, `SurvivalDataLoader`, `Item.json`, `Resource.json` |
+| 데이터 | `SurvivalItemData`, `ResourceData`, `SurvivalDataLoader`, `Item.json`, `Resource.json` |
 | 인벤토리 | `Inventory`, `InventorySlot` |
 | 인벤토리 UI | `MainPanel`, `InventoryPanel`, `InventorySlotElement` |
-| 파밍 | `ResourceObject`, `ResourceSpawner`, `HarvestEvents`, `ResourceData` |
+| 파밍 | `ResourceObject`, `ResourceSpawner`, `HarvestEvents`, `ToastPanel` |
 | 씬 초기화 | `SurvivalEntry` |
 
 ### Idle RPG ⏸ 보류

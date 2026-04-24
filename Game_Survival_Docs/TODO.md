@@ -53,32 +53,17 @@
 - `InventoryTestButton` — 아이템 추가 테스트용 임시 버튼 *(테스트 완료 후 제거)*
 
 #### 씬 초기화
-- `SurvivalEntry` — 데이터 로드 + HUD 초기화 진입점
-
----
-
-### ✅ 완료 (추가)
+- `SurvivalEntry` — 데이터 로드 + HUD 초기화 + 자원 스폰 진입점
 
 #### 파밍 시스템
-- [x] `ResourceData` — 자원 데이터 클래스 (resource_id, item_id, durability_max, respawn_time, drop_count, prefab_path)
-- [x] `Resource.json` — 자원 데이터 테이블 (나무/돌 2종)
-- [x] `HarvestEvents` — EventBus 이벤트 구조체 (HarvestRangeEntered/Exited, ResourceHarvested)
-- [x] `ResourceObject` — 자원 오브젝트 (내구도, 범위 감지, 채집 처리, 쿨타임 후 재생성)
-- [x] `ResourceSpawner` — 원점 기준 const 반경(20f) 내 랜덤 스폰 (맵 시스템 완성 전 임시)
-- [x] `HarvestButton` — MainPanel에 채집 버튼 (범위 진입 시 활성화, 이탈 시 비활성화)
-- [x] SurvivalDataLoader에 자원 데이터 로드 추가
-- [x] 프리팹 폴더 생성 (Resources/Prefabs/Farming, Combat, Building)
-
----
-
-### 🔲 진행 중
-
-#### 파밍 시스템 — Unity 작업 필요
-- [ ] Resource_Tree 프리팹 생성 (`Resources/Prefabs/Farming/` — 루트: SphereCollider IsTrigger:true + ResourceObject, 자식 Visual: Cube + Collider IsTrigger:false)
-- [ ] Resource_Rock 프리팹 생성 (동일 구조)
-- [ ] ResourceSpawner GameObject 씬 배치 + SurvivalEntry 연결
-- [ ] MainPanel에 HarvestButton 추가 + `_harvestButton` 연결
-- [ ] 채집 완료 시 ToastMessage 출력 (ResourceHarvestedEvent 연동)
+- `ResourceData` — 자원 데이터 클래스 (resource_id, item_id, durability_max, respawn_time, drop_count, prefab_path)
+- `Resource.json` — 자원 데이터 테이블 (Wood/Stone 2종)
+- `HarvestEvents` — EventBus 이벤트 구조체 (HarvestRangeEntered/Exited, ResourceHarvested)
+- `ResourceObject` — 자원 오브젝트 (내구도, 범위 감지, 채집 처리, 쿨타임 후 재생성, 리스폰 범위 재진입 처리)
+- `ResourceSpawner` — 원점 기준 반경 20f 내 랜덤 스폰 (맵 시스템 완성 전 임시)
+- `HarvestButton` — MainPanel 채집 버튼 (범위 진입 시 활성화, 이탈/채집 완료 시 비활성화)
+- `ToastPanel.prefab` — 채집 완료 토스트 알림 (화면 중앙, 페이드 인/아웃)
+- `Resource_Tree`, `Resource_Rock` 프리팹 생성 및 씬 배치 완료
 
 ---
 
