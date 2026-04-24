@@ -58,7 +58,7 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 
 프레임워크 모듈 연동을 검증하는 샘플 게임입니다.
 
-### 서바이벌 게임 (진행 중)
+### 서바이벌 게임 🟢 진행 중
 
 | 항목 | 내용 |
 |------|------|
@@ -79,7 +79,7 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 | 파밍 | `ResourceObject`, `ResourceSpawner`, `HarvestEvents`, `ResourceData` |
 | 씬 초기화 | `SurvivalEntry` |
 
-### Idle RPG (보류)
+### Idle RPG ⏸ 보류
 
 | 항목 | 내용 |
 |------|------|
