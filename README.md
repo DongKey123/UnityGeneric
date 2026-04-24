@@ -58,6 +58,29 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 
 프레임워크 모듈 연동을 검증하는 샘플 게임입니다.
 
+### 서바이벌 게임 (진행 중)
+
+| 항목 | 내용 |
+|------|------|
+| 장르 | 서바이벌 (Last Day on Earth 스타일) |
+| 시점 | 3D 쿼터뷰 |
+| 경로 | `Assets/Game_Survival/` |
+| 기획서 | [DESIGN.md](Game_Survival_Docs/DESIGN.md) |
+| 작업 목록 | [TODO.md](Game_Survival_Docs/TODO.md) |
+
+**구현 완료 시스템**
+
+| 시스템 | 주요 스크립트 |
+|--------|--------------|
+| 캐릭터 이동 | `PlayerController`, `SurvivalInputManager`, `VirtualJoystick`, `PlayerCamera` |
+| 데이터 | `SurvivalItemData`, `SurvivalDataLoader`, `Item.json`, `Resource.json` |
+| 인벤토리 | `Inventory`, `InventorySlot` |
+| 인벤토리 UI | `MainPanel`, `InventoryPanel`, `InventorySlotElement` |
+| 파밍 | `ResourceObject`, `ResourceSpawner`, `HarvestEvents`, `ResourceData` |
+| 씬 초기화 | `SurvivalEntry` |
+
+### Idle RPG (보류)
+
 | 항목 | 내용 |
 |------|------|
 | 장르 | 방치형 RPG |
@@ -70,6 +93,9 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 
 | 버전 | 날짜 | 내용 |
 |------|------|------|
+| 2.3.0 | 2026-04-24 | 서바이벌 게임 파밍 시스템 완료 (ResourceObject / ResourceSpawner / HarvestEvents / ToastPanel) |
+| 2.2.0 | 2026-04-24 | 서바이벌 게임 인벤토리 UI 완료 (MainPanel / InventoryPanel / InventorySlotElement) |
+| 2.1.0 | 2026-04-24 | 서바이벌 게임 기초 시스템 완료 (PlayerController / Inventory / SurvivalDataLoader / SurvivalEntry) |
 | 2.0.0 | 2026-04-08 | StateMachine 모듈 완료 (제네릭 FSM, IState / BaseState / OnStateChanged) |
 | 1.9.0 | 2026-04-08 | AsyncHelper 모듈 완료 (UniTask 래퍼, Delay / Frame / Condition / Cancellation) |
 | 1.8.0 | 2026-04-08 | LocalizationSystem 모듈 완료 (다국어 JSON 로드, LocalizedText 자동 갱신) |
