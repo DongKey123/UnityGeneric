@@ -10,7 +10,8 @@ namespace SurvivalGame.Data
     {
         #region Path Constants
 
-        private const string PathSurvivalItem = "Data/Item";
+        private const string PathSurvivalItem     = "Data/Item";
+        private const string PathSurvivalResource = "Data/Resource";
 
         #endregion
 
@@ -22,7 +23,8 @@ namespace SurvivalGame.Data
         /// </summary>
         public static void LoadAll()
         {
-            InGameDataManager.Instance.LoadAsDictionary<SurvivalItemData>(PathSurvivalItem, x => x.item_id);
+            InGameDataManager.Instance.LoadAsDictionary<SurvivalItemData>(PathSurvivalItem,     x => x.item_id);
+            InGameDataManager.Instance.LoadAsDictionary<ResourceData>    (PathSurvivalResource, x => x.resource_id);
         }
 
         #endregion

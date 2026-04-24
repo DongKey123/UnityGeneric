@@ -1,6 +1,7 @@
 using Framework.UI;
 using SurvivalGame.Inventories;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace SurvivalGame.UI
 {
@@ -19,6 +20,7 @@ namespace SurvivalGame.UI
 
         #region Inspector
 
+        [SerializeField] private Button               _closeButton;
         [SerializeField] private Transform            _slotGrid;
         [SerializeField] private InventorySlotElement _slotElementPrefab;
 
@@ -36,6 +38,8 @@ namespace SurvivalGame.UI
         protected override void Awake()
         {
             base.Awake();
+
+            _closeButton.onClick.AddListener(() => UIManager.Instance.Close());
 
             _slotElements = new InventorySlotElement[SlotCount];
             for (int i = 0; i < SlotCount; i++)

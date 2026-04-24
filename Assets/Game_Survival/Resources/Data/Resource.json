@@ -1,0 +1,22 @@
+[
+  {
+    "resource_id": 1,
+    "item_id": 1001,
+    "name": "나무",
+    "durability_max": 3,
+    "respawn_time": 30.0,
+    "drop_count_min": 1,
+    "drop_count_max": 3,
+    "prefab_path": "Prefabs/Farming/Resource_Tree"
+  },
+  {
+    "resource_id": 2,
+    "item_id": 1002,
+    "name": "돌",
+    "durability_max": 5,
+    "respawn_time": 60.0,
+    "drop_count_min": 1,
+    "drop_count_max": 2,
+    "prefab_path": "Prefabs/Farming/Resource_Rock"
+  }
+]

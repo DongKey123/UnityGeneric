@@ -1,26 +1,31 @@
+using Framework.Core.EventBus;
 using Framework.UI;
+using SurvivalGame.Farming;
 using SurvivalGame.Inventories;
 using SurvivalGame.Player;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace SurvivalGame.UI
 {
     /// <summary>
     /// 인게임 메인 HUD 패널입니다.
-    /// 항상 표시되며 조이스틱, 인벤토리 열기 버튼 등 HUD 요소를 포함합니다.
-    /// SurvivalEntry에서 UIManager.Instance.ShowOverlay&lt;MainPanel, PlayerController&gt;(player)로 열어주세요.
+    /// 항상 표시되며 조이스틱, 인벤토리 열기 버튼, 채집 버튼 등 HUD 요소를 포함합니다.
+    /// SurvivalEntry에서 UIManager.Instance.Open&lt;MainPanel, PlayerController&gt;(player)로 열어주세요.
     /// </summary>
     public class MainPanel : UIPanel, IInitializable<PlayerController>
     {
         #region Inspector
 
-        [UnityEngine.SerializeField] private Button _inventoryButton;
+        [SerializeField] private Button _inventoryButton;
+        [SerializeField] private Button _harvestButton;
 
         #endregion
 
         #region Private Fields
 
         private PlayerController _player;
+        private ResourceObject   _currentResource;
 
         #endregion
 
@@ -36,6 +41,20 @@ namespace SurvivalGame.UI
         {
             base.Awake();
             _inventoryButton.onClick.AddListener(OnClickInventory);
+            _harvestButton.onClick.AddListener(OnClickHarvest);
+        }
+
+        protected override void OnOpened()
+        {
+            EventBus.Subscribe<HarvestRangeEnteredEvent>(OnHarvestRangeEntered);
+            EventBus.Subscribe<HarvestRangeExitedEvent>(OnHarvestRangeExited);
+            SetHarvestButtonActive(false);
+        }
+
+        protected override void OnClosed()
+        {
+            EventBus.Unsubscribe<HarvestRangeEnteredEvent>(OnHarvestRangeEntered);
+            EventBus.Unsubscribe<HarvestRangeExitedEvent>(OnHarvestRangeExited);
         }
 
         #endregion
@@ -58,6 +77,29 @@ namespace SurvivalGame.UI
                 UIManager.Instance.Close();
             else
                 UIManager.Instance.Open<InventoryPanel, Inventory>(_player.Inventory);
+        }
+
+        private void OnClickHarvest()
+        {
+            _currentResource?.Harvest();
+        }
+
+        private void OnHarvestRangeEntered(HarvestRangeEnteredEvent e)
+        {
+            _currentResource = e.Resource;
+            SetHarvestButtonActive(true);
+        }
+
+        private void OnHarvestRangeExited(HarvestRangeExitedEvent e)
+        {
+            if (_currentResource != e.Resource) return;
+            _currentResource = null;
+            SetHarvestButtonActive(false);
+        }
+
+        private void SetHarvestButtonActive(bool active)
+        {
+            _harvestButton.gameObject.SetActive(active);
         }
 
         #endregion

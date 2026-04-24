@@ -47,25 +47,45 @@
 - `InventorySlot` — 아이템 데이터, 수량, 내구도 관리
 
 #### 인벤토리 UI
-- `MainPanel` — 항상 표시되는 HUD (UIPanel 상속, ShowOverlay로 관리)
-- `InventoryPanel` — 인벤토리 패널 (UIPanel + IInitializable<Inventory>)
+- `MainPanel` — 항상 표시되는 HUD (UIPanel 상속, Default Layer)
+- `InventoryPanel` — 인벤토리 패널 (UIPanel + IInitializable\<Inventory\>, ScrollView)
 - `InventorySlotElement` — 슬롯 단위 Element (배경/아이콘/수량)
-- `InventoryTestButton` — 아이템 추가 테스트용 임시 버튼
+- `InventoryTestButton` — 아이템 추가 테스트용 임시 버튼 *(테스트 완료 후 제거)*
 
 #### 씬 초기화
 - `SurvivalEntry` — 데이터 로드 + HUD 초기화 진입점
 
-### 🔲 다음 작업
+---
 
-#### 인벤토리 UI 마무리
-- [ ] InventorySlotElement 프리팹 완성 (SlotGrid 배치, Inspector 연결)
-- [ ] InventoryPanel 프리팹 Inspector 연결 (_slotGrid, _slotElementPrefab)
-- [ ] MainPanel Inspector 연결 (_inventoryButton, _player)
-- [ ] 플레이 테스트 — 인벤토리 열기/닫기, 아이템 추가 확인
+### ✅ 완료 (추가)
 
 #### 파밍 시스템
-- [ ] 자원 오브젝트 (나무, 돌) — 클릭/접근 시 채집
-- [ ] 채집 후 인벤토리 자동 추가
+- [x] `ResourceData` — 자원 데이터 클래스 (resource_id, item_id, durability_max, respawn_time, drop_count, prefab_path)
+- [x] `Resource.json` — 자원 데이터 테이블 (나무/돌 2종)
+- [x] `HarvestEvents` — EventBus 이벤트 구조체 (HarvestRangeEntered/Exited, ResourceHarvested)
+- [x] `ResourceObject` — 자원 오브젝트 (내구도, 범위 감지, 채집 처리, 쿨타임 후 재생성)
+- [x] `ResourceSpawner` — 원점 기준 const 반경(20f) 내 랜덤 스폰 (맵 시스템 완성 전 임시)
+- [x] `HarvestButton` — MainPanel에 채집 버튼 (범위 진입 시 활성화, 이탈 시 비활성화)
+- [x] SurvivalDataLoader에 자원 데이터 로드 추가
+- [x] 프리팹 폴더 생성 (Resources/Prefabs/Farming, Combat, Building)
+
+---
+
+### 🔲 진행 중
+
+#### 파밍 시스템 — Unity 작업 필요
+- [ ] Resource_Tree 프리팹 생성 (`Resources/Prefabs/Farming/` — 루트: SphereCollider IsTrigger:true + ResourceObject, 자식 Visual: Cube + Collider IsTrigger:false)
+- [ ] Resource_Rock 프리팹 생성 (동일 구조)
+- [ ] ResourceSpawner GameObject 씬 배치 + SurvivalEntry 연결
+- [ ] MainPanel에 HarvestButton 추가 + `_harvestButton` 연결
+- [ ] 채집 완료 시 ToastMessage 출력 (ResourceHarvestedEvent 연동)
+
+---
+
+### 🔲 예정
+
+#### 파밍 시스템 — 추후 기능
+- [ ] 자동 채집 — 범위 안에 머물면 자동으로 채집 진행
 
 #### 전투 시스템
 - [ ] 적 AI 기본 구현
