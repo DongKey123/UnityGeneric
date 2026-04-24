@@ -48,6 +48,7 @@ namespace SurvivalGame.UI
         {
             EventBus.Subscribe<HarvestRangeEnteredEvent>(OnHarvestRangeEntered);
             EventBus.Subscribe<HarvestRangeExitedEvent>(OnHarvestRangeExited);
+            EventBus.Subscribe<ResourceHarvestedEvent>(OnResourceHarvested);
             SetHarvestButtonActive(false);
         }
 
@@ -55,6 +56,7 @@ namespace SurvivalGame.UI
         {
             EventBus.Unsubscribe<HarvestRangeEnteredEvent>(OnHarvestRangeEntered);
             EventBus.Unsubscribe<HarvestRangeExitedEvent>(OnHarvestRangeExited);
+            EventBus.Unsubscribe<ResourceHarvestedEvent>(OnResourceHarvested);
         }
 
         #endregion
@@ -95,6 +97,11 @@ namespace SurvivalGame.UI
             if (_currentResource != e.Resource) return;
             _currentResource = null;
             SetHarvestButtonActive(false);
+        }
+
+        private void OnResourceHarvested(ResourceHarvestedEvent e)
+        {
+            ToastManager.Instance.Show($"{e.ItemName} x{e.Count} obtained", ToastType.Success);
         }
 
         private void SetHarvestButtonActive(bool active)

@@ -41,6 +41,7 @@ namespace SurvivalGame.Farming
         private Collider         _collider;
         private int              _currentDurability;
         private bool             _isRespawning;
+        private bool             _isPlayerInRange;
 
         #endregion
 
@@ -96,15 +97,19 @@ namespace SurvivalGame.Farming
 
         private void OnTriggerEnter(Collider other)
         {
-            if (!IsHarvestable) return;
             if (!other.TryGetComponent<PlayerController>(out _)) return;
 
+            _isPlayerInRange = true;
+
+            if (!IsHarvestable) return;
             EventBus.Publish(new HarvestRangeEnteredEvent { Resource = this });
         }
 
         private void OnTriggerExit(Collider other)
         {
             if (!other.TryGetComponent<PlayerController>(out _)) return;
+
+            _isPlayerInRange = false;
 
             EventBus.Publish(new HarvestRangeExitedEvent { Resource = this });
         }
@@ -132,6 +137,9 @@ namespace SurvivalGame.Farming
             _collider.enabled  = true;
 
             if (_visual != null) _visual.SetActive(true);
+
+            if (_isPlayerInRange)
+                EventBus.Publish(new HarvestRangeEnteredEvent { Resource = this });
         }
 
         #endregion

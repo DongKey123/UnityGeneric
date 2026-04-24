@@ -2,7 +2,7 @@
   {
     "resource_id": 1,
     "item_id": 1001,
-    "name": "나무",
+    "name": "Wood",
     "durability_max": 3,
     "respawn_time": 30.0,
     "drop_count_min": 1,
@@ -12,7 +12,7 @@
   {
     "resource_id": 2,
     "item_id": 1002,
-    "name": "돌",
+    "name": "Stone",
     "durability_max": 5,
     "respawn_time": 60.0,
     "drop_count_min": 1,
