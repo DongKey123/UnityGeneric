@@ -219,6 +219,35 @@ namespace Framework.UI
         #region Public Methods — Overlay Layer
 
         /// <summary>
+        /// 데이터를 전달하며 패널을 Overlay 레이어에 표시합니다.
+        /// 미등록 패널은 <c>Resources/UI/</c> 경로에서 자동으로 로드 및 인스턴스화합니다.
+        /// </summary>
+        /// <typeparam name="T">표시할 오버레이 패널 타입</typeparam>
+        /// <typeparam name="TData">전달할 데이터 타입</typeparam>
+        /// <param name="data">패널에 전달할 데이터</param>
+        public void ShowOverlay<T, TData>(TData data = null) where T : UIPanel where TData : class
+        {
+            var panel = GetOrCreate<T>(_overlayCanvas);
+
+            if (panel.IsOpen)
+            {
+                Debug.LogWarning($"[UIManager] 이미 열려 있는 오버레이 패널입니다: {typeof(T).Name}");
+                return;
+            }
+
+            if (data != null && panel is IInitializable<TData> initializable)
+                initializable.Initialize(data);
+
+            _overlayList.Add(panel);
+            panel.OnOpen();
+            OnPanelOpened?.Invoke(panel);
+
+#if UNITY_EDITOR
+            Debug.Log($"[UIManager] Overlay Shown: {typeof(T).Name}");
+#endif
+        }
+
+        /// <summary>
         /// 패널을 Overlay 레이어에 표시합니다.
         /// 미등록 패널은 <c>Resources/UI/</c> 경로에서 자동으로 로드 및 인스턴스화합니다.
         /// </summary>
