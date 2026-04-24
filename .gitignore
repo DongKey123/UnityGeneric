@@ -66,6 +66,10 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/
 
+# IDE / Tools
+.claude/
+.vscode/
+
 # OS generated
 .DS_Store
 .DS_Store?
