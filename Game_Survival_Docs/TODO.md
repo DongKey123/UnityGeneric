@@ -72,14 +72,26 @@
 #### 파밍 시스템 — 추후 기능
 - [ ] 자동 채집 — 범위 안에 머물면 자동으로 채집 진행
 
-#### 전투 시스템
-- [ ] `EnemyData` — 적 데이터 클래스 + `Enemy.json` 샘플
-- [ ] `IDamageable` — Player / Enemy 공통 인터페이스
-- [ ] `Enemy` — HP 관리, FSM (Idle/Chase/Attack/Dead), NavMesh 이동, 군집 반응
-- [ ] `EnemySpawner` — 테이블 기반 스폰
+#### 전투 시스템 — 코드
+- [x] `EnemyData` — 적 데이터 클래스 + `Enemy.json` (Zombie/Wolf 2종)
+- [x] `IDamageable` — Player / Enemy 공통 인터페이스
+- [x] `PlayerController` — IDamageable 구현 (HP, TakeDamage)
+- [x] `EnemyEvents` — EnemyDied / EnemyAttacked 이벤트 구조체
+- [x] `Enemy` — HP 관리, FSM (Idle/Chase/Attack/Dead), NavMesh 이동, 군집 반응
+- [x] `EnemySpawner` — 테이블 기반 스폰, 사망 시 인벤토리 드롭 + Toast
+- [x] `SurvivalDataLoader` — EnemyData 로드 추가
+- [x] `SurvivalEntry` — EnemySpawner 연동
 - [ ] MainPanel 공격 버튼 — 범위 내 적 감지 시 활성화, 자동 타겟
 - [ ] 적 터치 공격 입력 처리
-- [ ] 드롭 처리 — EnemyDeadEvent → 인벤토리 자동 추가 + Toast
+
+#### 전투 시스템 — Unity 에디터 작업
+- [ ] `Enemy_Zombie` 프리팹 생성 (`Resources/Prefabs/Combat/`)
+  - 루트: NavMeshAgent + Enemy 스크립트 + Capsule Collider
+  - 자식 Visual: Capsule 메시
+- [ ] `Enemy_Wolf` 프리팹 생성 (동일 구조)
+- [ ] EnemySpawner GameObject 씬 배치
+- [ ] SurvivalEntry `_enemySpawner` 필드 연결
+- [ ] NavMesh Bake (Window → AI → Navigation → Bake)
 
 #### 빌딩 시스템
 - [ ] 그리드 기반 건설
