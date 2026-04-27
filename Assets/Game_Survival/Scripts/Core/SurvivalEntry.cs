@@ -1,4 +1,5 @@
 using Framework.UI;
+using SurvivalGame.Battle;
 using SurvivalGame.Data;
 using SurvivalGame.Farming;
 using SurvivalGame.Player;
@@ -9,7 +10,7 @@ namespace SurvivalGame.Core
 {
     /// <summary>
     /// 서바이벌 게임 진입점입니다.
-    /// 씬 시작 시 데이터 로드, HUD 초기화, 자원 스폰을 담당합니다.
+    /// 씬 시작 시 데이터 로드, HUD 초기화, 자원 스폰, 적 스폰을 담당합니다.
     /// MainScene의 빈 GameObject에 붙여 사용하세요.
     /// </summary>
     public class SurvivalEntry : MonoBehaviour
@@ -18,6 +19,7 @@ namespace SurvivalGame.Core
 
         [SerializeField] private PlayerController _player;
         [SerializeField] private ResourceSpawner  _resourceSpawner;
+        [SerializeField] private EnemySpawner     _enemySpawner;
 
         #endregion
 
@@ -32,6 +34,7 @@ namespace SurvivalGame.Core
         {
             UIManager.Instance.Open<MainPanel, PlayerController>(_player);
             _resourceSpawner.Spawn(_player.Inventory);
+            _enemySpawner.Spawn(_player, _player.Inventory);
         }
 
         #endregion
