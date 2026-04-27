@@ -73,8 +73,13 @@
 - [ ] 자동 채집 — 범위 안에 머물면 자동으로 채집 진행
 
 #### 전투 시스템
-- [ ] 적 AI 기본 구현
-- [ ] 플레이어 공격 처리
+- [ ] `EnemyData` — 적 데이터 클래스 + `Enemy.json` 샘플
+- [ ] `IDamageable` — Player / Enemy 공통 인터페이스
+- [ ] `Enemy` — HP 관리, FSM (Idle/Chase/Attack/Dead), NavMesh 이동, 군집 반응
+- [ ] `EnemySpawner` — 테이블 기반 스폰
+- [ ] MainPanel 공격 버튼 — 범위 내 적 감지 시 활성화, 자동 타겟
+- [ ] 적 터치 공격 입력 처리
+- [ ] 드롭 처리 — EnemyDeadEvent → 인벤토리 자동 추가 + Toast
 
 #### 빌딩 시스템
 - [ ] 그리드 기반 건설
