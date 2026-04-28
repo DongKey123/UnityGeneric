@@ -1,8 +1,8 @@
 [
   {
     "item_id": 1001,
-    "name": "나무",
-    "description": "기본 건축 재료입니다.",
+    "name": "Wood",
+    "description": "Basic building material.",
     "category": "Resource",
     "weight": 0.5,
     "max_stack": 50,
@@ -13,8 +13,8 @@
   },
   {
     "item_id": 1002,
-    "name": "돌",
-    "description": "단단한 건축 재료입니다.",
+    "name": "Stone",
+    "description": "Solid building material.",
     "category": "Resource",
     "weight": 1.0,
     "max_stack": 50,
@@ -25,8 +25,8 @@
   },
   {
     "item_id": 1003,
-    "name": "철 조각",
-    "description": "가공된 금속 재료입니다.",
+    "name": "Iron Scrap",
+    "description": "Processed metal material.",
     "category": "Resource",
     "weight": 2.0,
     "max_stack": 30,
@@ -37,8 +37,8 @@
   },
   {
     "item_id": 2001,
-    "name": "나무 도끼",
-    "description": "나무를 빠르게 채집할 수 있는 도구입니다.",
+    "name": "Wooden Axe",
+    "description": "A tool for harvesting wood quickly.",
     "category": "Equipment",
     "weight": 1.5,
     "max_stack": 1,
@@ -49,8 +49,8 @@
   },
   {
     "item_id": 2002,
-    "name": "나무 검",
-    "description": "간단하게 만든 근접 무기입니다.",
+    "name": "Wooden Sword",
+    "description": "A simple melee weapon.",
     "category": "Equipment",
     "weight": 2.0,
     "max_stack": 1,
@@ -61,8 +61,8 @@
   },
   {
     "item_id": 3001,
-    "name": "붕대",
-    "description": "체력을 소량 회복합니다.",
+    "name": "Bandage",
+    "description": "Restores a small amount of HP.",
     "category": "Consumable",
     "weight": 0.2,
     "max_stack": 10,
