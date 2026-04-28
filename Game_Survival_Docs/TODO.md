@@ -81,17 +81,16 @@
 - [x] `EnemySpawner` — 테이블 기반 스폰, 사망 시 인벤토리 드롭 + Toast
 - [x] `SurvivalDataLoader` — EnemyData 로드 추가
 - [x] `SurvivalEntry` — EnemySpawner 연동
-- [ ] MainPanel 공격 버튼 — 범위 내 적 감지 시 활성화, 자동 타겟
-- [ ] 적 터치 공격 입력 처리
+- [x] MainPanel 공격 버튼 — 범위 내 적 감지 시 활성화, 자동 타겟
+- [x] 적 터치 공격 입력 처리
 
 #### 전투 시스템 — Unity 에디터 작업
-- [ ] `Enemy_Zombie` 프리팹 생성 (`Resources/Prefabs/Combat/`)
-  - 루트: NavMeshAgent + Enemy 스크립트 + Capsule Collider
-  - 자식 Visual: Capsule 메시
-- [ ] `Enemy_Wolf` 프리팹 생성 (동일 구조)
+- [x] `Enemy_Zombie` 프리팹 생성 (`Resources/Prefabs/Combat/`)
+- [x] `Enemy_Wolf` 프리팹 생성 (동일 구조)
 - [ ] EnemySpawner GameObject 씬 배치
 - [ ] SurvivalEntry `_enemySpawner` 필드 연결
-- [ ] NavMesh Bake (Window → AI → Navigation → Bake)
+- [x] NavMesh Bake
+- [ ] MainPanel `_attackButton` 필드 연결 (Inspector)
 
 #### 빌딩 시스템
 - [ ] 그리드 기반 건설

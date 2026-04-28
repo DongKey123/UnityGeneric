@@ -31,6 +31,7 @@
 |------|-----------|-----------|
 | 2026-04-16 | `InGameDataManager.GetAll<TValue>()` 추가 — Dictionary 캐시 전체 값 반환 | `LoadAsDictionary`로 로드된 데이터 전체 조회가 필요한 모든 곳 |
 | 2026-04-24 | `UIManager.ShowOverlay<T, TData>(TData data)` 추가 — 데이터 전달 오버로드 | 데이터를 주입하며 Overlay 패널을 열어야 하는 모든 곳 |
+| 2026-04-28 | `MobileInputManager.GetTap(out Vector2 screenPosition)` 추가 — 탭 위치 반환 오버로드 | 탭 발생 스크린 좌표가 필요한 모든 곳 (예: 적 터치 공격 레이캐스트) |
 
 ---
 
