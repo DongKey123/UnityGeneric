@@ -62,16 +62,28 @@ namespace Framework.Core.InputManager
         /// <returns>탭이 발생했으면 true</returns>
         public bool GetTap()
         {
+            return GetTap(out _);
+        }
+
+        /// <summary>
+        /// 이번 프레임에 탭(짧은 터치)이 발생했는지 반환하고, 탭 위치를 출력합니다.
+        /// </summary>
+        /// <param name="screenPosition">탭이 발생한 스크린 좌표. 탭이 없으면 Vector2.zero</param>
+        /// <returns>탭이 발생했으면 true</returns>
+        public bool GetTap(out Vector2 screenPosition)
+        {
             foreach (var touch in Touch.activeTouches)
             {
                 if (touch.phase == UnityEngine.InputSystem.TouchPhase.Ended
                     && touch.time - touch.startTime <= _tapTimeThreshold
                     && Vector2.Distance(touch.screenPosition, touch.startScreenPosition) < _swipeThreshold)
                 {
+                    screenPosition = touch.screenPosition;
                     return true;
                 }
             }
 
+            screenPosition = Vector2.zero;
             return false;
         }
 
