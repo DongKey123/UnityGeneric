@@ -92,8 +92,22 @@
 - [x] NavMesh Bake
 - [x] MainPanel `_attackButton` 필드 연결 (Inspector)
 
-#### 빌딩 시스템
-- [ ] 그리드 기반 건설
+#### 빌딩 시스템 — 코드
+- [x] `BuildingData` — 건물 데이터 클래스 + `Building.json` (Wood Floor 1종, grid 1x1, 재료 테이블)
+- [x] `BuildingGrid` — 정수 좌표 그리드 (WorldToCell/CellToWorld, 점유 등록/해제)
+- [x] `BuildingPlacer` — 배치 모드 관리, 고스트 미리보기 (녹/적 색상), 자원 소모 후 건물 생성
+- [x] `PlacedBuilding` — 배치된 건물 컴포넌트, 철거 시 재료 50% 반환
+- [x] `BuildModePanel` — 빌드 모드 UI 패널 (선택 화면 ↔ 배치 화면 전환)
+- [x] `SurvivalDataLoader` — BuildingData 로드 추가
+- [x] `SurvivalEntry` — BuildingGrid / BuildingPlacer 필드 추가
+- [x] `BuildModePanel.prefab` — SelectionView + BuildingListRoot + BuildingButtonTemplate + PlacementView + PlaceButton 구성 및 스크립트 필드 전체 연결
+
+#### 빌딩 시스템 — Unity 에디터 작업 (미완료)
+- [ ] `BuildingGrid` GameObject 씬 배치
+- [ ] `BuildingPlacer` GameObject 씬 배치
+- [ ] `SurvivalEntry` `_buildingGrid` / `_buildingPlacer` 필드 연결
+- [ ] MainPanel에 Build 버튼 추가 및 `_buildButton` 필드 연결
+- [ ] `BuildingListRoot`에 VerticalLayoutGroup 추가 (spacing 20)
 
 ---
 
