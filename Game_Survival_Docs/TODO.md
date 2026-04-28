@@ -87,10 +87,10 @@
 #### 전투 시스템 — Unity 에디터 작업
 - [x] `Enemy_Zombie` 프리팹 생성 (`Resources/Prefabs/Combat/`)
 - [x] `Enemy_Wolf` 프리팹 생성 (동일 구조)
-- [ ] EnemySpawner GameObject 씬 배치
-- [ ] SurvivalEntry `_enemySpawner` 필드 연결
+- [x] EnemySpawner GameObject 씬 배치
+- [x] SurvivalEntry `_enemySpawner` 필드 연결
 - [x] NavMesh Bake
-- [ ] MainPanel `_attackButton` 필드 연결 (Inspector)
+- [x] MainPanel `_attackButton` 필드 연결 (Inspector)
 
 #### 빌딩 시스템
 - [ ] 그리드 기반 건설
