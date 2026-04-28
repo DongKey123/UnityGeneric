@@ -1,3 +1,4 @@
+using Framework.Core.DataManager;
 using SurvivalGame.Data;
 using SurvivalGame.Inventories;
 using SurvivalGame.Player;

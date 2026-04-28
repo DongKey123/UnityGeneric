@@ -1,3 +1,4 @@
+using Framework.Core.DataManager;
 using Framework.UI;
 using SurvivalGame.Building;
 using SurvivalGame.Data;
