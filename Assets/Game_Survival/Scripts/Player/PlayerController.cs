@@ -1,3 +1,4 @@
+using Framework.Core.EventBus;
 using SurvivalGame.Battle;
 using SurvivalGame.Input;
 using SurvivalGame.Inventories;
@@ -14,11 +15,11 @@ namespace SurvivalGame.Player
     {
         #region Inspector
 
-        [SerializeField] private float _moveSpeed   = 5f;
-        [SerializeField] private int   _maxSlots    = 20;
-        [SerializeField] private float _maxWeight   = 50f;
-        [SerializeField] private int   _maxHp       = 100;
-        [SerializeField] private int   _attackPower = 10;
+        [SerializeField] private float _moveSpeed    = 5f;
+        [SerializeField] private int   _maxSlots     = 20;
+        [SerializeField] private float _maxWeight    = 50f;
+        [SerializeField] private int   _maxHp        = 100;
+        [SerializeField] private int   _attackPower  = 10;
         [SerializeField] private float _attackRadius = 2.5f;
 
         #endregion
@@ -53,10 +54,14 @@ namespace SurvivalGame.Player
 
         private void Awake()
         {
-            _rb       = GetComponent<Rigidbody>();
-            _rb.freezeRotation = true;
-            Inventory  = new Inventory(_maxSlots, _maxWeight);
-            CurrentHp  = _maxHp;
+            _rb                    = GetComponent<Rigidbody>();
+            _rb.freezeRotation     = true;
+            Inventory              = new Inventory(_maxSlots, _maxWeight);
+            CurrentHp              = _maxHp;
+
+            var rangeTrigger       = gameObject.AddComponent<SphereCollider>();
+            rangeTrigger.isTrigger = true;
+            rangeTrigger.radius    = _attackRadius;
         }
 
         private void Update()
@@ -97,7 +102,7 @@ namespace SurvivalGame.Player
         /// </summary>
         public Enemy GetNearestEnemy()
         {
-            int count = Physics.OverlapSphereNonAlloc(transform.position, _attackRadius, _overlapBuffer);
+            int count   = Physics.OverlapSphereNonAlloc(transform.position, _attackRadius, _overlapBuffer);
             Enemy nearest = null;
             float minDist = float.MaxValue;
 
@@ -132,14 +137,26 @@ namespace SurvivalGame.Player
 
         #region Private Methods
 
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.TryGetComponent<Enemy>(out var enemy) && !enemy.IsDead)
+                EventBus.Publish(new EnemyEnteredAttackRangeEvent { Source = enemy });
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.TryGetComponent<Enemy>(out var enemy))
+                EventBus.Publish(new EnemyExitedAttackRangeEvent { Source = enemy });
+        }
+
         private void Move()
         {
             Vector2 input = SurvivalInputManager.Instance.JoystickDirection;
-            IsMoving = SurvivalInputManager.Instance.HasJoystickInput;
+            IsMoving      = SurvivalInputManager.Instance.HasJoystickInput;
 
             if (!IsMoving) return;
 
-            Vector3 direction = new Vector3(input.x, 0f, input.y);
+            Vector3 direction      = new Vector3(input.x, 0f, input.y);
             Vector3 targetPosition = _rb.position + direction * _moveSpeed * Time.fixedDeltaTime;
             _rb.MovePosition(targetPosition);
 

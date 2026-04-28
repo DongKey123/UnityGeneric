@@ -1,9 +1,10 @@
+using System.Collections.Generic;
 using Framework.Core.EventBus;
 using Framework.UI;
+using SurvivalGame.Battle;
 using SurvivalGame.Farming;
 using SurvivalGame.Inventories;
 using SurvivalGame.Player;
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace SurvivalGame.UI
@@ -17,16 +18,17 @@ namespace SurvivalGame.UI
     {
         #region Inspector
 
-        [SerializeField] private Button _inventoryButton;
-        [SerializeField] private Button _harvestButton;
-        [SerializeField] private Button _attackButton;
+        [UnityEngine.SerializeField] private Button _inventoryButton;
+        [UnityEngine.SerializeField] private Button _harvestButton;
+        [UnityEngine.SerializeField] private Button _attackButton;
 
         #endregion
 
         #region Private Fields
 
-        private PlayerController _player;
-        private ResourceObject   _currentResource;
+        private PlayerController    _player;
+        private ResourceObject      _currentResource;
+        private readonly HashSet<Enemy> _enemiesInRange = new();
 
         #endregion
 
@@ -46,18 +48,16 @@ namespace SurvivalGame.UI
             _attackButton.onClick.AddListener(OnClickAttack);
         }
 
-        private void Update()
-        {
-            if (_player == null) return;
-            _attackButton.gameObject.SetActive(_player.GetNearestEnemy() != null);
-        }
-
         protected override void OnOpened()
         {
             EventBus.Subscribe<HarvestRangeEnteredEvent>(OnHarvestRangeEntered);
             EventBus.Subscribe<HarvestRangeExitedEvent>(OnHarvestRangeExited);
             EventBus.Subscribe<ResourceHarvestedEvent>(OnResourceHarvested);
+            EventBus.Subscribe<EnemyEnteredAttackRangeEvent>(OnEnemyEnteredRange);
+            EventBus.Subscribe<EnemyExitedAttackRangeEvent>(OnEnemyExitedRange);
+            EventBus.Subscribe<EnemyDiedEvent>(OnEnemyDied);
             SetHarvestButtonActive(false);
+            SetAttackButtonActive(false);
         }
 
         protected override void OnClosed()
@@ -65,6 +65,10 @@ namespace SurvivalGame.UI
             EventBus.Unsubscribe<HarvestRangeEnteredEvent>(OnHarvestRangeEntered);
             EventBus.Unsubscribe<HarvestRangeExitedEvent>(OnHarvestRangeExited);
             EventBus.Unsubscribe<ResourceHarvestedEvent>(OnResourceHarvested);
+            EventBus.Unsubscribe<EnemyEnteredAttackRangeEvent>(OnEnemyEnteredRange);
+            EventBus.Unsubscribe<EnemyExitedAttackRangeEvent>(OnEnemyExitedRange);
+            EventBus.Unsubscribe<EnemyDiedEvent>(OnEnemyDied);
+            _enemiesInRange.Clear();
         }
 
         #endregion
@@ -117,9 +121,32 @@ namespace SurvivalGame.UI
             ToastManager.Instance.Show($"{e.ItemName} x{e.Count} obtained", ToastType.Success);
         }
 
+        private void OnEnemyEnteredRange(EnemyEnteredAttackRangeEvent e)
+        {
+            _enemiesInRange.Add(e.Source);
+            SetAttackButtonActive(true);
+        }
+
+        private void OnEnemyExitedRange(EnemyExitedAttackRangeEvent e)
+        {
+            _enemiesInRange.Remove(e.Source);
+            SetAttackButtonActive(_enemiesInRange.Count > 0);
+        }
+
+        private void OnEnemyDied(EnemyDiedEvent e)
+        {
+            _enemiesInRange.Remove(e.Source);
+            SetAttackButtonActive(_enemiesInRange.Count > 0);
+        }
+
         private void SetHarvestButtonActive(bool active)
         {
             _harvestButton.gameObject.SetActive(active);
+        }
+
+        private void SetAttackButtonActive(bool active)
+        {
+            _attackButton.gameObject.SetActive(active);
         }
 
         #endregion
