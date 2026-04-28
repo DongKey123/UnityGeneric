@@ -1,4 +1,3 @@
-using Framework.Core.DataManager;
 using SurvivalGame.Data;
 using SurvivalGame.Inventories;
 using SurvivalGame.Player;
@@ -190,11 +189,7 @@ namespace SurvivalGame.Building
         private void ConsumeResources()
         {
             foreach (var cost in _currentData.costs)
-            {
-                var itemData = InGameDataManager.Instance.Get<SurvivalItemData>(cost.item_id);
-                if (itemData != null)
-                    _inventory.TryRemove(itemData, cost.count);
-            }
+                _inventory.TryRemove(cost.item_id, cost.count);
         }
 
         private void SpawnBuilding(Vector2Int cell)
