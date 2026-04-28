@@ -1,5 +1,6 @@
 using Framework.UI;
 using SurvivalGame.Battle;
+using SurvivalGame.Building;
 using SurvivalGame.Data;
 using SurvivalGame.Farming;
 using SurvivalGame.Player;
@@ -20,6 +21,8 @@ namespace SurvivalGame.Core
         [SerializeField] private PlayerController _player;
         [SerializeField] private ResourceSpawner  _resourceSpawner;
         [SerializeField] private EnemySpawner     _enemySpawner;
+        [SerializeField] private BuildingGrid     _buildingGrid;
+        [SerializeField] private BuildingPlacer   _buildingPlacer;
 
         #endregion
 

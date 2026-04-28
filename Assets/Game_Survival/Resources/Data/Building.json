@@ -1,0 +1,12 @@
+[
+  {
+    "building_id": 1,
+    "name": "Wood Floor",
+    "prefab_path": "Prefabs/Building/Floor_Wood",
+    "grid_width": 1,
+    "grid_height": 1,
+    "costs": [
+      { "item_id": 1001, "count": 2 }
+    ]
+  }
+]
