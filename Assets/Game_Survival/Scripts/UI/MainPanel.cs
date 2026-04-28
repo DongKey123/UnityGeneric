@@ -19,6 +19,7 @@ namespace SurvivalGame.UI
 
         [SerializeField] private Button _inventoryButton;
         [SerializeField] private Button _harvestButton;
+        [SerializeField] private Button _attackButton;
 
         #endregion
 
@@ -42,6 +43,13 @@ namespace SurvivalGame.UI
             base.Awake();
             _inventoryButton.onClick.AddListener(OnClickInventory);
             _harvestButton.onClick.AddListener(OnClickHarvest);
+            _attackButton.onClick.AddListener(OnClickAttack);
+        }
+
+        private void Update()
+        {
+            if (_player == null) return;
+            _attackButton.gameObject.SetActive(_player.GetNearestEnemy() != null);
         }
 
         protected override void OnOpened()
@@ -84,6 +92,11 @@ namespace SurvivalGame.UI
         private void OnClickHarvest()
         {
             _currentResource?.Harvest();
+        }
+
+        private void OnClickAttack()
+        {
+            if (_player != null) _player.Attack();
         }
 
         private void OnHarvestRangeEntered(HarvestRangeEnteredEvent e)

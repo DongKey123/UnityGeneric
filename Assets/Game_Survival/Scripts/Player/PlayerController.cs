@@ -6,7 +6,7 @@ using UnityEngine;
 namespace SurvivalGame.Player
 {
     /// <summary>
-    /// 플레이어 이동 및 인벤토리를 관리하는 컨트롤러입니다.
+    /// 플레이어 이동, 공격, 인벤토리를 관리하는 컨트롤러입니다.
     /// Rigidbody 기반으로 이동하며, SurvivalInputManager에서 조이스틱 방향을 읽습니다.
     /// </summary>
     [RequireComponent(typeof(Rigidbody))]
@@ -14,16 +14,19 @@ namespace SurvivalGame.Player
     {
         #region Inspector
 
-        [SerializeField] private float _moveSpeed  = 5f;
-        [SerializeField] private int   _maxSlots   = 20;
-        [SerializeField] private float _maxWeight  = 50f;
-        [SerializeField] private int   _maxHp      = 100;
+        [SerializeField] private float _moveSpeed   = 5f;
+        [SerializeField] private int   _maxSlots    = 20;
+        [SerializeField] private float _maxWeight   = 50f;
+        [SerializeField] private int   _maxHp       = 100;
+        [SerializeField] private int   _attackPower = 10;
+        [SerializeField] private float _attackRadius = 2.5f;
 
         #endregion
 
         #region Private Fields
 
         private Rigidbody _rb;
+        private readonly Collider[] _overlapBuffer = new Collider[16];
 
         #endregion
 
@@ -41,6 +44,9 @@ namespace SurvivalGame.Player
         /// <summary>사망 여부입니다.</summary>
         public bool IsDead { get; private set; }
 
+        /// <summary>공격력입니다.</summary>
+        public int AttackPower => _attackPower;
+
         #endregion
 
         #region Unity Lifecycle
@@ -51,6 +57,11 @@ namespace SurvivalGame.Player
             _rb.freezeRotation = true;
             Inventory  = new Inventory(_maxSlots, _maxWeight);
             CurrentHp  = _maxHp;
+        }
+
+        private void Update()
+        {
+            HandleTouchAttack();
         }
 
         private void FixedUpdate()
@@ -78,6 +89,47 @@ namespace SurvivalGame.Player
 
         #endregion
 
+        #region Public Methods
+
+        /// <summary>
+        /// 공격 범위 내 가장 가까운 살아있는 적을 반환합니다.
+        /// 없으면 null을 반환합니다.
+        /// </summary>
+        public Enemy GetNearestEnemy()
+        {
+            int count = Physics.OverlapSphereNonAlloc(transform.position, _attackRadius, _overlapBuffer);
+            Enemy nearest = null;
+            float minDist = float.MaxValue;
+
+            for (int i = 0; i < count; i++)
+            {
+                if (!_overlapBuffer[i].TryGetComponent<Enemy>(out var enemy) || enemy.IsDead) continue;
+
+                float dist = Vector3.Distance(transform.position, _overlapBuffer[i].transform.position);
+                if (dist < minDist)
+                {
+                    minDist = dist;
+                    nearest = enemy;
+                }
+            }
+
+            return nearest;
+        }
+
+        /// <summary>
+        /// 공격 범위 내 가장 가까운 적을 자동 타겟팅해 공격합니다.
+        /// </summary>
+        public void Attack()
+        {
+            var target = GetNearestEnemy();
+            if (target == null) return;
+
+            FaceTarget(target.transform.position);
+            target.TakeDamage(_attackPower);
+        }
+
+        #endregion
+
         #region Private Methods
 
         private void Move()
@@ -91,8 +143,28 @@ namespace SurvivalGame.Player
             Vector3 targetPosition = _rb.position + direction * _moveSpeed * Time.fixedDeltaTime;
             _rb.MovePosition(targetPosition);
 
-            // 이동 방향으로 캐릭터 회전
             transform.forward = direction;
+        }
+
+        /// <summary>적을 직접 탭했을 때 공격합니다.</summary>
+        private void HandleTouchAttack()
+        {
+            if (!SurvivalInputManager.Instance.GetTap(out Vector2 screenPos)) return;
+
+            Ray ray = UnityEngine.Camera.main.ScreenPointToRay(screenPos);
+            if (!Physics.Raycast(ray, out RaycastHit hit, 50f)) return;
+            if (!hit.collider.TryGetComponent<Enemy>(out var enemy) || enemy.IsDead) return;
+
+            FaceTarget(enemy.transform.position);
+            enemy.TakeDamage(_attackPower);
+        }
+
+        private void FaceTarget(Vector3 targetPosition)
+        {
+            Vector3 dir = targetPosition - transform.position;
+            dir.y = 0f;
+            if (dir != Vector3.zero)
+                transform.forward = dir.normalized;
         }
 
         #endregion
