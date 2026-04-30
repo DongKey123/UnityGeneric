@@ -73,11 +73,21 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 | 시스템 | 주요 스크립트 |
 |--------|--------------|
 | 캐릭터 이동 | `PlayerController`, `SurvivalInputManager`, `VirtualJoystick`, `PlayerCamera` |
-| 데이터 | `SurvivalItemData`, `ResourceData`, `SurvivalDataLoader`, `Item.json`, `Resource.json` |
+| 데이터 | `SurvivalItemData`, `ResourceData`, `RecipeData`, `EnemyData`, `BuildingData`, `SurvivalDataLoader` |
 | 인벤토리 | `Inventory`, `InventorySlot` |
 | 인벤토리 UI | `MainPanel`, `InventoryPanel`, `InventorySlotElement` |
 | 파밍 | `ResourceObject`, `ResourceSpawner`, `HarvestEvents`, `ToastPanel` |
+| 크래프팅 | `CraftingSystem`, `CraftingPanel` |
+| 전투 | `Enemy`, `EnemySpawner`, `EnemyEvents`, `IDamageable` |
+| 빌딩 | `BuildingGrid`, `BuildingPlacer`, `PlacedBuilding`, `BuildModePanel` |
 | 씬 초기화 | `SurvivalEntry` |
+
+**아트 리소스**
+
+| 팩 | 라이선스 | 경로 | 내용 |
+|----|----------|------|------|
+| [Kenney — Survival Kit](https://kenney.nl/assets/survival-kit) | CC0 1.0 | `Art/Models/Environment/` | 환경 FBX 80종 (barrel, chest, campfire, fence, rock, tree, structure, workbench, tool 등) |
+| [Kenney — Animated Characters: Survivors](https://kenney.nl/assets/animated-characters-1) | CC0 1.0 | `Art/Models/Characters/`, `Art/Animations/Characters/`, `Art/Textures/Characters/` | `characterMedium.fbx`, 애니메이션 3종 (idle/run/jump), 스킨 PNG 4종 (survivor×2, zombie×2) |
 
 ### Idle RPG ⏸ 보류
 
