@@ -144,34 +144,42 @@ namespace SurvivalGame.Editor
                 return;
             }
 
-            // Player 직속 MeshFilter 또는 자식 Visual
-            MeshFilter mf = null;
-            MeshRenderer mr = null;
+            // 루트에 직접 붙은 MeshFilter/MeshRenderer 제거 (콜라이더 스케일 오염 방지)
+            var rootMf = playerGo.GetComponent<MeshFilter>();
+            var rootMr = playerGo.GetComponent<MeshRenderer>();
+            if (rootMf != null) Object.DestroyImmediate(rootMf);
+            if (rootMr != null) Object.DestroyImmediate(rootMr);
 
-            foreach (Transform child in playerGo.GetComponentsInChildren<Transform>())
+            // Visual_Player 자식 — 없으면 생성
+            var visualT = playerGo.transform.Find("Visual_Player");
+            GameObject visual;
+            if (visualT == null)
             {
-                if (child.GetComponent<MeshFilter>() != null)
-                {
-                    mf = child.GetComponent<MeshFilter>();
-                    mr = child.GetComponent<MeshRenderer>();
-                    break;
-                }
+                visual = new GameObject("Visual_Player");
+                visual.transform.SetParent(playerGo.transform, false);
+            }
+            else
+            {
+                visual = visualT.gameObject;
             }
 
-            if (mf == null)
-            {
-                // 직속 컴포넌트
-                mf = playerGo.GetComponent<MeshFilter>();
-                mr = playerGo.GetComponent<MeshRenderer>();
-            }
+            // 스케일 50x, 회전 X -90° (FBX 좌표계 보정), 위치 (0,0,0)
+            visual.transform.localPosition = Vector3.zero;
+            visual.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
+            visual.transform.localScale    = new Vector3(50f, 50f, 50f);
 
-            if (mf != null) mf.sharedMesh = mesh;
-            if (mr != null && mat != null) mr.sharedMaterial = mat;
+            var mf = visual.GetComponent<MeshFilter>();
+            if (mf == null) mf = visual.AddComponent<MeshFilter>();
+            mf.sharedMesh = mesh;
+
+            var mr = visual.GetComponent<MeshRenderer>();
+            if (mr == null) mr = visual.AddComponent<MeshRenderer>();
+            if (mat != null) mr.sharedMaterial = mat;
 
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene);
             EditorSceneManager.CloseScene(scene, true);
-            Debug.Log("[ArtUpdater] 씬 Player 업데이트 완료");
+            Debug.Log("[ArtUpdater] 씬 Player 업데이트 완료 (Visual_Player 자식 생성)");
         }
     }
 }
