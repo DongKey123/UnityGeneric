@@ -80,9 +80,9 @@
 - [x] `SurvivalDataLoader` — RecipeData 로드 추가
 - [x] `MainPanel` — Craft 버튼 추가 (_craftButton)
 
-#### 크래프팅 시스템 — Unity 에디터 작업 (미완료)
-- [ ] MainPanel에 Craft 버튼 추가 및 `_craftButton` 필드 연결
-- [ ] RecipeListRoot에 VerticalLayoutGroup 추가 (spacing 15)
+#### 크래프팅 시스템 — Unity 에디터 작업
+- [x] MainPanel에 Craft 버튼 추가 및 `_craftButton` 필드 연결
+- [ ] RecipeListRoot에 VerticalLayoutGroup 추가 (Child Alignment: Upper Center, Spacing: 15, Control Child Size Width: ✅)
 
 #### 전투 시스템 — 코드
 - [x] `EnemyData` — 적 데이터 클래스 + `Enemy.json` (Zombie/Wolf 2종)
