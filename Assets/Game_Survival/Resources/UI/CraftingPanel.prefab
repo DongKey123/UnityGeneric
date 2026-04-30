@@ -116,6 +116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f29382f3cd4750530c72641057fbe1d, type: 3}
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::SurvivalGame.UI.CraftingPanel
+  _closeButton: {fileID: 4100000000000000034}
   _recipeListRoot: {fileID: 4100000000000000041}
   _recipeButtonTemplate: {fileID: 4100000000000000054}
 --- !u!1 &4100000000000000010

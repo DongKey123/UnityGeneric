@@ -17,6 +17,7 @@ namespace SurvivalGame.UI
     {
         #region Inspector
 
+        [SerializeField] private Button    _closeButton;
         [SerializeField] private Transform _recipeListRoot;
         [SerializeField] private Button    _recipeButtonTemplate;
 
@@ -34,6 +35,7 @@ namespace SurvivalGame.UI
         protected override void Awake()
         {
             base.Awake();
+            _closeButton.onClick.AddListener(() => UIManager.Instance.Close());
             _recipeButtonTemplate.gameObject.SetActive(false);
         }
 
