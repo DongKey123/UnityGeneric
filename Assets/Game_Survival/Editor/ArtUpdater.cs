@@ -163,9 +163,10 @@ namespace SurvivalGame.Editor
                 visual = visualT.gameObject;
             }
 
-            // FBX 임포트 설정(bakeAxisConversion / globalScale)에서 처리됨 — 추가 보정 불필요
+            // bakeAxisConversion은 임포트 프리팹 계층에만 적용, 원시 Mesh 참조엔 미적용
+            // → Visual 오브젝트에 직접 회전 보정 필요 (FBX Z-up → Unity Y-up)
             visual.transform.localPosition = Vector3.zero;
-            visual.transform.localRotation = Quaternion.identity;
+            visual.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
             visual.transform.localScale    = Vector3.one;
 
             var mf = visual.GetComponent<MeshFilter>();
