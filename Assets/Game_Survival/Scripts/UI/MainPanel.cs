@@ -22,6 +22,7 @@ namespace SurvivalGame.UI
         [UnityEngine.SerializeField] private Button _harvestButton;
         [UnityEngine.SerializeField] private Button _attackButton;
         [UnityEngine.SerializeField] private Button _buildButton;
+        [UnityEngine.SerializeField] private Button _craftButton;
 
         #endregion
 
@@ -48,6 +49,7 @@ namespace SurvivalGame.UI
             _harvestButton.onClick.AddListener(OnClickHarvest);
             _attackButton.onClick.AddListener(OnClickAttack);
             _buildButton.onClick.AddListener(OnClickBuild);
+            _craftButton.onClick.AddListener(OnClickCraft);
         }
 
         protected override void OnOpened()
@@ -108,6 +110,11 @@ namespace SurvivalGame.UI
         private void OnClickBuild()
         {
             UIManager.Instance.Open<BuildModePanel, PlayerController>(_player);
+        }
+
+        private void OnClickCraft()
+        {
+            UIManager.Instance.Open<CraftingPanel, Inventory>(_player.Inventory);
         }
 
         private void OnHarvestRangeEntered(HarvestRangeEnteredEvent e)

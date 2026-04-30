@@ -14,6 +14,7 @@ namespace SurvivalGame.Data
         private const string PathSurvivalResource = "Data/Resource";
         private const string PathSurvivalEnemy    = "Data/Enemy";
         private const string PathSurvivalBuilding = "Data/Building";
+        private const string PathSurvivalRecipe   = "Data/Recipe";
 
         #endregion
 
@@ -29,6 +30,7 @@ namespace SurvivalGame.Data
             InGameDataManager.Instance.LoadAsDictionary<ResourceData>    (PathSurvivalResource, x => x.resource_id);
             InGameDataManager.Instance.LoadAsDictionary<EnemyData>       (PathSurvivalEnemy,    x => x.enemy_id);
             InGameDataManager.Instance.LoadAsDictionary<BuildingData>    (PathSurvivalBuilding, x => x.building_id);
+            InGameDataManager.Instance.LoadAsDictionary<RecipeData>      (PathSurvivalRecipe,   x => x.recipe_id);
         }
 
         #endregion

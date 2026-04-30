@@ -72,6 +72,18 @@
 #### 파밍 시스템 — 추후 기능
 - [ ] 자동 채집 — 범위 안에 머물면 자동으로 채집 진행
 
+#### 크래프팅 시스템 — 코드
+- [x] `RecipeData` — 레시피 데이터 클래스 + `Recipe.json` (Wooden Axe / Wooden Sword / Bandage 3종)
+- [x] `CraftingSystem` — 재료 확인(CanCraft) + 소모 후 지급(TryCraft) 정적 클래스
+- [x] `CraftingPanel` — 레시피 목록 UI, 재료 현황 표시, Inventory.OnChanged 구독으로 버튼 자동 갱신
+- [x] `CraftingPanel.prefab` — RecipeListRoot + RecipeButtonTemplate 구성 및 스크립트 필드 연결
+- [x] `SurvivalDataLoader` — RecipeData 로드 추가
+- [x] `MainPanel` — Craft 버튼 추가 (_craftButton)
+
+#### 크래프팅 시스템 — Unity 에디터 작업 (미완료)
+- [ ] MainPanel에 Craft 버튼 추가 및 `_craftButton` 필드 연결
+- [ ] RecipeListRoot에 VerticalLayoutGroup 추가 (spacing 15)
+
 #### 전투 시스템 — 코드
 - [x] `EnemyData` — 적 데이터 클래스 + `Enemy.json` (Zombie/Wolf 2종)
 - [x] `IDamageable` — Player / Enemy 공통 인터페이스

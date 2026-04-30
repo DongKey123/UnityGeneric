@@ -1,0 +1,33 @@
+[
+  {
+    "recipe_id": 1,
+    "name": "Wooden Axe",
+    "result_item_id": 2001,
+    "result_count": 1,
+    "workbench_type": 0,
+    "ingredients": [
+      { "item_id": 1001, "count": 5 }
+    ]
+  },
+  {
+    "recipe_id": 2,
+    "name": "Wooden Sword",
+    "result_item_id": 2002,
+    "result_count": 1,
+    "workbench_type": 0,
+    "ingredients": [
+      { "item_id": 1001, "count": 5 },
+      { "item_id": 1002, "count": 2 }
+    ]
+  },
+  {
+    "recipe_id": 3,
+    "name": "Bandage",
+    "result_item_id": 3001,
+    "result_count": 3,
+    "workbench_type": 0,
+    "ingredients": [
+      { "item_id": 1001, "count": 3 }
+    ]
+  }
+]
