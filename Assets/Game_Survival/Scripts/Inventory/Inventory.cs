@@ -93,7 +93,8 @@ namespace SurvivalGame.Inventories
                 if (_slots.Count >= MaxSlots) return false;
 
                 var newSlot = new InventorySlot(data);
-                remaining -= newSlot.Add(remaining - 1); // 1개는 생성자에서 추가됨
+                remaining--;                        // 생성자에서 1개 추가됨
+                remaining -= newSlot.Add(remaining);
                 _slots.Add(newSlot);
             }
 

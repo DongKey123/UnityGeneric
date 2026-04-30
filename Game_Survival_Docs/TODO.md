@@ -102,12 +102,12 @@
 - [x] `SurvivalEntry` — BuildingGrid / BuildingPlacer 필드 추가
 - [x] `BuildModePanel.prefab` — SelectionView + BuildingListRoot + BuildingButtonTemplate + PlacementView + PlaceButton 구성 및 스크립트 필드 전체 연결
 
-#### 빌딩 시스템 — Unity 에디터 작업 (미완료)
-- [ ] `BuildingGrid` GameObject 씬 배치
-- [ ] `BuildingPlacer` GameObject 씬 배치
-- [ ] `SurvivalEntry` `_buildingGrid` / `_buildingPlacer` 필드 연결
-- [ ] MainPanel에 Build 버튼 추가 및 `_buildButton` 필드 연결
-- [ ] `BuildingListRoot`에 VerticalLayoutGroup 추가 (spacing 20)
+#### 빌딩 시스템 — Unity 에디터 작업
+- [x] `BuildingGrid` GameObject 씬 배치
+- [x] `BuildingPlacer` GameObject 씬 배치
+- [x] `SurvivalEntry` `_buildingGrid` / `_buildingPlacer` 필드 연결
+- [x] MainPanel에 Build 버튼 추가 및 `_buildButton` 필드 연결
+- [x] 배치 동작 확인
 
 ---
 
