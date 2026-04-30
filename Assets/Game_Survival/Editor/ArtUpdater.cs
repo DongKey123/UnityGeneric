@@ -163,10 +163,10 @@ namespace SurvivalGame.Editor
                 visual = visualT.gameObject;
             }
 
-            // 스케일 50x, 회전 X -90° (FBX 좌표계 보정), 위치 (0,0,0)
+            // FBX 임포트 설정(bakeAxisConversion / globalScale)에서 처리됨 — 추가 보정 불필요
             visual.transform.localPosition = Vector3.zero;
-            visual.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
-            visual.transform.localScale    = new Vector3(50f, 50f, 50f);
+            visual.transform.localRotation = Quaternion.identity;
+            visual.transform.localScale    = Vector3.one;
 
             var mf = visual.GetComponent<MeshFilter>();
             if (mf == null) mf = visual.AddComponent<MeshFilter>();
