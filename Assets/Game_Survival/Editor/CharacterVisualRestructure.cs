@@ -6,8 +6,10 @@ using SurvivalGame.Player;
 namespace SurvivalGame.Editor
 {
     /// <summary>
-    /// Visual_ 자식을 characterMedium.fbx 프리팹 인스턴스로 교체합니다.
-    /// Tools > Survival > Restructure Character Visuals 로 실행 후 이 파일을 삭제하세요.
+    /// 캐릭터 비주얼 전체 셋업 툴입니다.
+    /// Visual_ 교체 → 마테리얼 할당 → Animator 설정까지 한 번에 처리합니다.
+    /// Tools > Survival > Setup All Character Visuals 로 실행하세요.
+    /// FBX Reimport 후 매번 실행하면 됩니다.
     /// </summary>
     public static class CharacterVisualRestructure
     {
@@ -17,7 +19,12 @@ namespace SurvivalGame.Editor
         private const string PathWolf       = "Assets/Game_Survival/Resources/Prefabs/Combat/Enemy_Wolf.prefab";
         private const string PathScene      = "Assets/Game_Survival/Scenes/MainScene.unity";
 
-        [MenuItem("Tools/Survival/Restructure Character Visuals")]
+        private const string MatSurvivor    = "Assets/Game_Survival/Resources/Prefabs/Combat/Survivor.mat";
+        private const string MatZombie      = "Assets/Game_Survival/Resources/Prefabs/Combat/Zombie.mat";
+        private const string MatWolf        = "Assets/Game_Survival/Resources/Prefabs/Combat/Enemy_Wolf.mat";
+        private const string TexZombieC     = "Assets/Game_Survival/Art/Textures/Characters/zombieC.png";
+
+        [MenuItem("Tools/Survival/Setup All Character Visuals")]
         public static void Run()
         {
             var charPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(PathCharFbx);
@@ -25,44 +32,57 @@ namespace SurvivalGame.Editor
 
             if (charPrefab == null || controller == null)
             {
-                Debug.LogError("[Restructure] FBX 또는 Controller 로드 실패");
+                Debug.LogError("[CharacterSetup] FBX 또는 Controller 로드 실패");
                 return;
             }
 
-            RestructurePrefab(PathZombie, "Visual_Zombie", charPrefab, controller);
-            RestructurePrefab(PathWolf,   "Visual_Wolf",   charPrefab, controller);
-            RestructureScenePlayer(charPrefab, controller);
+            var matSurvivor = AssetDatabase.LoadAssetAtPath<Material>(MatSurvivor);
+            var matZombie   = AssetDatabase.LoadAssetAtPath<Material>(MatZombie);
+            var matWolf     = LoadOrSetupWolfMaterial();
+
+            if (matSurvivor == null || matZombie == null || matWolf == null)
+            {
+                Debug.LogError("[CharacterSetup] 마테리얼 로드 실패");
+                return;
+            }
+
+            SetupPrefab(PathZombie, "Visual_Zombie", charPrefab, controller, matZombie);
+            SetupPrefab(PathWolf,   "Visual_Wolf",   charPrefab, controller, matWolf);
+            SetupScenePlayer(charPrefab, controller, matSurvivor);
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            Debug.Log("[Restructure] 완료");
+            Debug.Log("[CharacterSetup] 전체 완료 — Zombie / Wolf / Player");
         }
 
         // ──────────────────────────────────────────────
 
-        private static void RestructurePrefab(string prefabPath, string visualName,
-                                              GameObject charPrefab, RuntimeAnimatorController controller)
+        private static void SetupPrefab(string prefabPath, string visualName,
+                                        GameObject charPrefab, RuntimeAnimatorController controller,
+                                        Material mat)
         {
             var root = PrefabUtility.LoadPrefabContents(prefabPath);
 
             var old = root.transform.Find(visualName);
             if (old != null) Object.DestroyImmediate(old.gameObject);
 
-            // LoadPrefabContents 컨텍스트에서는 Object.Instantiate 사용
             var visual = Object.Instantiate(charPrefab, root.transform);
             visual.name = visualName;
             visual.transform.localPosition = Vector3.zero;
-            visual.transform.localRotation = Quaternion.identity;
+            visual.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
             visual.transform.localScale    = Vector3.one;
 
             SetAnimator(visual, controller);
+            ApplyMaterial(visual, mat);
 
             PrefabUtility.SaveAsPrefabAsset(root, prefabPath);
             PrefabUtility.UnloadPrefabContents(root);
-            Debug.Log($"[Restructure] {prefabPath} 완료");
+            Debug.Log($"[CharacterSetup] {prefabPath} 완료");
         }
 
-        private static void RestructureScenePlayer(GameObject charPrefab, RuntimeAnimatorController controller)
+        private static void SetupScenePlayer(GameObject charPrefab,
+                                             RuntimeAnimatorController controller,
+                                             Material mat)
         {
             var scene = EditorSceneManager.OpenScene(PathScene, OpenSceneMode.Additive);
 
@@ -74,7 +94,7 @@ namespace SurvivalGame.Editor
 
             if (playerGo == null)
             {
-                Debug.LogWarning("[Restructure] 씬에서 Player를 찾지 못했습니다.");
+                Debug.LogWarning("[CharacterSetup] 씬에서 Player를 찾지 못했습니다.");
                 EditorSceneManager.CloseScene(scene, true);
                 return;
             }
@@ -90,10 +110,11 @@ namespace SurvivalGame.Editor
             var visual = Object.Instantiate(charPrefab, playerGo.transform);
             visual.name = "Visual_Player";
             visual.transform.localPosition = Vector3.zero;
-            visual.transform.localRotation = Quaternion.identity;
+            visual.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
             visual.transform.localScale    = Vector3.one;
 
             var anim = SetAnimator(visual, controller);
+            ApplyMaterial(visual, mat);
 
             // PlayerController._animator 필드 연결
             var pc = playerGo.GetComponent<PlayerController>();
@@ -111,17 +132,54 @@ namespace SurvivalGame.Editor
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene);
             EditorSceneManager.CloseScene(scene, true);
-            Debug.Log("[Restructure] 씬 Player 완료");
+            Debug.Log("[CharacterSetup] 씬 Player 완료");
         }
 
         private static Animator SetAnimator(GameObject visual, RuntimeAnimatorController controller)
         {
-            var anim = visual.GetComponent<Animator>();
-            if (anim == null) anim = visual.GetComponentInChildren<Animator>();
-            if (anim == null) anim = visual.AddComponent<Animator>();
+            // Animator는 Visual_ 루트가 아닌 FBX 내부 Root 본에 부착
+            var rootBone = visual.transform.Find("Root");
+            var target   = rootBone != null ? rootBone.gameObject : visual;
+
+            // 기존 Animator 제거 후 새로 추가 (중복 방지)
+            foreach (var old in visual.GetComponentsInChildren<Animator>(true))
+                Object.DestroyImmediate(old);
+
+            var anim = target.AddComponent<Animator>();
             anim.runtimeAnimatorController = controller;
-            anim.applyRootMotion = false;   // 이동은 NavMeshAgent / Rigidbody가 담당
+            anim.applyRootMotion = false;
             return anim;
+        }
+
+        private static void ApplyMaterial(GameObject visual, Material mat)
+        {
+            foreach (var smr in visual.GetComponentsInChildren<SkinnedMeshRenderer>(true))
+            {
+                var mats = new Material[smr.sharedMaterials.Length];
+                for (int i = 0; i < mats.Length; i++) mats[i] = mat;
+                smr.sharedMaterials = mats;
+            }
+            foreach (var mr in visual.GetComponentsInChildren<MeshRenderer>(true))
+            {
+                var mats = new Material[mr.sharedMaterials.Length];
+                for (int i = 0; i < mats.Length; i++) mats[i] = mat;
+                mr.sharedMaterials = mats;
+            }
+        }
+
+        private static Material LoadOrSetupWolfMaterial()
+        {
+            var mat = AssetDatabase.LoadAssetAtPath<Material>(MatWolf);
+            if (mat == null) return null;
+
+            var tex = AssetDatabase.LoadAssetAtPath<Texture2D>(TexZombieC);
+            if (tex != null && mat.GetTexture("_BaseMap") == null)
+            {
+                mat.SetTexture("_BaseMap", tex);
+                mat.SetTexture("_MainTex", tex);
+                EditorUtility.SetDirty(mat);
+            }
+            return mat;
         }
     }
 }
