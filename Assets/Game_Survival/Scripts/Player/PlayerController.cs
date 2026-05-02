@@ -15,16 +15,19 @@ namespace SurvivalGame.Player
     {
         #region Inspector
 
-        [SerializeField] private float _moveSpeed    = 5f;
-        [SerializeField] private int   _maxSlots     = 20;
-        [SerializeField] private float _maxWeight    = 50f;
-        [SerializeField] private int   _maxHp        = 100;
-        [SerializeField] private int   _attackPower  = 10;
-        [SerializeField] private float _attackRadius = 2.5f;
+        [SerializeField] private float    _moveSpeed    = 5f;
+        [SerializeField] private int      _maxSlots     = 20;
+        [SerializeField] private float    _maxWeight    = 50f;
+        [SerializeField] private int      _maxHp        = 100;
+        [SerializeField] private int      _attackPower  = 10;
+        [SerializeField] private float    _attackRadius = 2.5f;
+        [SerializeField] private Animator _animator;
 
         #endregion
 
         #region Private Fields
+
+        private static readonly int SpeedHash = Animator.StringToHash("Speed");
 
         private Rigidbody _rb;
         private readonly Collider[] _overlapBuffer = new Collider[16];
@@ -153,6 +156,8 @@ namespace SurvivalGame.Player
         {
             Vector2 input = SurvivalInputManager.Instance.JoystickDirection;
             IsMoving      = SurvivalInputManager.Instance.HasJoystickInput;
+
+            if (_animator != null) _animator.SetFloat(SpeedHash, IsMoving ? input.magnitude : 0f);
 
             if (!IsMoving) return;
 

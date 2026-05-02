@@ -44,12 +44,15 @@ namespace SurvivalGame.Battle
 
         #region Private Fields
 
+        private static readonly int SpeedHash = Animator.StringToHash("Speed");
+
         private StateMachine<Enemy> _stateMachine;
         private EnemyIdleState   _idleState;
         private EnemyChaseState  _chaseState;
         private EnemyAttackState _attackState;
         private EnemyDeadState   _deadState;
         private Inventory        _playerInventory;
+        private Animator         _animator;
 
         #endregion
 
@@ -57,7 +60,8 @@ namespace SurvivalGame.Battle
 
         private void Awake()
         {
-            Agent = GetComponent<NavMeshAgent>();
+            Agent     = GetComponent<NavMeshAgent>();
+            _animator = GetComponentInChildren<Animator>();
 
             _idleState   = new EnemyIdleState();
             _chaseState  = new EnemyChaseState();
@@ -70,6 +74,8 @@ namespace SurvivalGame.Battle
         private void Update()
         {
             _stateMachine.Update();
+            if (_animator != null)
+                _animator.SetFloat(SpeedHash, Agent.velocity.magnitude);
         }
 
         #endregion
