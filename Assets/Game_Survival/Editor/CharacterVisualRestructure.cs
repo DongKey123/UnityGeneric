@@ -120,6 +120,7 @@ namespace SurvivalGame.Editor
             if (anim == null) anim = visual.GetComponentInChildren<Animator>();
             if (anim == null) anim = visual.AddComponent<Animator>();
             anim.runtimeAnimatorController = controller;
+            anim.applyRootMotion = false;   // 이동은 NavMeshAgent / Rigidbody가 담당
             return anim;
         }
     }

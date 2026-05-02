@@ -22,6 +22,16 @@ namespace SurvivalGame.Editor
         // zombieC 텍스처 (Wolf 전용)
         private const string TexZombieC   = "Assets/Game_Survival/Art/Textures/Characters/zombieC.png";
 
+        [MenuItem("Tools/Survival/Fix Animator Root Motion")]
+        public static void FixRootMotion()
+        {
+            FixRootMotionInPrefab(PathZombie, "Visual_Zombie");
+            FixRootMotionInPrefab(PathWolf,   "Visual_Wolf");
+            FixRootMotionInScene();
+            AssetDatabase.SaveAssets();
+            Debug.Log("[RootMotionFix] 완료 — Animator.applyRootMotion = false");
+        }
+
         [MenuItem("Tools/Survival/Setup Character Materials")]
         public static void Run()
         {
@@ -129,7 +139,6 @@ namespace SurvivalGame.Editor
                 smr.sharedMaterials = mats;
             }
 
-            // MeshRenderer도 처리 (혹시 있을 경우)
             var meshRenderers = root.GetComponentsInChildren<MeshRenderer>(true);
             foreach (var mr in meshRenderers)
             {
@@ -138,6 +147,49 @@ namespace SurvivalGame.Editor
                     mats[i] = mat;
                 mr.sharedMaterials = mats;
             }
+        }
+
+        // ──────────────────────────────────────────────
+        // Root Motion 패치
+
+        private static void FixRootMotionInPrefab(string prefabPath, string visualName)
+        {
+            var root   = PrefabUtility.LoadPrefabContents(prefabPath);
+            var visual = root.transform.Find(visualName);
+            if (visual == null)
+            {
+                Debug.LogWarning($"[RootMotionFix] {visualName} not found in {prefabPath}");
+                PrefabUtility.UnloadPrefabContents(root);
+                return;
+            }
+
+            foreach (var anim in visual.GetComponentsInChildren<Animator>(true))
+                anim.applyRootMotion = false;
+
+            PrefabUtility.SaveAsPrefabAsset(root, prefabPath);
+            PrefabUtility.UnloadPrefabContents(root);
+            Debug.Log($"[RootMotionFix] {prefabPath} 완료");
+        }
+
+        private static void FixRootMotionInScene()
+        {
+            var scene = EditorSceneManager.OpenScene(PathScene, OpenSceneMode.Additive);
+
+            foreach (var go in scene.GetRootGameObjects())
+            {
+                if (go.name != "Player") continue;
+
+                var visual = go.transform.Find("Visual_Player");
+                if (visual == null) break;
+
+                foreach (var anim in visual.GetComponentsInChildren<Animator>(true))
+                    anim.applyRootMotion = false;
+            }
+
+            EditorSceneManager.MarkSceneDirty(scene);
+            EditorSceneManager.SaveScene(scene);
+            EditorSceneManager.CloseScene(scene, true);
+            Debug.Log("[RootMotionFix] 씬 Player 완료");
         }
     }
 }
