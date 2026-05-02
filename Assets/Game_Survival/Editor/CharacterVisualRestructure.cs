@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using SurvivalGame.Player;
 
 namespace SurvivalGame.Editor
 {
@@ -19,8 +20,8 @@ namespace SurvivalGame.Editor
         [MenuItem("Tools/Survival/Restructure Character Visuals")]
         public static void Run()
         {
-            var charPrefab  = AssetDatabase.LoadAssetAtPath<GameObject>(PathCharFbx);
-            var controller  = AssetDatabase.LoadAssetAtPath<RuntimeAnimatorController>(PathController);
+            var charPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(PathCharFbx);
+            var controller = AssetDatabase.LoadAssetAtPath<RuntimeAnimatorController>(PathController);
 
             if (charPrefab == null || controller == null)
             {
@@ -44,21 +45,17 @@ namespace SurvivalGame.Editor
         {
             var root = PrefabUtility.LoadPrefabContents(prefabPath);
 
-            // 기존 Visual 제거
             var old = root.transform.Find(visualName);
             if (old != null) Object.DestroyImmediate(old.gameObject);
 
-            // FBX 프리팹 인스턴스를 자식으로 추가
-            var visual = (GameObject)PrefabUtility.InstantiatePrefab(charPrefab, root.transform);
+            // LoadPrefabContents 컨텍스트에서는 Object.Instantiate 사용
+            var visual = Object.Instantiate(charPrefab, root.transform);
             visual.name = visualName;
             visual.transform.localPosition = Vector3.zero;
             visual.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
             visual.transform.localScale    = Vector3.one;
 
-            // Animator 연결
-            var anim = visual.GetComponent<Animator>();
-            if (anim == null) anim = visual.AddComponent<Animator>();
-            anim.runtimeAnimatorController = controller;
+            SetAnimator(visual, controller);
 
             PrefabUtility.SaveAsPrefabAsset(root, prefabPath);
             PrefabUtility.UnloadPrefabContents(root);
@@ -70,9 +67,9 @@ namespace SurvivalGame.Editor
             var scene = EditorSceneManager.OpenScene(PathScene, OpenSceneMode.Additive);
 
             GameObject playerGo = null;
-            foreach (var root in scene.GetRootGameObjects())
+            foreach (var go in scene.GetRootGameObjects())
             {
-                if (root.name == "Player") { playerGo = root; break; }
+                if (go.name == "Player") { playerGo = go; break; }
             }
 
             if (playerGo == null)
@@ -82,7 +79,6 @@ namespace SurvivalGame.Editor
                 return;
             }
 
-            // 기존 Visual_Player 제거 및 루트 MeshFilter/MeshRenderer 제거
             var oldVisual = playerGo.transform.Find("Visual_Player");
             if (oldVisual != null) Object.DestroyImmediate(oldVisual.gameObject);
 
@@ -91,23 +87,19 @@ namespace SurvivalGame.Editor
             if (rootMf != null) Object.DestroyImmediate(rootMf);
             if (rootMr != null) Object.DestroyImmediate(rootMr);
 
-            // FBX 프리팹 인스턴스 추가
-            var visual = (GameObject)PrefabUtility.InstantiatePrefab(charPrefab, playerGo.transform);
+            var visual = Object.Instantiate(charPrefab, playerGo.transform);
             visual.name = "Visual_Player";
             visual.transform.localPosition = Vector3.zero;
             visual.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
             visual.transform.localScale    = Vector3.one;
 
-            // Animator 연결
-            var anim = visual.GetComponent<Animator>();
-            if (anim == null) anim = visual.AddComponent<Animator>();
-            anim.runtimeAnimatorController = controller;
+            var anim = SetAnimator(visual, controller);
 
             // PlayerController._animator 필드 연결
-            var pc = playerGo.GetComponent<PlayerController.PlayerController>();
+            var pc = playerGo.GetComponent<PlayerController>();
             if (pc != null)
             {
-                var so = new SerializedObject(pc);
+                var so   = new SerializedObject(pc);
                 var prop = so.FindProperty("_animator");
                 if (prop != null)
                 {
@@ -120,6 +112,15 @@ namespace SurvivalGame.Editor
             EditorSceneManager.SaveScene(scene);
             EditorSceneManager.CloseScene(scene, true);
             Debug.Log("[Restructure] 씬 Player 완료");
+        }
+
+        private static Animator SetAnimator(GameObject visual, RuntimeAnimatorController controller)
+        {
+            var anim = visual.GetComponent<Animator>();
+            if (anim == null) anim = visual.GetComponentInChildren<Animator>();
+            if (anim == null) anim = visual.AddComponent<Animator>();
+            anim.runtimeAnimatorController = controller;
+            return anim;
         }
     }
 }
