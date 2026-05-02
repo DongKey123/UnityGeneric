@@ -52,7 +52,7 @@ namespace SurvivalGame.Editor
             var visual = Object.Instantiate(charPrefab, root.transform);
             visual.name = visualName;
             visual.transform.localPosition = Vector3.zero;
-            visual.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
+            visual.transform.localRotation = Quaternion.identity;
             visual.transform.localScale    = Vector3.one;
 
             SetAnimator(visual, controller);
@@ -90,7 +90,7 @@ namespace SurvivalGame.Editor
             var visual = Object.Instantiate(charPrefab, playerGo.transform);
             visual.name = "Visual_Player";
             visual.transform.localPosition = Vector3.zero;
-            visual.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
+            visual.transform.localRotation = Quaternion.identity;
             visual.transform.localScale    = Vector3.one;
 
             var anim = SetAnimator(visual, controller);
