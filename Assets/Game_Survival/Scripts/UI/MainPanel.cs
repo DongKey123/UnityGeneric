@@ -2,9 +2,12 @@ using System.Collections.Generic;
 using Framework.Core.EventBus;
 using Framework.UI;
 using SurvivalGame.Battle;
+using SurvivalGame.Core;
+using SurvivalGame.Defines;
 using SurvivalGame.Farming;
 using SurvivalGame.Inventories;
 using SurvivalGame.Player;
+using TMPro;
 using UnityEngine.UI;
 
 namespace SurvivalGame.UI
@@ -18,11 +21,15 @@ namespace SurvivalGame.UI
     {
         #region Inspector
 
-        [UnityEngine.SerializeField] private Button _inventoryButton;
-        [UnityEngine.SerializeField] private Button _harvestButton;
-        [UnityEngine.SerializeField] private Button _attackButton;
-        [UnityEngine.SerializeField] private Button _buildButton;
-        [UnityEngine.SerializeField] private Button _craftButton;
+        [UnityEngine.SerializeField] private Button  _inventoryButton;
+        [UnityEngine.SerializeField] private Button  _harvestButton;
+        [UnityEngine.SerializeField] private Button  _attackButton;
+        [UnityEngine.SerializeField] private Button  _buildButton;
+        [UnityEngine.SerializeField] private Button  _craftButton;
+
+        [UnityEngine.SerializeField] private TMP_Text _goldText;
+        [UnityEngine.SerializeField] private TMP_Text _premiumText;
+        [UnityEngine.SerializeField] private TMP_Text _weightText;
 
         #endregion
 
@@ -60,8 +67,11 @@ namespace SurvivalGame.UI
             EventBus.Subscribe<EnemyEnteredAttackRangeEvent>(OnEnemyEnteredRange);
             EventBus.Subscribe<EnemyExitedAttackRangeEvent>(OnEnemyExitedRange);
             EventBus.Subscribe<EnemyDiedEvent>(OnEnemyDied);
+            EventBus.Subscribe<CurrencyChangedEvent>(OnCurrencyChanged);
             SetHarvestButtonActive(false);
             SetAttackButtonActive(false);
+            RefreshCurrency(CurrencyType.Gold);
+            RefreshCurrency(CurrencyType.Premium);
         }
 
         protected override void OnClosed()
@@ -72,6 +82,8 @@ namespace SurvivalGame.UI
             EventBus.Unsubscribe<EnemyEnteredAttackRangeEvent>(OnEnemyEnteredRange);
             EventBus.Unsubscribe<EnemyExitedAttackRangeEvent>(OnEnemyExitedRange);
             EventBus.Unsubscribe<EnemyDiedEvent>(OnEnemyDied);
+            EventBus.Unsubscribe<CurrencyChangedEvent>(OnCurrencyChanged);
+            if (_player != null) _player.Inventory.OnChanged -= RefreshWeight;
             _enemiesInRange.Clear();
         }
 
@@ -83,6 +95,8 @@ namespace SurvivalGame.UI
         public void Initialize(PlayerController player)
         {
             _player = player;
+            _player.Inventory.OnChanged += RefreshWeight;
+            RefreshWeight();
         }
 
         #endregion
@@ -151,6 +165,32 @@ namespace SurvivalGame.UI
         {
             _enemiesInRange.Remove(e.Source);
             SetAttackButtonActive(_enemiesInRange.Count > 0);
+        }
+
+        private void OnCurrencyChanged(CurrencyChangedEvent e)
+        {
+            RefreshCurrency(e.Type);
+        }
+
+        private void RefreshCurrency(CurrencyType type)
+        {
+            int amount = CurrencyManager.Instance.Get(type);
+            switch (type)
+            {
+                case CurrencyType.Gold:
+                    if (_goldText != null) _goldText.text = amount.ToString("N0");
+                    break;
+                case CurrencyType.Premium:
+                    if (_premiumText != null) _premiumText.text = amount.ToString("N0");
+                    break;
+            }
+        }
+
+        private void RefreshWeight()
+        {
+            if (_weightText == null || _player == null) return;
+            var inv = _player.Inventory;
+            _weightText.text = $"{inv.CurrentWeight:0.#} / {inv.MaxWeight:0} kg";
         }
 
         private void SetHarvestButtonActive(bool active)

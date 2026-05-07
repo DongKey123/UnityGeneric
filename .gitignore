@@ -70,6 +70,10 @@ crashlytics-build.properties
 .claude/
 .vscode/
 
+# Unity Editor 유틸 스크립트 (로컬 전용)
+Assets/Game_Survival/Editor/
+Assets/Game_Survival/Editor.meta
+
 # OS generated
 .DS_Store
 .DS_Store?
