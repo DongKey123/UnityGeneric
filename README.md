@@ -31,6 +31,7 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 | 모듈 | 설명 | 상태 |
 |------|------|------|
 | UIManager | UI 패널 2레이어 관리 (Default 스택 / Overlay) | ✅ |
+| SubPanel | UIPanel 내부 서브 UI 구획 기반 클래스 (Show/Hide/Refresh) | ✅ |
 | SafeAreaFitter | 노치/펀치홀/홈 인디케이터 Safe Area 자동 적용 | ✅ |
 | ToastManager | 자동으로 사라지는 토스트 알림 메시지 | ✅ |
 | CommonPopupManager | 공용 팝업 관리 (OneButton / TwoButton / Dim / 스택) | ✅ |
@@ -103,6 +104,7 @@ Unity 프로젝트에서 반복적으로 사용되는 패턴과 시스템을 모
 
 | 버전 | 날짜 | 내용 |
 |------|------|------|
+| 2.4.0 | 2026-05-08 | SubPanel 모듈 완료 (UIPanel 내부 서브 구획 기반 클래스 — Show/Hide/Refresh) |
 | 2.3.0 | 2026-04-24 | 서바이벌 게임 파밍 시스템 완료 (ResourceObject / ResourceSpawner / HarvestEvents / ToastPanel) |
 | 2.2.0 | 2026-04-24 | 서바이벌 게임 인벤토리 UI 완료 (MainPanel / InventoryPanel / InventorySlotElement) |
 | 2.1.0 | 2026-04-24 | 서바이벌 게임 기초 시스템 완료 (PlayerController / Inventory / SurvivalDataLoader / SurvivalEntry) |

@@ -32,6 +32,7 @@
 | 2026-04-16 | `InGameDataManager.GetAll<TValue>()` 추가 — Dictionary 캐시 전체 값 반환 | `LoadAsDictionary`로 로드된 데이터 전체 조회가 필요한 모든 곳 |
 | 2026-04-24 | `UIManager.ShowOverlay<T, TData>(TData data)` 추가 — 데이터 전달 오버로드 | 데이터를 주입하며 Overlay 패널을 열어야 하는 모든 곳 |
 | 2026-04-28 | `MobileInputManager.GetTap(out Vector2 screenPosition)` 추가 — 탭 위치 반환 오버로드 | 탭 발생 스크린 좌표가 필요한 모든 곳 (예: 적 터치 공격 레이캐스트) |
+| 2026-05-08 | `SubPanel` 추가 — UIPanel 내부 서브 구획 기반 클래스 (Show/Hide/Refresh/OnShown/OnHidden/OnRefresh) | UIPanel 안에서 독립적으로 show/hide되는 구획이 필요한 모든 곳 |
 
 ---
 
@@ -53,6 +54,7 @@
 
 ### UI 작업
 - 모든 UI 패널은 `Framework.UI.UIPanel`을 상속합니다 — `MonoBehaviour` 직접 상속 금지
+- UIPanel 내부의 독립적인 UI 구획은 `Framework.UI.SubPanel`을 상속합니다 — 부모 UIPanel이 Show/Hide/Refresh 호출
 - 패널 열기/닫기는 `UIManager.Instance.Open<T>()` / `Close()` / `ShowOverlay<T>()` 사용
 - HUD처럼 항상 표시되는 패널은 `ShowOverlay<T>()`, 일반 패널은 `Open<T>()`
 - `CanClose`, `CloseOnBack`, `DestroyOnClose`를 override하여 패널 동작 제어
