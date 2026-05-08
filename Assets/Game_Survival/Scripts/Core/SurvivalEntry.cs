@@ -35,6 +35,7 @@ namespace SurvivalGame.Core
 
         private void Start()
         {
+            MapManager.Instance.SetPlayer(_player);
             UIManager.Instance.Open<MainPanel, PlayerController>(_player);
             _resourceSpawner.Spawn(_player.Inventory);
             _enemySpawner.Spawn(_player, _player.Inventory);

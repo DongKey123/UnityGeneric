@@ -1,4 +1,5 @@
 using Framework.Core.DataManager;
+using SurvivalGame.Core;
 using SurvivalGame.Data;
 using SurvivalGame.Inventories;
 using UnityEngine;
@@ -53,6 +54,7 @@ namespace SurvivalGame.Farming
                     var obj = Instantiate(prefab, GetRandomPosition(), Quaternion.identity);
                     var resource = obj.GetComponent<ResourceObject>();
                     resource.Initialize(resourceData, itemData, inventory);
+                    MapManager.Instance.RegisterResource(resource);
                 }
             }
         }

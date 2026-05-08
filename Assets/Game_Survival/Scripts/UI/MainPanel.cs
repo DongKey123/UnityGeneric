@@ -27,9 +27,10 @@ namespace SurvivalGame.UI
         [UnityEngine.SerializeField] private Button  _buildButton;
         [UnityEngine.SerializeField] private Button  _craftButton;
 
-        [UnityEngine.SerializeField] private TMP_Text _goldText;
-        [UnityEngine.SerializeField] private TMP_Text _premiumText;
-        [UnityEngine.SerializeField] private TMP_Text _weightText;
+        [UnityEngine.SerializeField] private TMP_Text       _goldText;
+        [UnityEngine.SerializeField] private TMP_Text       _premiumText;
+        [UnityEngine.SerializeField] private TMP_Text       _weightText;
+        [UnityEngine.SerializeField] private MinimapSubPanel _minimapSubPanel;
 
         #endregion
 
@@ -61,6 +62,7 @@ namespace SurvivalGame.UI
 
         protected override void OnOpened()
         {
+            _minimapSubPanel.Show();
             EventBus.Subscribe<HarvestRangeEnteredEvent>(OnHarvestRangeEntered);
             EventBus.Subscribe<HarvestRangeExitedEvent>(OnHarvestRangeExited);
             EventBus.Subscribe<ResourceHarvestedEvent>(OnResourceHarvested);
@@ -76,6 +78,7 @@ namespace SurvivalGame.UI
 
         protected override void OnClosed()
         {
+            _minimapSubPanel.Hide();
             EventBus.Unsubscribe<HarvestRangeEnteredEvent>(OnHarvestRangeEntered);
             EventBus.Unsubscribe<HarvestRangeExitedEvent>(OnHarvestRangeExited);
             EventBus.Unsubscribe<ResourceHarvestedEvent>(OnResourceHarvested);
@@ -113,7 +116,7 @@ namespace SurvivalGame.UI
 
         private void OnClickHarvest()
         {
-            _currentResource?.Harvest();
+            if (_currentResource != null) _currentResource.Harvest();
         }
 
         private void OnClickAttack()

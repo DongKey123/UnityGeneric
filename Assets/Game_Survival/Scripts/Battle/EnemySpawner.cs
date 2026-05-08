@@ -1,5 +1,6 @@
 using Framework.Core.DataManager;
 using Framework.Core.EventBus;
+using SurvivalGame.Core;
 using SurvivalGame.Data;
 using SurvivalGame.Farming;
 using SurvivalGame.Inventories;
@@ -55,6 +56,7 @@ namespace SurvivalGame.Battle
                     }
 
                     enemy.Initialize(enemyData, player, playerInventory);
+                    MapManager.Instance.RegisterEnemy(enemy);
                     SubscribeDrop(enemy, enemyData, playerInventory);
                 }
             }
@@ -73,6 +75,7 @@ namespace SurvivalGame.Battle
                 if (e.Source != enemy) return;
 
                 EventBus.Unsubscribe<EnemyDiedEvent>(OnEnemyDied);
+                MapManager.Instance.UnregisterEnemy(enemy);
 
                 if (data.drop_item_id <= 0) return;
 
