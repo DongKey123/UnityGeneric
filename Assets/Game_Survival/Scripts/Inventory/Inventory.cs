@@ -117,6 +117,7 @@ namespace SurvivalGame.Inventories
             for (int i = _slots.Count - 1; i >= 0 && remaining > 0; i--)
             {
                 if (_slots[i].Data.item_id != itemId) continue;
+                if (_slots[i].IsEquipped) continue;
 
                 remaining -= _slots[i].Remove(remaining);
                 if (_slots[i].Count <= 0)

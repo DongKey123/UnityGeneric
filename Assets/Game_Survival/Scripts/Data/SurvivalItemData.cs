@@ -1,4 +1,5 @@
 using System;
+using SurvivalGame.Defines;
 
 namespace SurvivalGame.Data
 {
@@ -29,7 +30,7 @@ namespace SurvivalGame.Data
 
         // 장비 전용 필드 (category == "Equipment" 일 때만 사용)
 
-        /// <summary>장비 슬롯 — Weapon / Armor / Tool (장비가 아니면 빈 문자열)</summary>
+        /// <summary>장비 슬롯 — Weapon / Tool / Head / Chest / Legs / Boots (장비가 아니면 빈 문자열)</summary>
         public string equipment_slot;
 
         /// <summary>최대 내구도 (장비가 아니면 0)</summary>
@@ -37,5 +38,9 @@ namespace SurvivalGame.Data
 
         /// <summary>장비 티어 (1 ~ N)</summary>
         public int tier;
+
+        /// <summary>equipment_slot 문자열을 <see cref="EquipmentSlotType"/>으로 변환합니다.</summary>
+        public EquipmentSlotType SlotType =>
+            Enum.TryParse<EquipmentSlotType>(equipment_slot, out var result) ? result : EquipmentSlotType.None;
     }
 }

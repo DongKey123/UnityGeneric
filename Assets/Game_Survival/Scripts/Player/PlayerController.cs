@@ -42,6 +42,9 @@ namespace SurvivalGame.Player
         /// <summary>플레이어 인벤토리입니다.</summary>
         public Inventory Inventory { get; private set; }
 
+        /// <summary>플레이어 장비 슬롯입니다.</summary>
+        public EquipmentSlots Equipment { get; private set; }
+
         /// <summary>현재 체력입니다.</summary>
         public int CurrentHp { get; private set; }
 
@@ -60,6 +63,7 @@ namespace SurvivalGame.Player
             _rb                    = GetComponent<Rigidbody>();
             _rb.freezeRotation     = true;
             Inventory              = new Inventory(_maxSlots, _maxWeight);
+            Equipment              = new EquipmentSlots();
             CurrentHp              = _maxHp;
 
             var rangeTrigger       = gameObject.AddComponent<SphereCollider>();

@@ -14,7 +14,10 @@ namespace SurvivalGame.Defines
     {
         None   = 0,
         Weapon = 1,
-        Armor  = 2,
-        Tool   = 3
+        Tool   = 2,
+        Head   = 3,
+        Chest  = 4,
+        Legs   = 5,
+        Boots  = 6
     }
 }

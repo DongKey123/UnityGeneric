@@ -20,6 +20,9 @@ namespace SurvivalGame.Inventories
         /// <summary>슬롯이 꽉 찼는지 여부</summary>
         public bool IsFull => Count >= Data.max_stack;
 
+        /// <summary>현재 장착 중인지 여부입니다.</summary>
+        public bool IsEquipped { get; private set; }
+
         /// <summary>슬롯 무게 합계</summary>
         public float TotalWeight => Data.weight * Count;
 
@@ -54,5 +57,11 @@ namespace SurvivalGame.Inventories
         {
             Durability = System.Math.Max(0, Durability - amount);
         }
+
+        /// <summary>장착 중으로 표시합니다. EquipmentSlots에서 호출하세요.</summary>
+        public void MarkEquipped()   => IsEquipped = true;
+
+        /// <summary>장착 해제로 표시합니다. EquipmentSlots에서 호출하세요.</summary>
+        public void MarkUnequipped() => IsEquipped = false;
     }
 }
