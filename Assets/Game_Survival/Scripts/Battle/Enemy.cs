@@ -3,6 +3,7 @@ using Random = UnityEngine.Random;
 using SurvivalGame.Data;
 using SurvivalGame.Inventories;
 using SurvivalGame.Player;
+using SurvivalGame.UI.HUD;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -45,6 +46,8 @@ namespace SurvivalGame.Battle
         #region Private Fields
 
         private static readonly int SpeedHash = Animator.StringToHash("Speed");
+
+        [SerializeField] private HealthBar _hpBar;
 
         private StateMachine<Enemy> _stateMachine;
         private EnemyIdleState   _idleState;
@@ -91,6 +94,9 @@ namespace SurvivalGame.Battle
             CurrentHp        = data.hp_max;
             IsDead           = false;
 
+            // HP 바를 max 상태로 초기화 — hideWhenFull이면 자동으로 비활성화됨
+            _hpBar?.SetValue(CurrentHp, data.hp_max);
+
             Agent.speed = data.move_speed;
             _stateMachine.SetInitialState(_idleState);
         }
@@ -116,6 +122,8 @@ namespace SurvivalGame.Battle
 
             int damage    = Mathf.Max(1, attackPower - Data.defense);
             CurrentHp     = Mathf.Max(0, CurrentHp - damage);
+
+            _hpBar?.SetValue(CurrentHp, Data.hp_max);
 
             // 군집 반응 — 피격 시 주변 적에게 알림
             NotifyNearbyEnemies();

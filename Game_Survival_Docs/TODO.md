@@ -69,6 +69,18 @@
 
 ### 🔲 예정
 
+#### 인벤토리 UI — 장비 시스템 연동 (디자인 완료 후 진행)
+
+> 시안 파일: `Game_Survival_Docs/Reference/inventory_mockup.html`
+> 요청서: `Game_Survival_Docs/INVENTORY_UI_DESIGN_REQUEST.md`
+
+- [ ] `InventoryPanel` 리디자인 — 3단 레이아웃 (장비 슬롯 | 아이템 그리드 | 상세 패널)
+- [ ] `EquipmentSlotsSubPanel` — 캐릭터 실루엣 + 6슬롯 (Weapon/Tool/Head/Chest/Legs/Boots), 장착 부위 glow 표시
+- [ ] `InventorySlotElement` 상태 추가 — 선택(금색 테두리) / 장착중(초록 배지)
+- [ ] `ItemDetailSubPanel` — 아이콘, 이름, 카테고리, 설명, 무게, 내구도 바, 티어
+- [ ] 액션 버튼 — 사용(Consumable), 장착/해제(Equipment), 버리기 조건부 활성
+- [ ] `InventoryPanel` ↔ `EquipmentSlots` 연동 — 장착/해제 버튼 → `PlayerController.Equipment` 호출
+
 #### 파밍 시스템 — 추후 기능
 - [ ] 자동 채집 — 범위 안에 머물면 자동으로 채집 진행
 

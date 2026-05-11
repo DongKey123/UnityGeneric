@@ -2,6 +2,7 @@ using Framework.Core.EventBus;
 using SurvivalGame.Battle;
 using SurvivalGame.Input;
 using SurvivalGame.Inventories;
+using SurvivalGame.UI.HUD;
 using UnityEngine;
 
 namespace SurvivalGame.Player
@@ -15,13 +16,17 @@ namespace SurvivalGame.Player
     {
         #region Inspector
 
-        [SerializeField] private float    _moveSpeed    = 5f;
-        [SerializeField] private int      _maxSlots     = 20;
-        [SerializeField] private float    _maxWeight    = 50f;
-        [SerializeField] private int      _maxHp        = 100;
-        [SerializeField] private int      _attackPower  = 10;
-        [SerializeField] private float    _attackRadius = 2.5f;
-        [SerializeField] private Animator _animator;
+        [SerializeField] private float     _moveSpeed      = 5f;
+        [SerializeField] private int       _maxSlots       = 20;
+        [SerializeField] private float     _maxWeight      = 50f;
+        [SerializeField] private int       _maxHp          = 100;
+        [SerializeField] private int       _maxStamina     = 100;
+        [SerializeField] private float     _staminaRegen   = 15f;
+        [SerializeField] private int       _attackPower    = 10;
+        [SerializeField] private float     _attackRadius   = 2.5f;
+        [SerializeField] private Animator  _animator;
+        [SerializeField] private HealthBar _hpBar;
+        [SerializeField] private HealthBar _staminaBar;
 
         #endregion
 
@@ -48,6 +53,12 @@ namespace SurvivalGame.Player
         /// <summary>현재 체력입니다.</summary>
         public int CurrentHp { get; private set; }
 
+        /// <summary>현재 기력입니다.</summary>
+        public int CurrentStamina { get; private set; }
+
+        /// <summary>최대 기력입니다.</summary>
+        public int MaxStamina => _maxStamina;
+
         /// <summary>사망 여부입니다.</summary>
         public bool IsDead { get; private set; }
 
@@ -65,6 +76,7 @@ namespace SurvivalGame.Player
             Inventory              = new Inventory(_maxSlots, _maxWeight);
             Equipment              = new EquipmentSlots();
             CurrentHp              = _maxHp;
+            CurrentStamina         = _maxStamina;
 
             var rangeTrigger       = gameObject.AddComponent<SphereCollider>();
             rangeTrigger.isTrigger = true;
@@ -74,6 +86,7 @@ namespace SurvivalGame.Player
         private void Update()
         {
             HandleTouchAttack();
+            RegenStamina();
         }
 
         private void FixedUpdate()
@@ -92,6 +105,8 @@ namespace SurvivalGame.Player
 
             int damage = Mathf.Max(1, attackPower);
             CurrentHp  = Mathf.Max(0, CurrentHp - damage);
+
+            _hpBar?.SetValue(CurrentHp, _maxHp);
 
             if (CurrentHp == 0)
                 IsDead = true;
@@ -183,6 +198,14 @@ namespace SurvivalGame.Player
 
             FaceTarget(enemy.transform.position);
             enemy.TakeDamage(_attackPower);
+        }
+
+        private void RegenStamina()
+        {
+            if (CurrentStamina >= _maxStamina) return;
+
+            CurrentStamina = Mathf.Min(_maxStamina, CurrentStamina + Mathf.RoundToInt(_staminaRegen * Time.deltaTime));
+            _staminaBar?.SetValue(CurrentStamina, _maxStamina);
         }
 
         private void FaceTarget(Vector3 targetPosition)
