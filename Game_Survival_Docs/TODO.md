@@ -6,7 +6,7 @@
 
 - [x] LDOE 레퍼런스 분석 (GAME_REFERENCE.md)
 - [x] 게임 개요 / 핵심 루프 / 시스템 최소 설계 (DESIGN.md)
-- [ ] 맵 / 지역 구조 상세 설계 (MAP.md)
+- [x] 맵 / 지역 구조 상세 설계 (MAP.md)
 - [ ] 플레이어 스탯 상세 설계 (PLAYER.md)
 - [x] 인벤토리 상세 설계 (INVENTORY.md)
 - [ ] 크래프팅 상세 설계 (CRAFTING.md)
@@ -18,7 +18,7 @@
 
 ## 미결 사항 (설계 중 확정 예정)
 
-- [ ] 씬 구조 — 지역별 씬 분리 vs 단일 씬
+- [x] 씬 구조 — 단일 씬 (메인) + 이벤트 씬 분리로 확정
 - [ ] 레벨 시스템 포함 여부
 - [ ] PvP 레이드 포함 여부
 - [ ] 장기 목표 (최종 콘텐츠)
@@ -48,9 +48,22 @@
 
 #### 인벤토리 UI
 - `MainPanel` — 항상 표시되는 HUD (UIPanel 상속, Default Layer)
-- `InventoryPanel` — 인벤토리 패널 (UIPanel + IInitializable\<Inventory\>, ScrollView)
-- `InventorySlotElement` — 슬롯 단위 Element (배경/아이콘/수량)
+- `InventoryPanelData` — Inventory + EquipmentSlots 전달용 데이터 클래스
+- `InventoryPanel` — 3단 레이아웃 (장비 슬롯 | 아이템 그리드 | 상세 패널), IInitializable\<InventoryPanelData\>
+- `InventorySlotElement` — 슬롯 단위 Element (선택/장착 glow, 배지, 아이콘 동적 로드)
+- `EquipmentSlotsSubPanel` — 캐릭터 실루엣 + 6슬롯, 장착 아이콘 반영
+- `ItemDetailSubPanel` — 아이콘/이름/카테고리/설명/무게/내구도 바/티어 표시
 - `InventoryTestButton` — 아이템 추가 테스트용 임시 버튼 *(테스트 완료 후 제거)*
+- `Resources/Data/Item.json` — icon_path 6종 입력 완료
+- `Resources/Sprites/Items/` — 아이템 아이콘 14종 배치 (Resources.Load 경로)
+
+#### 맵 / 지역 설계
+- `MAP.md` — 단일 씬 구조, CoC식 무한 영역 확장, 자원 오토스폰 테이블, 이벤트 씬 분리
+
+#### 에디터 툴
+- `InventoryPanelSetup` — InventoryPanel / InventorySlotElement 프리팹 자동 생성 (앵커 절대좌표 방식)
+- `FontSetup` — NanumGothic-Bold TMP FontAsset 생성 + 전체 UI 프리팹 적용
+- `PanelRectFixer` — Resources/UI 하위 모든 프리팹 루트 RT 전체화면 Stretch 초기화
 
 #### 씬 초기화
 - `SurvivalEntry` — 데이터 로드 + HUD 초기화 + 자원 스폰 진입점
@@ -69,17 +82,14 @@
 
 ### 🔲 예정
 
-#### 인벤토리 UI — 장비 시스템 연동 (디자인 완료 후 진행)
+#### 인벤토리 UI — 장비 시스템 연동 ✅
 
-> 시안 파일: `Game_Survival_Docs/Reference/inventory_mockup.html`
-> 요청서: `Game_Survival_Docs/INVENTORY_UI_DESIGN_REQUEST.md`
-
-- [ ] `InventoryPanel` 리디자인 — 3단 레이아웃 (장비 슬롯 | 아이템 그리드 | 상세 패널)
-- [ ] `EquipmentSlotsSubPanel` — 캐릭터 실루엣 + 6슬롯 (Weapon/Tool/Head/Chest/Legs/Boots), 장착 부위 glow 표시
-- [ ] `InventorySlotElement` 상태 추가 — 선택(금색 테두리) / 장착중(초록 배지)
-- [ ] `ItemDetailSubPanel` — 아이콘, 이름, 카테고리, 설명, 무게, 내구도 바, 티어
-- [ ] 액션 버튼 — 사용(Consumable), 장착/해제(Equipment), 버리기 조건부 활성
-- [ ] `InventoryPanel` ↔ `EquipmentSlots` 연동 — 장착/해제 버튼 → `PlayerController.Equipment` 호출
+- [x] `InventoryPanel` 리디자인 — 3단 레이아웃 (장비 슬롯 | 아이템 그리드 | 상세 패널)
+- [x] `EquipmentSlotsSubPanel` — 캐릭터 실루엣 + 6슬롯 (Weapon/Tool/Head/Chest/Legs/Boots), 장착 부위 glow 표시
+- [x] `InventorySlotElement` 상태 추가 — 선택(금색 테두리) / 장착중(초록 배지)
+- [x] `ItemDetailSubPanel` — 아이콘, 이름, 카테고리, 설명, 무게, 내구도 바, 티어
+- [x] 액션 버튼 — 사용(Consumable), 장착/해제(Equipment), 버리기 조건부 활성
+- [x] `InventoryPanel` ↔ `EquipmentSlots` 연동 — 장착/해제 버튼 → `PlayerController.Equipment` 호출
 
 #### 파밍 시스템 — 추후 기능
 - [ ] 자동 채집 — 범위 안에 머물면 자동으로 채집 진행

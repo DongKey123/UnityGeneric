@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>인벤토리 UI 시안 — 가로형</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #0a0906;
+  font-family: 'Courier New', monospace;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+}
+
+h2 {
+  color: #6b5f40;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* ══ 폰 외곽 — 가로형 ══ */
+.phone {
+  width: 900px;
+  height: 420px;
+  background: #111009;
+  border: 2px solid #3a3020;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+}
+
+/* ══ 좌: 장비 패널 ══ */
+.equip-col {
+  width: 280px;
+  flex-shrink: 0;
+  background: #0d0b07;
+  border-right: 2px solid #2a2010;
+  display: flex;
+  flex-direction: column;
+}
+
+.col-header {
+  background: #181410;
+  border-bottom: 1px solid #2a2010;
+  padding: 7px 12px;
+  font-size: 8px;
+  color: #4a4030;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+/* 캐릭터 장비 뷰 — 메이플/리니지 스타일 */
+.equip-view {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 배경 격자 */
+.equip-view::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* 캐릭터 실루엣 — 중앙 */
+.char-svg {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -52%);
+}
+
+/* 장착 하이라이트 — 장착된 부위에 glow */
+.char-region {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(12px);
+  pointer-events: none;
+}
+
+/* 연결선 SVG (슬롯 → 인체) */
+.connector-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* 장비 슬롯 */
+.eq-slot {
+  position: absolute;
+  width: 50px; height: 50px;
+  background: #191510;
+  border: 1px solid #352c18;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.eq-slot:hover { border-color: #6a5a30; }
+
+.eq-slot.empty { border-style: dashed; border-color: #1e1a0e; }
+
+.eq-slot.filled {
+  border-color: #4a7820;
+  background: #111808;
+}
+
+.eq-slot.filled:hover { border-color: #70b030; }
+
+/* 선택된 슬롯 */
+.eq-slot.sel-eq {
+  border-color: #d4a843;
+  background: #1c1808;
+  box-shadow: 0 0 10px rgba(212,168,67,0.4);
+}
+
+.eq-slot .ico { font-size: 22px; line-height: 1; }
+.eq-slot.empty .ico { opacity: 0.12; }
+
+.eq-slot .lbl {
+  font-size: 6px;
+  color: #3a3018;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+.eq-slot.filled .lbl { color: #4a7820; }
+.eq-slot.sel-eq .lbl { color: #d4a843; }
+
+.dur {
+  width: 38px; height: 2px;
+  background: #111008;
+  border-radius: 1px;
+  margin-top: 2px;
+  overflow: hidden;
+}
+.dur-fill { height: 100%; border-radius: 1px; }
+.hi  { background: #4a8020; }
+.mid { background: #c06820; }
+.low { background: #a01818; }
+
+/* 슬롯 위치 (280px 컬럼) */
+/* 좌측 컬럼 */
+.pos-weapon { top: 90px;  left: 10px; }
+.pos-head   { top: 16px;  left: 50%; transform: translateX(-50%); }
+/* 우측 컬럼 */
+.pos-tool   { top: 90px;  right: 10px; }
+/* 하단 */
+.pos-chest  { top: 152px; left: 50%; transform: translateX(-50%); }
+.pos-legs   { top: 222px; left: 50%; transform: translateX(-50%); }
+.pos-boots  { top: 290px; left: 50%; transform: translateX(-50%); }
+
+/* ══ 중: 그리드 ══ */
+.grid-col {
+  flex: 1;
+  background: #0e0c07;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border-right: 2px solid #2a2010;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 7px;
+  align-content: start;
+}
+
+.inv-slot {
+  aspect-ratio: 1;
+  background: #161208;
+  border: 1px solid #242010;
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inv-slot .ico { font-size: 22px; }
+.inv-slot .count {
+  position: absolute;
+  bottom: 2px; right: 3px;
+  font-size: 8px;
+  color: #c8a060;
+  font-weight: bold;
+}
+.inv-slot.sel {
+  border-color: #d4a843;
+  background: #1c1808;
+  box-shadow: 0 0 6px rgba(212,168,67,0.25);
+}
+.inv-slot.eq-item { border-color: #2a4818; background: #101808; }
+.inv-slot .badge {
+  position: absolute;
+  top: 2px; right: 2px;
+  width: 11px; height: 11px;
+  background: #2a4818;
+  border-radius: 50%;
+  font-size: 6px;
+  display: flex; align-items: center; justify-content: center;
+  color: #60b020;
+}
+.inv-slot.empty-sl { border-style: dashed; border-color: #181408; }
+
+/* ══ 우: 상세 ══ */
+.detail-col {
+  width: 200px;
+  flex-shrink: 0;
+  background: #0f0d07;
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-header {
+  background: #181410;
+  border-bottom: 1px solid #2a2010;
+  padding: 7px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-btn {
+  width: 24px; height: 24px;
+  border: 1px solid #4a3d20;
+  border-radius: 3px;
+  background: #221d10;
+  color: #c8a060;
+  font-size: 11px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.hdr-stats { text-align: right; }
+.stat { font-size: 9px; color: #6a5a38; }
+.stat b { color: #c8a060; }
+.stat b.warn { color: #d07020; }
+.stat b.ok   { color: #4a8820; }
+
+.detail-body {
+  flex: 1;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.detail-icon-lg {
+  width: 64px; height: 64px;
+  background: #1c1810;
+  border: 1px solid #3a3020;
+  border-radius: 4px;
+  margin: 0 auto;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 34px;
+}
+
+.detail-name {
+  color: #e8d8b0;
+  font-size: 11px;
+  font-weight: bold;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.cat-tag {
+  display: block;
+  text-align: center;
+  font-size: 7px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin: 0 auto;
+  width: fit-content;
+}
+.cat-eq  { background: #1a0830; color: #9060c8; border: 1px solid #381860; }
+.cat-con { background: #200c04; color: #c06830; border: 1px solid #402010; }
+.cat-res { background: #081604; color: #4a8820; border: 1px solid #143008; }
+
+.detail-desc {
+  font-size: 8px;
+  color: #5a4a28;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.detail-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-top: 1px solid #1e1a10;
+  padding-top: 6px;
+}
+
+.dstat {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  color: #5a4a30;
+}
+.dstat span { color: #c8a060; }
+
+.dur-bar { width: 100%; height: 3px; background: #161208; border-radius: 2px; overflow: hidden; margin-top: 1px; }
+.dur-bar-fill { height: 100%; border-radius: 2px; }
+
+.empty-detail {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2a2010;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border: 1px dashed #1e1a10;
+  border-radius: 4px;
+}
+
+.action-bar {
+  border-top: 1px solid #2a2010;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.btn {
+  width: 100%;
+  padding: 8px 0;
+  border-radius: 3px;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-align: center;
+  border: 1px solid;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+}
+.btn.use     { background: #0a1804; border-color: #284818; color: #58a028; }
+.btn.equip   { background: #08081e; border-color: #202858; color: #5868c0; }
+.btn.unequip { background: #180e04; border-color: #482a10; color: #b06820; }
+.btn.drop    { background: #180404; border-color: #480808; color: #a01818; }
+.btn.off     { background: #0e0c08; border-color: #181408; color: #282010; cursor: not-allowed; }
+
+/* ══ 그리드 라벨 ══ */
+.col-label {
+  font-size: 8px;
+  color: #4a4030;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #1e1a10;
+}
+</style>
+</head>
+<body>
+
+
+<!-- ══════ 시안 A: 장비 아이템 선택 ══════ -->
+<div>
+<h2>시안 A — 장비 아이템 선택 (해제 버튼 활성)</h2>
+<div class="phone">
+
+  <!-- ── 장비 컬럼 ── -->
+  <div class="equip-col">
+    <div class="col-header">장비 슬롯</div>
+    <div class="equip-view">
+
+      <!-- 장착 부위 glow (장착된 곳만) -->
+      <div class="char-region" style="width:48px;height:48px;background:#60c030;opacity:0.18;top:16px;left:50%;transform:translateX(-50%);"></div>  <!-- head -->
+      <div class="char-region" style="width:56px;height:56px;background:#60c030;opacity:0.15;top:108px;left:50%;transform:translateX(-50%);"></div> <!-- chest -->
+      <div class="char-region" style="width:44px;height:44px;background:#60c030;opacity:0.12;top:190px;left:50%;transform:translateX(-50%);"></div> <!-- legs -->
+      <div class="char-region" style="width:44px;height:44px;background:#d4a843;opacity:0.25;top:80px;left:14px;"></div> <!-- weapon (selected) -->
+
+      <!-- 캐릭터 실루엣 -->
+      <div class="char-svg">
+        <svg width="100" height="220" viewBox="0 0 60 140" xmlns="http://www.w3.org/2000/svg">
+          <!-- 머리 -->
+          <circle cx="30" cy="11" r="10" fill="#2a2418" stroke="#4a3d20" stroke-width="1"/>
+          <!-- 목 -->
+          <rect x="27" y="20" width="6" height="6" fill="#222018"/>
+          <!-- 몸통 -->
+          <rect x="15" y="26" width="30" height="38" rx="4" fill="#221e12" stroke="#3a3218" stroke-width="1"/>
+          <!-- 왼팔 -->
+          <rect x="4"  y="28" width="12" height="30" rx="4" fill="#1e1a10" stroke="#342e18" stroke-width="1"/>
+          <!-- 오른팔 -->
+          <rect x="44" y="28" width="12" height="30" rx="4" fill="#1e1a10" stroke="#342e18" stroke-width="1"/>
+          <!-- 왼다리 -->
+          <rect x="17" y="64" width="12" height="40" rx="4" fill="#1c1810" stroke="#302a16" stroke-width="1"/>
+          <!-- 오른다리 -->
+          <rect x="31" y="64" width="12" height="40" rx="4" fill="#1c1810" stroke="#302a16" stroke-width="1"/>
+          <!-- 왼발 -->
+          <rect x="14" y="102" width="15" height="10" rx="3" fill="#181408" stroke="#282210" stroke-width="1"/>
+          <!-- 오른발 -->
+          <rect x="31" y="102" width="15" height="10" rx="3" fill="#181408" stroke="#282210" stroke-width="1"/>
+
+          <!-- 장착된 부위 하이라이트 오버레이 -->
+          <!-- 머리 장착 (헬멧) -->
+          <circle cx="30" cy="11" r="10" fill="#60c030" opacity="0.18"/>
+          <!-- 몸통 장착 (조끼) -->
+          <rect x="15" y="26" width="30" height="38" rx="4" fill="#60c030" opacity="0.12"/>
+          <!-- 왼다리 장착 -->
+          <rect x="17" y="64" width="12" height="40" rx="4" fill="#60c030" opacity="0.10"/>
+          <rect x="31" y="64" width="12" height="40" rx="4" fill="#60c030" opacity="0.10"/>
+          <!-- 무기(왼팔) 선택됨 -->
+          <rect x="4" y="28" width="12" height="30" rx="4" fill="#d4a843" opacity="0.22"/>
+        </svg>
+      </div>
+
+      <!-- 연결선 SVG -->
+      <svg class="connector-svg" viewBox="0 0 280 360" xmlns="http://www.w3.org/2000/svg">
+        <!-- weapon → 왼팔 -->
+        <line x1="62" y1="115" x2="104" y2="122" stroke="#d4a843" stroke-width="0.8" opacity="0.6" stroke-dasharray="3,2"/>
+        <!-- head → 머리 -->
+        <line x1="140" y1="66" x2="140" y2="82" stroke="#4a8020" stroke-width="0.8" opacity="0.5" stroke-dasharray="3,2"/>
+        <!-- chest → 몸통 -->
+        <line x1="140" y1="202" x2="140" y2="188" stroke="#4a8020" stroke-width="0.8" opacity="0.5" stroke-dasharray="3,2"/>
+        <!-- tool → 오른팔 -->
+        <line x1="218" y1="115" x2="176" y2="122" stroke="#2a2010" stroke-width="0.8" opacity="0.3" stroke-dasharray="3,2"/>
+        <!-- legs → 다리 -->
+        <line x1="140" y1="272" x2="140" y2="258" stroke="#4a8020" stroke-width="0.8" opacity="0.4" stroke-dasharray="3,2"/>
+      </svg>
+
+      <!-- 장비 슬롯들 -->
+      <div class="eq-slot pos-head filled">
+        <div class="ico">⛑️</div>
+        <div class="lbl">HEAD</div>
+        <div class="dur"><div class="dur-fill hi" style="width:80%"></div></div>
+      </div>
+
+      <div class="eq-slot pos-weapon sel-eq">
+        <div class="ico">⚔️</div>
+        <div class="lbl">WEAPON</div>
+        <div class="dur"><div class="dur-fill mid" style="width:45%"></div></div>
+      </div>
+
+      <div class="eq-slot pos-chest filled">
+        <div class="ico">🦺</div>
+        <div class="lbl">CHEST</div>
+        <div class="dur"><div class="dur-fill hi" style="width:92%"></div></div>
+      </div>
+
+      <div class="eq-slot pos-tool empty">
+        <div class="ico">🪓</div>
+        <div class="lbl">TOOL</div>
+      </div>
+
+      <div class="eq-slot pos-legs filled">
+        <div class="ico">👖</div>
+        <div class="lbl">LEGS</div>
+        <div class="dur"><div class="dur-fill low" style="width:18%"></div></div>
+      </div>
+
+      <div class="eq-slot pos-boots empty">
+        <div class="ico">👢</div>
+        <div class="lbl">BOOTS</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── 그리드 ── -->
+  <div class="grid-col">
+    <div class="col-label">소지품 · 12 / 20</div>
+    <div class="grid">
+      <div class="inv-slot eq-item"><div class="ico">⛑️</div><div class="badge">✓</div></div>
+      <div class="inv-slot eq-item sel"><div class="ico">⚔️</div><div class="badge">✓</div></div>
+      <div class="inv-slot eq-item"><div class="ico">🦺</div><div class="badge">✓</div></div>
+      <div class="inv-slot eq-item"><div class="ico">👖</div><div class="badge">✓</div></div>
+      <div class="inv-slot"><div class="ico">🪵</div><div class="count">×24</div></div>
+      <div class="inv-slot"><div class="ico">🪨</div><div class="count">×18</div></div>
+      <div class="inv-slot"><div class="ico">🍖</div><div class="count">×6</div></div>
+      <div class="inv-slot"><div class="ico">🧴</div><div class="count">×3</div></div>
+      <div class="inv-slot"><div class="ico">🔩</div><div class="count">×12</div></div>
+      <div class="inv-slot"><div class="ico">🪢</div><div class="count">×8</div></div>
+      <div class="inv-slot"><div class="ico">💊</div><div class="count">×2</div></div>
+      <div class="inv-slot"><div class="ico">🪓</div></div>
+      <div class="inv-slot empty-sl"></div><div class="inv-slot empty-sl"></div>
+      <div class="inv-slot empty-sl"></div><div class="inv-slot empty-sl"></div>
+      <div class="inv-slot empty-sl"></div><div class="inv-slot empty-sl"></div>
+      <div class="inv-slot empty-sl"></div><div class="inv-slot empty-sl"></div>
+    </div>
+  </div>
+
+  <!-- ── 상세 ── -->
+  <div class="detail-col">
+    <div class="detail-header">
+      <div class="close-btn">✕</div>
+      <div class="hdr-stats">
+        <div class="stat">무게 <b class="warn">38.5</b>/50</div>
+        <div class="stat">슬롯 <b>12</b>/20</div>
+      </div>
+    </div>
+    <div class="detail-body">
+      <div class="detail-icon-lg">⚔️</div>
+      <div class="detail-name">철제 단검</div>
+      <span class="cat-tag cat-eq">장비 · WEAPON</span>
+      <div class="detail-desc">단단하게 단조된 철제 단검.<br>빠른 연속 공격에 유리하다.</div>
+      <div class="detail-stats">
+        <div class="dstat">무게 <span>1.2 kg</span></div>
+        <div class="dstat">티어 <span>★★☆</span></div>
+        <div class="dstat">내구도 <span>45/100</span></div>
+        <div class="dur-bar"><div class="dur-bar-fill mid" style="width:45%;background:#c06820;"></div></div>
+      </div>
+    </div>
+    <div class="action-bar">
+      <div class="btn off">사용</div>
+      <div class="btn unequip">해제</div>
+      <div class="btn drop">버리기</div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+
+<!-- ══════ 시안 B: 미장착 상태 ══════ -->
+<div>
+<h2>시안 B — 장비 미장착 상태 (장착 버튼 활성)</h2>
+<div class="phone">
+
+  <div class="equip-col">
+    <div class="col-header">장비 슬롯</div>
+    <div class="equip-view">
+
+      <div class="char-svg">
+        <svg width="100" height="220" viewBox="0 0 60 140" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="30" cy="11" r="10" fill="#1e1a10" stroke="#302a14" stroke-width="1"/>
+          <rect x="27" y="20" width="6" height="6" fill="#181508"/>
+          <rect x="15" y="26" width="30" height="38" rx="4" fill="#1a1810" stroke="#282214" stroke-width="1"/>
+          <rect x="4"  y="28" width="12" height="30" rx="4" fill="#181408" stroke="#242010" stroke-width="1"/>
+          <rect x="44" y="28" width="12" height="30" rx="4" fill="#181408" stroke="#242010" stroke-width="1"/>
+          <rect x="17" y="64" width="12" height="40" rx="4" fill="#161208" stroke="#201c10" stroke-width="1"/>
+          <rect x="31" y="64" width="12" height="40" rx="4" fill="#161208" stroke="#201c10" stroke-width="1"/>
+          <rect x="14" y="102" width="15" height="10" rx="3" fill="#121008" stroke="#1c1a08" stroke-width="1"/>
+          <rect x="31" y="102" width="15" height="10" rx="3" fill="#121008" stroke="#1c1a08" stroke-width="1"/>
+        </svg>
+      </div>
+
+      <!-- 선택된 아이템(도끼)이 장착될 슬롯(TOOL) 강조 -->
+      <div class="char-region" style="width:44px;height:44px;background:#5868c0;opacity:0.20;top:80px;right:14px;"></div>
+
+      <svg class="connector-svg" viewBox="0 0 280 360" xmlns="http://www.w3.org/2000/svg">
+        <line x1="218" y1="115" x2="176" y2="122" stroke="#5868c0" stroke-width="1" opacity="0.5" stroke-dasharray="3,2"/>
+      </svg>
+
+      <div class="eq-slot pos-head empty"><div class="ico">⛑️</div><div class="lbl">HEAD</div></div>
+      <div class="eq-slot pos-weapon empty"><div class="ico">⚔️</div><div class="lbl">WEAPON</div></div>
+      <div class="eq-slot pos-chest empty"><div class="ico">🦺</div><div class="lbl">CHEST</div></div>
+      <!-- TOOL 슬롯: 장착 예정 하이라이트 -->
+      <div class="eq-slot pos-tool" style="border-color:#5868c0;background:#0c0c1c;box-shadow:0 0 8px rgba(88,104,192,0.35);">
+        <div class="ico">🪓</div>
+        <div class="lbl" style="color:#5868c0;">TOOL</div>
+      </div>
+      <div class="eq-slot pos-legs empty"><div class="ico">👖</div><div class="lbl">LEGS</div></div>
+      <div class="eq-slot pos-boots empty"><div class="ico">👢</div><div class="lbl">BOOTS</div></div>
+    </div>
+  </div>
+
+  <div class="grid-col">
+    <div class="col-label">소지품 · 4 / 20</div>
+    <div class="grid">
+      <div class="inv-slot"><div class="ico">🪵</div><div class="count">×10</div></div>
+      <div class="inv-slot"><div class="ico">🍖</div><div class="count">×3</div></div>
+      <div class="inv-slot sel"><div class="ico">🪓</div></div>
+      <div class="inv-slot"><div class="ico">💊</div><div class="count">×2</div></div>
+      <div class="inv-slot empty-sl"></div><div class="inv-slot empty-sl"></div>
+      <div class="inv-slot empty-sl"></div><div class="inv-slot empty-sl"></div>
+      <div class="inv-slot empty-sl"></div><div class="inv-slot empty-sl"></div>
+      <div class="inv-slot empty-sl"></div><div class="inv-slot empty-sl"></div>
+      <div class="inv-slot empty-sl"></div><div class="inv-slot empty-sl"></div>
+      <div class="inv-slot empty-sl"></div><div class="inv-slot empty-sl"></div>
+      <div class="inv-slot empty-sl"></div><div class="inv-slot empty-sl"></div>
+      <div class="inv-slot empty-sl"></div><div class="inv-slot empty-sl"></div>
+    </div>
+  </div>
+
+  <div class="detail-col">
+    <div class="detail-header">
+      <div class="close-btn">✕</div>
+      <div class="hdr-stats">
+        <div class="stat">무게 <b class="ok">5.8</b>/50</div>
+        <div class="stat">슬롯 <b>4</b>/20</div>
+      </div>
+    </div>
+    <div class="detail-body">
+      <div class="detail-icon-lg">🪓</div>
+      <div class="detail-name">철제 도끼</div>
+      <span class="cat-tag cat-eq">장비 · TOOL</span>
+      <div class="detail-desc">나무 채집에 특화된 도끼.<br>장착 시 채집 효율 증가.</div>
+      <div class="detail-stats">
+        <div class="dstat">무게 <span>2.0 kg</span></div>
+        <div class="dstat">티어 <span>★☆☆</span></div>
+        <div class="dstat">내구도 <span>100/100</span></div>
+        <div class="dur-bar"><div class="dur-bar-fill hi" style="width:100%;background:#4a8020;"></div></div>
+      </div>
+    </div>
+    <div class="action-bar">
+      <div class="btn off">사용</div>
+      <div class="btn equip">장착</div>
+      <div class="btn drop">버리기</div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+
+<!-- ══════ 시안 C: 소비 아이템 선택 ══════ -->
+<div>
+<h2>시안 C — 소비 아이템 선택 (사용 버튼 활성)</h2>
+<div class="phone">
+
+  <div class="equip-col">
+    <div class="col-header">장비 슬롯</div>
+    <div class="equip-view">
+      <div class="char-region" style="width:48px;height:48px;background:#60c030;opacity:0.18;top:16px;left:50%;transform:translateX(-50%);"></div>
+      <div class="char-region" style="width:56px;height:56px;background:#60c030;opacity:0.15;top:108px;left:50%;transform:translateX(-50%);"></div>
+
+      <div class="char-svg">
+        <svg width="100" height="220" viewBox="0 0 60 140" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="30" cy="11" r="10" fill="#2a2418" stroke="#4a3d20" stroke-width="1"/>
+          <rect x="27" y="20" width="6" height="6" fill="#222018"/>
+          <rect x="15" y="26" width="30" height="38" rx="4" fill="#221e12" stroke="#3a3218" stroke-width="1"/>
+          <rect x="4"  y="28" width="12" height="30" rx="4" fill="#1e1a10" stroke="#342e18" stroke-width="1"/>
+          <rect x="44" y="28" width="12" height="30" rx="4" fill="#1e1a10" stroke="#342e18" stroke-width="1"/>
+          <rect x="17" y="64" width="12" height="40" rx="4" fill="#1c1810" stroke="#302a16" stroke-width="1"/>
+          <rect x="31" y="64" width="12" height="40" rx="4" fill="#1c1810" stroke="#302a16" stroke-width="1"/>
+          <rect x="14" y="102" width="15" height="10" rx="3" fill="#181408" stroke="#282210" stroke-width="1"/>
+          <rect x="31" y="102" width="15" height="10" rx="3" fill="#181408" stroke="#282210" stroke-width="1"/>
+          <circle cx="30" cy="11" r="10" fill="#60c030" opacity="0.18"/>
+          <rect x="15" y="26" width="30" height="38" rx="4" fill="#60c030" opacity="0.12"/>
+        </svg>
+      </div>
+
+      <svg class="connector-svg" viewBox="0 0 280 360" xmlns="http://www.w3.org/2000/svg">
+        <line x1="140" y1="66" x2="140" y2="82" stroke="#4a8020" stroke-width="0.8" opacity="0.5" stroke-dasharray="3,2"/>
+        <line x1="140" y1="202" x2="140" y2="188" stroke="#4a8020" stroke-width="0.8" opacity="0.5" stroke-dasharray="3,2"/>
+      </svg>
+
+      <div class="eq-slot pos-head filled"><div class="ico">⛑️</div><div class="lbl">HEAD</div><div class="dur"><div class="dur-fill hi" style="width:80%"></div></div></div>
+      <div class="eq-slot pos-weapon empty"><div class="ico">⚔️</div><div class="lbl">WEAPON</div></div>
+      <div class="eq-slot pos-chest filled"><div class="ico">🦺</div><div class="lbl">CHEST</div><div class="dur"><div class="dur-fill hi" style="width:92%"></div></div></div>
+      <div class="eq-slot pos-tool empty"><div class="ico">🪓</div><div class="lbl">TOOL</div></div>
+      <div class="eq-slot pos-legs empty"><div class="ico">👖</div><div class="lbl">LEGS</div></div>
+      <div class="eq-slot pos-boots empty"><div class="ico">👢</div><div class="lbl">BOOTS</div></div>
+    </div>
+  </div>
+
+  <div class="grid-col">
+    <div class="col-label">소지품 · 6 / 20</div>
+    <div class="grid">
+      <div class="inv-slot eq-item"><div class="ico">⛑️</div><div class="badge">✓</div></div>
+      <div class="inv-slot eq-item"><div class="ico">🦺</div><div class="badge">✓</div></div>
+      <div class="inv-slot"><div class="ico">🪵</div><div class="count">×10</div></div>
+      <div class="inv-slot"><div class="ico">🪨</div><div class="count">×5</div></div>
+      <div class="inv-slot sel"><div class="ico">🍖</div><div class="count">×6</div></div>
+      <div class="inv-slot"><div class="ico">💊</div><div class="count">×2</div></div>
+      <div class="inv-slot empty-sl"></div><div class="inv-slot empty-sl"></div>
+      <div class="inv-slot empty-sl"></div><div class="inv-slot empty-sl"></div>
+      <div class="inv-slot empty-sl"></div><div class="inv-slot empty-sl"></div>
+      <div class="inv-slot empty-sl"></div><div class="inv-slot empty-sl"></div>
+      <div class="inv-slot empty-sl"></div><div class="inv-slot empty-sl"></div>
+      <div class="inv-slot empty-sl"></div><div class="inv-slot empty-sl"></div>
+      <div class="inv-slot empty-sl"></div><div class="inv-slot empty-sl"></div>
+    </div>
+  </div>
+
+  <div class="detail-col">
+    <div class="detail-header">
+      <div class="close-btn">✕</div>
+      <div class="hdr-stats">
+        <div class="stat">무게 <b class="ok">11.2</b>/50</div>
+        <div class="stat">슬롯 <b>6</b>/20</div>
+      </div>
+    </div>
+    <div class="detail-body">
+      <div class="detail-icon-lg">🍖</div>
+      <div class="detail-name">구운 고기</div>
+      <span class="cat-tag cat-con">소비</span>
+      <div class="detail-desc">불에 구운 고기.<br>섭취 시 체력을 회복한다.</div>
+      <div class="detail-stats">
+        <div class="dstat">무게 <span>0.3 kg</span></div>
+        <div class="dstat">수량 <span>6 개</span></div>
+        <div class="dstat">회복 <span>+30 HP</span></div>
+      </div>
+    </div>
+    <div class="action-bar">
+      <div class="btn use">사용</div>
+      <div class="btn off">장착</div>
+      <div class="btn drop">버리기</div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+</body>
+</html>

@@ -6,7 +6,7 @@
     "category": "Resource",
     "weight": 0.5,
     "max_stack": 50,
-    "icon_path": "",
+    "icon_path": "Sprites/Items/icon_wood",
     "equipment_slot": "",
     "durability_max": 0,
     "tier": 0
@@ -18,7 +18,7 @@
     "category": "Resource",
     "weight": 1.0,
     "max_stack": 50,
-    "icon_path": "",
+    "icon_path": "Sprites/Items/icon_stone",
     "equipment_slot": "",
     "durability_max": 0,
     "tier": 0
@@ -30,7 +30,7 @@
     "category": "Resource",
     "weight": 2.0,
     "max_stack": 30,
-    "icon_path": "",
+    "icon_path": "Sprites/Items/icon_screw",
     "equipment_slot": "",
     "durability_max": 0,
     "tier": 0
@@ -42,7 +42,7 @@
     "category": "Equipment",
     "weight": 1.5,
     "max_stack": 1,
-    "icon_path": "",
+    "icon_path": "Sprites/Items/icon_axe",
     "equipment_slot": "Tool",
     "durability_max": 100,
     "tier": 1
@@ -54,7 +54,7 @@
     "category": "Equipment",
     "weight": 2.0,
     "max_stack": 1,
-    "icon_path": "",
+    "icon_path": "Sprites/Items/icon_sword",
     "equipment_slot": "Weapon",
     "durability_max": 80,
     "tier": 1
@@ -66,7 +66,7 @@
     "category": "Consumable",
     "weight": 0.2,
     "max_stack": 10,
-    "icon_path": "",
+    "icon_path": "Sprites/Items/icon_pill",
     "equipment_slot": "",
     "durability_max": 0,
     "tier": 0

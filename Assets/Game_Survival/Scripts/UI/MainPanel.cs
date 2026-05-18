@@ -111,7 +111,11 @@ namespace SurvivalGame.UI
             if (UIManager.Instance.IsOpen<InventoryPanel>())
                 UIManager.Instance.Close();
             else
-                UIManager.Instance.Open<InventoryPanel, Inventory>(_player.Inventory);
+                UIManager.Instance.Open<InventoryPanel, InventoryPanelData>(new InventoryPanelData
+                {
+                    Inventory = _player.Inventory,
+                    Equipment = _player.Equipment,
+                });
         }
 
         private void OnClickHarvest()
