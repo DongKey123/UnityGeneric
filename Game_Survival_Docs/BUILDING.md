@@ -17,6 +17,44 @@
 | 그리드 크기 | **미정** |
 | 배치 제한 | 기존 건물과 겹침 불가, 그리드 범위 내 |
 | 철거 | 배치 후 철거 가능, 재료 일부 반환 |
+| 건설 시간 | `construction_time` (초 단위, 0 = 즉시 설치) |
+
+### 건설 데이터 구조 (Building.json)
+
+```json
+{
+  "building_id": 2,
+  "name": "Wood Floor",
+  "category": "Structure",
+  "prefab_path": "Prefabs/Building/Floor_Wood",
+  "grid_width": 1,
+  "grid_height": 1,
+  "construction_time": 5,
+  "durability_max": 100,
+  "costs": [
+    { "item_id": 1001, "count": 5 }
+  ]
+}
+```
+
+| 필드 | 설명 |
+|------|------|
+| `category` | `"Structure"` / `"Furniture"` / `"Production"` |
+| `construction_time` | 건설 소요 시간 (초, 0 = 즉시) |
+| `durability_max` | 내구도 (0 = 파괴 불가 건물) |
+
+---
+
+## 초반 튜토리얼 흐름
+
+| 단계 | 내용 | 비고 |
+|------|------|------|
+| 1 | 시작 시 나무 N개 지급 + Campfire 자동 설치 | Campfire = 거점 개념 (즉시 설치, 무료) |
+| 2 | 퀘스트: 나무 채집 → Wood Floor 건설 | 건설 시간 5초, 나무 5개 소모 |
+| 3 | 퀘스트: Storage Box 건설 | 아이템 보관 개념 소개 |
+| 4 | 크래프팅 UI 소개 → 첫 도구 제작 | 재화만 있으면 제작 가능 |
+| 5 | 퀘스트: 몬스터 처치 | 전투 소개 |
+| 6 | 퀘스트: Lumber Mill 건설 | 방치형 자동 채집 소개 |
 
 ---
 
@@ -35,10 +73,17 @@
 
 | 건물 | 설명 |
 |------|------|
-| 저장 상자 | 아이템 보관 |
-| 작업대 (티어별) | 크래프팅 가능 범위 결정 |
-| 캠프파이어 | 음식 조리 |
+| Campfire | 시작 지급, 음식 조리, 거점 표시 |
+| Storage Box | 아이템 보관 |
 | 침대 | 체력 회복 / 오프라인 보상 거점 |
+
+### 자동 생산 (Production)
+
+| 건물 | 생산 자원 | 설명 |
+|------|----------|------|
+| Lumber Mill (벌목장) | 나무 | 레벨별 시간당 생산량 증가 |
+| Quarry (채석장) | 돌 | 레벨별 시간당 생산량 증가 |
+| 추가 건물 | **미정** | 금속 등 고급 자원 |
 
 ---
 

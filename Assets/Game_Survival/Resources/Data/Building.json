@@ -1,12 +1,93 @@
 [
   {
     "building_id": 1,
+    "name": "Campfire",
+    "category": "Furniture",
+    "prefab_path": "Prefabs/Building/Campfire",
+    "grid_width": 1,
+    "grid_height": 1,
+    "construction_time": 0,
+    "durability_max": 0,
+    "costs": []
+  },
+  {
+    "building_id": 2,
     "name": "Wood Floor",
+    "category": "Structure",
     "prefab_path": "Prefabs/Building/Floor_Wood",
     "grid_width": 1,
     "grid_height": 1,
+    "construction_time": 5,
+    "durability_max": 100,
     "costs": [
-      { "item_id": 1001, "count": 2 }
+      { "item_id": 1001, "count": 5 }
+    ]
+  },
+  {
+    "building_id": 3,
+    "name": "Wood Wall",
+    "category": "Structure",
+    "prefab_path": "Prefabs/Building/Wall_Wood",
+    "grid_width": 1,
+    "grid_height": 1,
+    "construction_time": 10,
+    "durability_max": 150,
+    "costs": [
+      { "item_id": 1001, "count": 8 }
+    ]
+  },
+  {
+    "building_id": 4,
+    "name": "Workbench",
+    "category": "Furniture",
+    "prefab_path": "Prefabs/Building/Workbench",
+    "grid_width": 1,
+    "grid_height": 1,
+    "construction_time": 15,
+    "durability_max": 0,
+    "costs": [
+      { "item_id": 1001, "count": 10 }
+    ]
+  },
+  {
+    "building_id": 5,
+    "name": "Storage Box",
+    "category": "Furniture",
+    "prefab_path": "Prefabs/Building/StorageBox",
+    "grid_width": 1,
+    "grid_height": 1,
+    "construction_time": 10,
+    "durability_max": 0,
+    "costs": [
+      { "item_id": 1001, "count": 6 }
+    ]
+  },
+  {
+    "building_id": 6,
+    "name": "Lumber Mill",
+    "category": "Production",
+    "prefab_path": "Prefabs/Building/LumberMill",
+    "grid_width": 2,
+    "grid_height": 2,
+    "construction_time": 60,
+    "durability_max": 0,
+    "costs": [
+      { "item_id": 1001, "count": 20 },
+      { "item_id": 1002, "count": 10 }
+    ]
+  },
+  {
+    "building_id": 7,
+    "name": "Quarry",
+    "category": "Production",
+    "prefab_path": "Prefabs/Building/Quarry",
+    "grid_width": 2,
+    "grid_height": 2,
+    "construction_time": 60,
+    "durability_max": 0,
+    "costs": [
+      { "item_id": 1001, "count": 10 },
+      { "item_id": 1002, "count": 20 }
     ]
   }
 ]

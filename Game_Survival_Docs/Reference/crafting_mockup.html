@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>크래프팅 UI 시안 — 가로형</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #0a0906;
+  font-family: 'Courier New', monospace;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+}
+
+h2 {
+  color: #6b5f40;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* ══ 폰 외곽 — 가로형 ══ */
+.phone {
+  width: 900px;
+  height: 460px;
+  background: #111009;
+  border: 2px solid #3a3020;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ══ 탭 바 ══ */
+.tab-bar {
+  height: 44px;
+  background: #0d0b07;
+  border-bottom: 2px solid #2a2010;
+  display: flex;
+  align-items: stretch;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 24px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-right: 1px solid #2a2010;
+  color: #3a3020;
+  transition: background 0.15s, color 0.15s;
+}
+
+.tab .tab-ico { font-size: 14px; }
+
+.tab:hover { background: #161210; color: #6a5a30; }
+
+.tab.active {
+  background: #181410;
+  color: #c8a84a;
+  border-bottom: 2px solid #c8a84a;
+  margin-bottom: -2px;
+}
+
+.tab-close {
+  margin-left: auto;
+  width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: #3a3020;
+  cursor: pointer;
+  border-left: 1px solid #2a2010;
+}
+.tab-close:hover { color: #a03020; background: #180d0a; }
+
+/* ══ 바디 ══ */
+.body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* ══ 좌: 레시피 목록 ══ */
+.recipe-col {
+  width: 340px;
+  flex-shrink: 0;
+  background: #0d0b07;
+  border-right: 2px solid #2a2010;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.col-header {
+  background: #181410;
+  border-bottom: 1px solid #2a2010;
+  padding: 7px 14px;
+  font-size: 7px;
+  color: #4a4030;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.recipe-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.recipe-list::-webkit-scrollbar { width: 4px; }
+.recipe-list::-webkit-scrollbar-track { background: #0a0806; }
+.recipe-list::-webkit-scrollbar-thumb { background: #2a2010; border-radius: 2px; }
+
+/* ══ 레시피 카드 ══ */
+.recipe-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #111009;
+  border: 1px solid #252015;
+  border-radius: 4px;
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.recipe-card:hover { border-color: #4a3a18; background: #141208; }
+
+.recipe-card.selected {
+  border-color: #c8a84a;
+  background: #181408;
+  box-shadow: 0 0 8px rgba(200,168,74,0.2);
+}
+
+.recipe-card.disabled { opacity: 0.45; cursor: default; }
+.recipe-card.disabled:hover { border-color: #252015; background: #111009; }
+
+.card-icon {
+  width: 44px; height: 44px;
+  background: #191510;
+  border: 1px solid #302818;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.card-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.card-name {
+  font-size: 11px;
+  color: #c8b880;
+  letter-spacing: 0.5px;
+}
+
+.card-ingredients {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ing {
+  font-size: 9px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.ing .ico { font-size: 11px; }
+.ing .ok  { color: #5a9830; }
+.ing .ng  { color: #a03020; }
+
+.card-arrow {
+  font-size: 10px;
+  color: #3a3020;
+  flex-shrink: 0;
+}
+.recipe-card.selected .card-arrow { color: #c8a84a; }
+
+/* ══ 우: 상세 패널 ══ */
+.detail-col {
+  flex: 1;
+  background: #0e0c08;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.detail-empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  color: #2a2010;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.detail-body {
+  flex: 1;
+  padding: 18px 20px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+/* 결과 아이템 헤더 */
+.detail-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #252015;
+}
+
+.detail-icon {
+  width: 64px; height: 64px;
+  background: #191510;
+  border: 1px solid #352c18;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.detail-title { display: flex; flex-direction: column; gap: 5px; }
+
+.detail-name {
+  font-size: 14px;
+  color: #e8d8a0;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.detail-tags { display: flex; gap: 6px; }
+
+.tag {
+  font-size: 8px;
+  padding: 2px 7px;
+  border-radius: 2px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.tag-eq  { background: #1a2a3a; color: #4a8aaa; border: 1px solid #2a4a5a; }
+.tag-res { background: #1a2a1a; color: #4a8a4a; border: 1px solid #2a4a2a; }
+.tag-con { background: #2a1a1a; color: #aa4a4a; border: 1px solid #4a2a2a; }
+
+/* 아이템 정보 */
+.detail-info { display: flex; flex-direction: column; gap: 6px; }
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+}
+.info-label { color: #4a4030; width: 36px; flex-shrink: 0; letter-spacing: 1px; }
+.info-val   { color: #c8b880; }
+
+.info-desc {
+  font-size: 10px;
+  color: #6a5a40;
+  line-height: 1.5;
+  padding: 6px 8px;
+  background: #111009;
+  border: 1px solid #252015;
+  border-radius: 3px;
+}
+
+/* 재료 목록 */
+.ing-section { display: flex; flex-direction: column; gap: 6px; }
+
+.ing-title {
+  font-size: 8px;
+  color: #4a4030;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #252015;
+}
+
+.ing-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  background: #111009;
+  border: 1px solid #252015;
+  border-radius: 3px;
+}
+.ing-row .ico2 { font-size: 16px; }
+.ing-row .iname { flex: 1; font-size: 10px; color: #c8b880; }
+.ing-row .icount { font-size: 10px; font-weight: bold; }
+.ing-row .icount.ok { color: #5a9830; }
+.ing-row .icount.ng { color: #a03020; }
+.ing-row .ibar {
+  width: 60px; height: 3px;
+  background: #1a1508;
+  border-radius: 1px;
+  overflow: hidden;
+}
+.ing-row .ibar-fill { height: 100%; border-radius: 1px; }
+.ok-bar { background: #5a9830; }
+.ng-bar { background: #a03020; }
+
+/* 버튼 영역 */
+.detail-footer {
+  padding: 10px 20px 14px;
+  display: flex;
+  gap: 10px;
+  border-top: 1px solid #252015;
+  flex-shrink: 0;
+}
+
+.btn-craft {
+  flex: 1;
+  height: 40px;
+  background: #1a3010;
+  border: 1px solid #3a6020;
+  border-radius: 3px;
+  color: #70c040;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  font-family: 'Courier New', monospace;
+}
+.btn-craft:hover { background: #22401a; border-color: #5a8030; }
+.btn-craft.disabled {
+  background: #141210;
+  border-color: #252015;
+  color: #3a3020;
+  cursor: default;
+}
+
+.btn-cancel {
+  width: 80px;
+  height: 40px;
+  background: #1a1208;
+  border: 1px solid #3a2c14;
+  border-radius: 3px;
+  color: #6a5a30;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Courier New', monospace;
+}
+.btn-cancel:hover { background: #221a0a; border-color: #5a4a20; color: #9a8a50; }
+
+/* ══ 레이블 ══ */
+.label { color: #6b5f40; font-size: 9px; letter-spacing: 2px; text-align: center; }
+</style>
+</head>
+<body>
+
+<h2>crafting ui mockup</h2>
+<div class="label">State A — 레시피 미선택</div>
+
+<!-- ══════════ STATE A : 미선택 ══════════ -->
+<div class="phone">
+  <!-- 탭 바 -->
+  <div class="tab-bar">
+    <div class="tab"><span class="tab-ico">🏗</span> 빌딩</div>
+    <div class="tab active"><span class="tab-ico">⚒</span> 아이템 제작</div>
+    <div class="tab-close">✕</div>
+  </div>
+
+  <!-- 바디 -->
+  <div class="body">
+    <!-- 레시피 목록 -->
+    <div class="recipe-col">
+      <div class="col-header">레시피 목록</div>
+      <div class="recipe-list">
+
+        <!-- 제작 가능 -->
+        <div class="recipe-card">
+          <div class="card-icon">🪓</div>
+          <div class="card-info">
+            <div class="card-name">나무 도끼 ×1</div>
+            <div class="card-ingredients">
+              <div class="ing"><span class="ico">🪵</span><span class="ok">나무 5/5</span></div>
+            </div>
+          </div>
+          <div class="card-arrow">▶</div>
+        </div>
+
+        <!-- 재료 부족 -->
+        <div class="recipe-card disabled">
+          <div class="card-icon">🗡</div>
+          <div class="card-info">
+            <div class="card-name">나무 검 ×1</div>
+            <div class="card-ingredients">
+              <div class="ing"><span class="ico">🪵</span><span class="ng">나무 3/5</span></div>
+              <div class="ing"><span class="ico">🪨</span><span class="ng">돌 0/2</span></div>
+            </div>
+          </div>
+          <div class="card-arrow">▶</div>
+        </div>
+
+        <!-- 제작 가능 -->
+        <div class="recipe-card">
+          <div class="card-icon">🩹</div>
+          <div class="card-info">
+            <div class="card-name">붕대 ×3</div>
+            <div class="card-ingredients">
+              <div class="ing"><span class="ico">🪵</span><span class="ok">나무 3/3</span></div>
+            </div>
+          </div>
+          <div class="card-arrow">▶</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 상세 — 빈 상태 -->
+    <div class="detail-col">
+      <div class="detail-empty">레시피를 선택하세요</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ STATE B : 제작 가능 선택 ══════════ -->
+<div class="label">State B — 제작 가능 레시피 선택</div>
+<div class="phone">
+  <div class="tab-bar">
+    <div class="tab"><span class="tab-ico">🏗</span> 빌딩</div>
+    <div class="tab active"><span class="tab-ico">⚒</span> 아이템 제작</div>
+    <div class="tab-close">✕</div>
+  </div>
+
+  <div class="body">
+    <div class="recipe-col">
+      <div class="col-header">레시피 목록</div>
+      <div class="recipe-list">
+
+        <div class="recipe-card selected">
+          <div class="card-icon">🪓</div>
+          <div class="card-info">
+            <div class="card-name">나무 도끼 ×1</div>
+            <div class="card-ingredients">
+              <div class="ing"><span class="ico">🪵</span><span class="ok">나무 5/5</span></div>
+            </div>
+          </div>
+          <div class="card-arrow">▶</div>
+        </div>
+
+        <div class="recipe-card disabled">
+          <div class="card-icon">🗡</div>
+          <div class="card-info">
+            <div class="card-name">나무 검 ×1</div>
+            <div class="card-ingredients">
+              <div class="ing"><span class="ico">🪵</span><span class="ng">나무 3/5</span></div>
+              <div class="ing"><span class="ico">🪨</span><span class="ng">돌 0/2</span></div>
+            </div>
+          </div>
+          <div class="card-arrow">▶</div>
+        </div>
+
+        <div class="recipe-card">
+          <div class="card-icon">🩹</div>
+          <div class="card-info">
+            <div class="card-name">붕대 ×3</div>
+            <div class="card-ingredients">
+              <div class="ing"><span class="ico">🪵</span><span class="ok">나무 3/3</span></div>
+            </div>
+          </div>
+          <div class="card-arrow">▶</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 상세 — 제작 가능 -->
+    <div class="detail-col">
+      <div class="detail-body">
+
+        <!-- 결과 아이템 헤더 -->
+        <div class="detail-header">
+          <div class="detail-icon">🪓</div>
+          <div class="detail-title">
+            <div class="detail-name">나무 도끼</div>
+            <div class="detail-tags">
+              <span class="tag tag-eq">장비</span>
+              <span class="tag tag-eq">도구</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 아이템 정보 -->
+        <div class="detail-info">
+          <div class="info-row">
+            <span class="info-label">무게</span>
+            <span class="info-val">1.5 kg</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">내구도</span>
+            <span class="info-val">100 / 100</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">티어</span>
+            <span class="info-val" style="color:#c8a84a;">Tier 1</span>
+          </div>
+          <div class="info-desc">목재로 만든 기초적인 도끼. 나무 채집 속도가 증가한다.</div>
+        </div>
+
+        <!-- 재료 -->
+        <div class="ing-section">
+          <div class="ing-title">필요 재료</div>
+          <div class="ing-row">
+            <span class="ico2">🪵</span>
+            <span class="iname">나무</span>
+            <span class="icount ok">5 / 5</span>
+            <div class="ibar"><div class="ibar-fill ok-bar" style="width:100%"></div></div>
+          </div>
+        </div>
+
+      </div>
+      <div class="detail-footer">
+        <button class="btn-craft">⚒ 제작</button>
+        <button class="btn-cancel">취소</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ STATE C : 재료 부족 선택 ══════════ -->
+<div class="label">State C — 재료 부족 레시피 선택</div>
+<div class="phone">
+  <div class="tab-bar">
+    <div class="tab"><span class="tab-ico">🏗</span> 빌딩</div>
+    <div class="tab active"><span class="tab-ico">⚒</span> 아이템 제작</div>
+    <div class="tab-close">✕</div>
+  </div>
+
+  <div class="body">
+    <div class="recipe-col">
+      <div class="col-header">레시피 목록</div>
+      <div class="recipe-list">
+
+        <div class="recipe-card">
+          <div class="card-icon">🪓</div>
+          <div class="card-info">
+            <div class="card-name">나무 도끼 ×1</div>
+            <div class="card-ingredients">
+              <div class="ing"><span class="ico">🪵</span><span class="ok">나무 5/5</span></div>
+            </div>
+          </div>
+          <div class="card-arrow">▶</div>
+        </div>
+
+        <div class="recipe-card selected">
+          <div class="card-icon">🗡</div>
+          <div class="card-info">
+            <div class="card-name">나무 검 ×1</div>
+            <div class="card-ingredients">
+              <div class="ing"><span class="ico">🪵</span><span class="ng">나무 3/5</span></div>
+              <div class="ing"><span class="ico">🪨</span><span class="ng">돌 0/2</span></div>
+            </div>
+          </div>
+          <div class="card-arrow">▶</div>
+        </div>
+
+        <div class="recipe-card">
+          <div class="card-icon">🩹</div>
+          <div class="card-info">
+            <div class="card-name">붕대 ×3</div>
+            <div class="card-ingredients">
+              <div class="ing"><span class="ico">🪵</span><span class="ok">나무 3/3</span></div>
+            </div>
+          </div>
+          <div class="card-arrow">▶</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 상세 — 재료 부족 -->
+    <div class="detail-col">
+      <div class="detail-body">
+
+        <div class="detail-header">
+          <div class="detail-icon">🗡</div>
+          <div class="detail-title">
+            <div class="detail-name">나무 검</div>
+            <div class="detail-tags">
+              <span class="tag tag-eq">장비</span>
+              <span class="tag tag-eq">무기</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-info">
+          <div class="info-row">
+            <span class="info-label">무게</span>
+            <span class="info-val">2.0 kg</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">내구도</span>
+            <span class="info-val">80 / 80</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">티어</span>
+            <span class="info-val" style="color:#c8a84a;">Tier 1</span>
+          </div>
+          <div class="info-desc">목재로 깎아 만든 단순한 검. 근접 전투에 사용한다.</div>
+        </div>
+
+        <div class="ing-section">
+          <div class="ing-title">필요 재료</div>
+          <div class="ing-row">
+            <span class="ico2">🪵</span>
+            <span class="iname">나무</span>
+            <span class="icount ng">3 / 5</span>
+            <div class="ibar"><div class="ibar-fill ng-bar" style="width:60%"></div></div>
+          </div>
+          <div class="ing-row">
+            <span class="ico2">🪨</span>
+            <span class="iname">돌</span>
+            <span class="icount ng">0 / 2</span>
+            <div class="ibar"><div class="ibar-fill ng-bar" style="width:0%"></div></div>
+          </div>
+        </div>
+
+      </div>
+      <div class="detail-footer">
+        <button class="btn-craft disabled">⚒ 재료 부족</button>
+        <button class="btn-cancel">취소</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

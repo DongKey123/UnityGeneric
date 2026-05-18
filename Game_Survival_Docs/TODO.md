@@ -7,13 +7,20 @@
 - [x] LDOE 레퍼런스 분석 (GAME_REFERENCE.md)
 - [x] 게임 개요 / 핵심 루프 / 시스템 최소 설계 (DESIGN.md)
 - [x] 맵 / 지역 구조 상세 설계 (MAP.md)
-- [ ] 플레이어 스탯 상세 설계 (PLAYER.md)
+- [x] 플레이어 스탯 상세 설계 (PLAYER.md)
 - [x] 인벤토리 상세 설계 (INVENTORY.md)
-- [ ] 크래프팅 상세 설계 (CRAFTING.md)
+- [x] 크래프팅 상세 설계 (CRAFTING.md) — 건물 조건 없음, 재화만 있으면 UI에서 제작
 - [x] 빌딩 / 베이스 건설 상세 설계 (BUILDING.md)
 - [x] 전투 상세 설계 (BATTLE.md)
 - [x] 파밍 / 자원 수집 설계 (FARMING.md)
-- [ ] 오프라인 보상 설계
+- [x] 방치형 시스템 3종 확정 — 오프라인 자원 수집 / 자동 채집 / 자동 전투 (DESIGN.md)
+- [x] 초반 튜토리얼 흐름 설계 (BUILDING.md) — 나무 지급 → Campfire → Wood Floor → 크래프팅 → 전투 → Lumber Mill
+- [x] Building.json — construction_time / durability_max / category 필드 추가, 건물 7종 정의
+- [ ] 오프라인 보상 설계 상세 (누적 상한, 지급 UI)
+- [ ] 자동 전투 건물/유닛 방식 결정
+- [ ] Recipe.json — required_level 필드 추가
+- [ ] CraftingSystem — 플레이어 레벨 조건 체크 로직
+- [ ] BuildingData 클래스 — construction_time / category 필드 추가 (코드 반영)
 - [ ] UI 구조 설계 (UI_STRUCTURE.md)
 
 ## 미결 사항 (설계 중 확정 예정)
