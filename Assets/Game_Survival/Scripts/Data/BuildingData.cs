@@ -18,9 +18,11 @@ namespace SurvivalGame.Data
     {
         public int              building_id;
         public string           name;
+        public string           category;   // Structure / Furniture / Production
         public string           prefab_path;
         public int              grid_width;
         public int              grid_height;
+        public int              durability_max;
         public List<BuildingCost> costs;
     }
 }

@@ -130,7 +130,7 @@ namespace SurvivalGame.UI
 
         private void OnClickBuild()
         {
-            UIManager.Instance.Open<BuildModePanel, PlayerController>(_player);
+            UIManager.Instance.Open<BuildingQueuePanel, Inventory>(_player.Inventory);
         }
 
         private void OnClickCraft()
