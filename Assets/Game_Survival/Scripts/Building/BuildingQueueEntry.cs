@@ -22,5 +22,11 @@ namespace SurvivalGame.Building
             State           = BuildingState.Placed;
             PlacedInstance  = instance;
         }
+
+        public void MarkPending()
+        {
+            State          = BuildingState.Pending;
+            PlacedInstance = null;
+        }
     }
 }

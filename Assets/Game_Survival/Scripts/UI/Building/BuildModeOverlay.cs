@@ -1,14 +1,24 @@
+using Framework.UI;
+using SurvivalGame.Building;
+using SurvivalGame.Inventories;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace SurvivalGame.UI
 {
+    public class BuildModeOverlayData
+    {
+        public BuildingQueueEntry Entry     { get; set; }
+        public Inventory          Inventory { get; set; }
+    }
+
     /// <summary>
-    /// 배치 모드 중 화면 하단에 표시되는 소형 오버레이입니다.
-    /// UIManager 스택과 무관하게 독립적으로 Show/Hide됩니다.
+    /// 배치 모드 중 화면 하단에 표시되는 오버레이 패널입니다.
+    /// UIManager.ShowOverlay&lt;BuildModeOverlay, BuildModeOverlayData&gt;로 열고
+    /// UIManager.HideOverlay&lt;BuildModeOverlay&gt;로 닫습니다.
     /// </summary>
-    public class BuildModeOverlay : MonoBehaviour
+    public class BuildModeOverlay : UIPanel, IInitializable<BuildModeOverlayData>
     {
         #region Inspector — Building Info
 
@@ -51,31 +61,57 @@ namespace SurvivalGame.UI
 
         #endregion
 
-        #region Unity Lifecycle
+        #region Private Fields
 
-        private void Awake()
+        private Inventory _currentInventory;
+
+        #endregion
+
+        public override bool CloseOnBack => false;
+
+        #region UIPanel Lifecycle
+
+        protected override void Awake()
         {
+            base.Awake();
             _cancelButton.onClick.AddListener(OnClickCancel);
             _confirmButton.onClick.AddListener(OnClickConfirm);
-            gameObject.SetActive(false);
+        }
+
+        #endregion
+
+        #region Update
+
+        private void Update()
+        {
+            if (BuildingPlacer.Instance == null || !BuildingPlacer.Instance.IsPlacing) return;
+
+            bool ok = BuildingPlacer.Instance.CanPlaceAtCurrentPosition();
+            SetCanPlace(ok);
+
+            var cell = BuildingPlacer.Instance.CurrentCell;
+            SetCoord(cell.x, cell.y);
+        }
+
+        #endregion
+
+        #region IInitializable
+
+        public void Initialize(BuildModeOverlayData data)
+        {
+            _currentInventory = data.Inventory;
+
+            if (_nameText != null) _nameText.text = data.Entry.Data.name;
+            if (_gridText != null) _gridText.text = $"{data.Entry.Data.grid_width} × {data.Entry.Data.grid_height}";
         }
 
         #endregion
 
         #region Public API
 
-        public void Show(string buildingName, int gridW, int gridH)
-        {
-            if (_nameText != null) _nameText.text = buildingName;
-            if (_gridText != null) _gridText.text = $"{gridW} × {gridH}";
-            gameObject.SetActive(true);
-        }
-
-        public void Hide() => gameObject.SetActive(false);
-
         public void SetCanPlace(bool ok, string reason = null)
         {
-            if (_statusBg   != null) _statusBg.sprite   = ok ? _sprStatusOkBg  : _sprStatusNgBg;
+            if (_statusBg   != null) _statusBg.sprite   = ok ? _sprStatusOkBg   : _sprStatusNgBg;
             if (_statusIcon != null) _statusIcon.sprite  = ok ? _sprStatusOkIcon : _sprStatusNgIcon;
             if (_statusText != null) _statusText.text    = ok ? "배치 가능" : $"배치 불가 — {reason ?? "공간 부족"}";
 
@@ -90,10 +126,20 @@ namespace SurvivalGame.UI
 
         #endregion
 
-        #region Button Handlers (stub — 로직은 추후 연결)
+        #region Button Handlers
 
-        private void OnClickCancel()  { /* TODO: BuildingPlacer.ExitPlacementMode + 큐 패널 복귀 */ }
-        private void OnClickConfirm() { /* TODO: BuildingPlacer.TryPlace */ }
+        private void OnClickCancel()
+        {
+            BuildingPlacer.Instance.ExitPlacementMode();
+            UIManager.Instance.HideOverlay<BuildModeOverlay>();
+            UIManager.Instance.Open<BuildingQueuePanel, Inventory>(_currentInventory);
+        }
+
+        private void OnClickConfirm()
+        {
+            if (BuildingPlacer.Instance.TryPlace())
+                UIManager.Instance.HideOverlay<BuildModeOverlay>();
+        }
 
         #endregion
     }

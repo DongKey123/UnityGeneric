@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Framework.Core.DataManager;
 using Framework.UI;
 using SurvivalGame.Building;
 using SurvivalGame.Data;
@@ -338,13 +339,75 @@ namespace SurvivalGame.UI
 
         #endregion
 
-        #region Action Handlers (stub — 로직은 추후 연결)
+        #region Action Handlers
 
-        private void OnClickPlace()    { /* TODO: BuildingPlacer.EnterPlacementMode + Close */ }
-        private void OnClickDiscard()  { /* TODO: 재료 반환 + BuildingQueueManager.Remove */ }
-        private void OnClickMove()     { /* TODO: BuildingPlacer로 이동 모드 */ }
-        private void OnClickRepair()   { /* TODO: 재료 소모 + 내구도 회복 */ }
-        private void OnClickDemolish() { /* TODO: PlacedBuilding 제거 + 재료 50% 반환 */ }
+        private void OnClickPlace()
+        {
+            if (_selectedEntry == null || _selectedEntry.State != BuildingState.Pending) return;
+            if (BuildingPlacer.Instance == null) return;
+
+            BuildingPlacer.Instance.EnterPlacementMode(_selectedEntry);
+            UIManager.Instance.ShowOverlay<BuildModeOverlay, BuildModeOverlayData>(new BuildModeOverlayData
+            {
+                Entry     = _selectedEntry,
+                Inventory = _inventory,
+            });
+            UIManager.Instance.Close();
+        }
+
+        private void OnClickDiscard()
+        {
+            if (_selectedEntry == null || _selectedEntry.State != BuildingState.Pending) return;
+
+            foreach (var cost in _selectedEntry.Data.costs)
+            {
+                var itemData = InGameDataManager.Instance.Get<SurvivalItemData>(cost.item_id);
+                if (itemData == null) continue;
+                int refund = Mathf.Max(1, cost.count / 2);
+                _inventory.TryAdd(itemData, refund);
+            }
+
+            BuildingQueueManager.Instance.Remove(_selectedEntry);
+            ClearSelection();
+        }
+
+        private void OnClickMove()
+        {
+            if (_selectedEntry == null || _selectedEntry.State != BuildingState.Placed) return;
+            var placed = _selectedEntry.PlacedInstance;
+            if (placed == null) return;
+            if (BuildingPlacer.Instance == null) return;
+
+            BuildingGrid.Instance.Unregister(placed.Origin, placed.Data.grid_width, placed.Data.grid_height);
+            Destroy(placed.gameObject);
+            _selectedEntry.MarkPending();
+            BuildingQueueManager.Instance.NotifyChanged();
+
+            BuildingPlacer.Instance.EnterPlacementMode(_selectedEntry);
+            UIManager.Instance.ShowOverlay<BuildModeOverlay, BuildModeOverlayData>(new BuildModeOverlayData
+            {
+                Entry     = _selectedEntry,
+                Inventory = _inventory,
+            });
+            UIManager.Instance.Close();
+        }
+
+        private void OnClickRepair()
+        {
+            if (_selectedEntry == null || _selectedEntry.State != BuildingState.Placed) return;
+            ToastManager.Instance.Show("수리는 내구도 시스템 구현 후 활성화됩니다.", ToastType.Success);
+        }
+
+        private void OnClickDemolish()
+        {
+            if (_selectedEntry == null || _selectedEntry.State != BuildingState.Placed) return;
+
+            var placed = _selectedEntry.PlacedInstance;
+            if (placed != null) placed.Demolish(_inventory);
+
+            BuildingQueueManager.Instance.Remove(_selectedEntry);
+            ClearSelection();
+        }
 
         #endregion
     }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Framework.Core.DataManager;
 using Framework.UI;
+using SurvivalGame.Building;
 using SurvivalGame.Crafting;
 using SurvivalGame.Data;
 using SurvivalGame.Inventories;
@@ -405,7 +406,16 @@ namespace SurvivalGame.UI
             }
             else if (_selectedCard.BoundBuilding != null)
             {
-                ToastManager.Instance.Show($"{_selectedCard.BoundBuilding.name} 건설 배치 준비 중", ToastType.Success);
+                if (BuildingQueueManager.Instance == null)
+                {
+                    Debug.LogError("[CraftingPanel] BuildingQueueManager가 씬에 없습니다.");
+                    return;
+                }
+                var building = _selectedCard.BoundBuilding;
+                foreach (var cost in building.costs)
+                    _inventory.TryRemove(cost.item_id, cost.count);
+                BuildingQueueManager.Instance.AddToQueue(building);
+                ToastManager.Instance.Show($"{building.name} 건설 큐에 추가됐습니다.", ToastType.Success);
             }
         }
 

@@ -39,6 +39,7 @@ namespace SurvivalGame.Core
             UIManager.Instance.Open<MainPanel, PlayerController>(_player);
             _resourceSpawner.Spawn(_player.Inventory);
             _enemySpawner.Spawn(_player, _player.Inventory);
+            if (_buildingPlacer != null) _buildingPlacer.SetPlayer(_player);
         }
 
         #endregion

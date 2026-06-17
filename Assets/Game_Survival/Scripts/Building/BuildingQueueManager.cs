@@ -41,5 +41,7 @@ namespace SurvivalGame.Building
         }
 
         public IReadOnlyList<BuildingQueueEntry> GetAll() => _queue;
+
+        public void NotifyChanged() => OnQueueChanged?.Invoke();
     }
 }

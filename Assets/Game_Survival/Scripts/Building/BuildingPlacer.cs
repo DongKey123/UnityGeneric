@@ -36,10 +36,10 @@ namespace SurvivalGame.Building
 
         #region Private Fields
 
-        private BuildingData _currentData;
-        private Inventory    _inventory;
-        private PlayerController _player;
-        private GameObject   _ghost;
+        private BuildingData       _currentData;
+        private BuildingQueueEntry _currentEntry;
+        private PlayerController   _player;
+        private GameObject         _ghost;
 
         private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
 
@@ -47,7 +47,8 @@ namespace SurvivalGame.Building
 
         #region Properties
 
-        public bool IsPlacing { get; private set; }
+        public bool        IsPlacing   { get; private set; }
+        public Vector2Int  CurrentCell => IsPlacing ? GetTargetCell() : default;
 
         #endregion
 
@@ -63,18 +64,29 @@ namespace SurvivalGame.Building
 
         #region Public Methods
 
-        /// <summary>배치 모드를 시작합니다. BuildModePanel에서 호출합니다.</summary>
+        /// <summary>플레이어를 주입합니다. SurvivalEntry.Start에서 호출합니다.</summary>
+        public void SetPlayer(PlayerController player) => _player = player;
+
+        /// <summary>큐 항목으로 배치 모드를 시작합니다. BuildingQueuePanel에서 호출합니다.</summary>
+        public void EnterPlacementMode(BuildingQueueEntry entry)
+        {
+            _currentEntry = entry;
+            _currentData  = entry.Data;
+            IsPlacing     = true;
+            CreateGhost(entry.Data);
+        }
+
+        /// <summary>배치 모드를 시작합니다. BuildModePanel(레거시)에서 호출합니다.</summary>
         public void EnterPlacementMode(BuildingData data, PlayerController player, Inventory inventory)
         {
-            _currentData = data;
-            _player      = player;
-            _inventory   = inventory;
-            IsPlacing    = true;
-
+            _currentEntry = null;
+            _currentData  = data;
+            _player       = player;
+            IsPlacing     = true;
             CreateGhost(data);
         }
 
-        /// <summary>배치를 확정합니다. Place 버튼에서 호출합니다.</summary>
+        /// <summary>배치를 확정합니다. BuildModeOverlay의 확인 버튼에서 호출합니다.</summary>
         public bool TryPlace()
         {
             if (!IsPlacing) return false;
@@ -84,20 +96,22 @@ namespace SurvivalGame.Building
             if (!BuildingGrid.Instance.CanPlace(cell, _currentData.grid_width, _currentData.grid_height))
                 return false;
 
-            if (!HasResources())
-                return false;
+            var placed = SpawnBuilding(cell);
+            if (placed == null) return false;
 
-            ConsumeResources();
-            SpawnBuilding(cell);
+            if (_currentEntry != null && BuildingQueueManager.Instance != null)
+                BuildingQueueManager.Instance.SetPlaced(_currentEntry, placed);
+
             ExitPlacementMode();
             return true;
         }
 
-        /// <summary>배치 모드를 취소합니다. Cancel 버튼에서 호출합니다.</summary>
+        /// <summary>배치 모드를 취소합니다.</summary>
         public void ExitPlacementMode()
         {
-            IsPlacing    = false;
-            _currentData = null;
+            IsPlacing     = false;
+            _currentData  = null;
+            _currentEntry = null;
 
             if (_ghost != null)
             {
@@ -111,8 +125,7 @@ namespace SurvivalGame.Building
         {
             if (!IsPlacing) return false;
             Vector2Int cell = GetTargetCell();
-            return BuildingGrid.Instance.CanPlace(cell, _currentData.grid_width, _currentData.grid_height)
-                   && HasResources();
+            return BuildingGrid.Instance.CanPlace(cell, _currentData.grid_width, _currentData.grid_height);
         }
 
         #endregion
@@ -154,7 +167,7 @@ namespace SurvivalGame.Building
             var prefab = Resources.Load<GameObject>(data.prefab_path);
             if (prefab == null)
             {
-                Debug.LogWarning($"[BuildingPlacer] 프리팹을 찾을 수 없습니다: {data.prefab_path}");
+                Debug.LogError($"[BuildingPlacer] 고스트 프리팹 없음: Resources/{data.prefab_path}");
                 return;
             }
 
@@ -176,26 +189,14 @@ namespace SurvivalGame.Building
             }
         }
 
-        private bool HasResources()
-        {
-            foreach (var cost in _currentData.costs)
-            {
-                if (_inventory.GetCount(cost.item_id) < cost.count)
-                    return false;
-            }
-            return true;
-        }
-
-        private void ConsumeResources()
-        {
-            foreach (var cost in _currentData.costs)
-                _inventory.TryRemove(cost.item_id, cost.count);
-        }
-
-        private void SpawnBuilding(Vector2Int cell)
+        private PlacedBuilding SpawnBuilding(Vector2Int cell)
         {
             var prefab = Resources.Load<GameObject>(_currentData.prefab_path);
-            if (prefab == null) return;
+            if (prefab == null)
+            {
+                Debug.LogError($"[BuildingPlacer] 배치 프리팹 없음: Resources/{_currentData.prefab_path}");
+                return null;
+            }
 
             Vector3 worldPos = BuildingGrid.Instance.CellToWorld(cell);
             var go           = Instantiate(prefab, worldPos, Quaternion.identity);
@@ -203,6 +204,7 @@ namespace SurvivalGame.Building
             placed.Initialize(_currentData, cell);
 
             BuildingGrid.Instance.Register(cell, _currentData.grid_width, _currentData.grid_height, placed);
+            return placed;
         }
 
         #endregion
